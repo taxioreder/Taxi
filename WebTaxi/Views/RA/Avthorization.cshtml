@@ -1,0 +1,85 @@
+﻿<div class="bodySt">
+    <label class="labelHeadSt">
+        Sign in to Dashboard
+    </label><br /><br />
+    <form method="post" action="~/RA/Avthorization">
+        <label class="labelSt">
+            Email
+        </label><br />
+        <input class="textInpSt" type="text" name="Email" /> <br>
+        <label class="labelSt">
+            Password
+        </label> <br />
+        <input class="textInpSt" type="password" name="Password" /> <br>
+        <input class="btnInpSt" type="submit" value="Sign In" />
+    </form>
+    <span class="errSpanSt">
+        @ViewData["TextError"]
+    </span>
+</div>
+
+<style>
+    .bodySt {
+        position: absolute;
+        top: 35%;
+        left: 35%;
+    }
+
+    .textInpSt {
+        margin: 5px;
+        width: 350px;
+        height: 35px;
+        border-radius: 5px;
+        font-size: 17px;
+        color: rgb(51, 51, 51);
+        border-color: rgb(51, 51, 51);
+        border-style: groove;
+        border-width: 1px;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .labelSt {
+        margin-left: 7px;
+        font-size: 20px;
+        color: rgb(51, 51, 51);
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .labelHeadSt {
+        margin: 10px;
+        font-size: 24px;
+        color: rgb(51, 51, 51);
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .btnInpSt {
+        margin: 5px;
+        width: 120px;
+        height: 35px;
+        border-radius: 5px;
+        font-size: 18px;
+        color: rgb(51, 51, 51);
+        border-color: rgb(51, 51, 51);
+        border-style: groove;
+        border-width: 1px;
+        background-color: white;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        margin-top: 8px;
+    }
+
+        .btnInpSt:hover {
+            background-color: rgb(51, 51, 51);
+            color: white;
+        }
+
+        .btnInpSt:active {
+            font-size: 19px;
+        }
+
+    .errSpanSt {
+        margin-left: 5px;
+        color: red;
+        font-size: 16px;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+</style>
