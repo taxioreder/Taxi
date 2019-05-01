@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DBAplication.Model;
+using System;
+using System.Collections.Generic;
 
 namespace WebTaxi.Service
 {
@@ -23,5 +25,27 @@ namespace WebTaxi.Service
             sqlCommand.SaveKeyDatabays(login, password, key);
             return key;
         }
+
+        public List<Order> GetOrders(string status, int page)
+        {
+            return sqlCommand.GetShippings(status, page);
+        }
+
+        public bool CheckKey(string key)
+        {
+            return sqlCommand.CheckKeyDb(key);
+        }
+
+        //public List<Driver> GetDrivers()
+        //{
+        //    return _sqlEntityFramworke.GetDriversInDb();
+        //}
+
+        public int GetCountPage(string status)
+        {
+            return sqlCommand.GetCountPageInDb(status);
+        }
+
+
     }
 }

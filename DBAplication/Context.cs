@@ -6,6 +6,7 @@ namespace DBAplication
     public class Context : DbContext
     {
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public Context()
         {
             Database.Migrate();

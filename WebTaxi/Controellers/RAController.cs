@@ -39,7 +39,7 @@ namespace WebTaxi.Controellers
                     ViewData["hidden"] = "";
                     actionResult = Redirect("/Dashbord/Order/NewLoad");
                     int key = managerTaxi.Createkey(Email, Password);
-                    Response.Cookies.Append("KeyAvtho", key.ToString());
+                    Response.Cookies.Append("KeyAvthoTaxi", key.ToString());
                 }
                 else
                 {
