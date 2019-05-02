@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using WebTaxi.Service;
 
 namespace WebTaxi.Controellers
@@ -38,6 +41,42 @@ namespace WebTaxi.Controellers
 
             }
             return actionResult;
+        }
+
+        [HttpPost]
+        [Route("Dashbord/SaveFile")]
+        public async Task<string> AddFile(IFormFile uploadedFile)
+        {
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    if (uploadedFile != null)
+                    {
+                        string path = "Load/"+uploadedFile.FileName;
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            await uploadedFile.CopyToAsync(fileStream);
+                        }
+                        managerTaxi.ParseExel("");
+                    }
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return "true";
         }
     }
 }

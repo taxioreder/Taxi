@@ -82,6 +82,19 @@
         if (pref != "xlsx") {
 
         }
+        else {
+            let url = "@ViewBag.BaseUrl/Dashbord/SaveFile";
+            let xmlHttp = new XMLHttpRequest();
+            let formData = new FormData();
+            formData.append("uploadedFile", fille.files[0]);  
+            xmlHttp.open("POST", url, false);
+            xmlHttp.send(formData);
+            statusResponse = xmlHttp.responseText;
+
+            if (statusResponse == "true") {
+                window.location.reload();
+            }
+        }
     }
 
     function SelectAssining(idOrderAndIdDriver) {
@@ -99,7 +112,7 @@
             statusResponse = xmlHttp.responseText;
         }
 
-        if (statusResponse == "True") {
+        if (statusResponse == "true") {
             window.location.reload();
         }
     }

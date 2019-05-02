@@ -7,6 +7,7 @@
 <body>
     <nav class="navst">
         <span style="margin-right:10px"><a class="linkASt" href="">Taxi</a></span>
+        <input class="btn" type="button" value="Order" @ViewData["hidden"] onclick="window.location.href='@Url.Action("NewLoad", "Dashbord")';" />
     </nav>
     <div style="width:99%;height:97vh;">
         @RenderBody()
