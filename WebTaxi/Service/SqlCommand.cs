@@ -3,6 +3,7 @@ using DBAplication.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebTaxi.Service
 {
@@ -90,6 +91,12 @@ namespace WebTaxi.Service
             int remainderPage = orders.Count % 20;
             countPage = remainderPage > 0 ? countPage + 1 : countPage;
             return countPage;
+        }
+
+        public async Task SaveOrder(Order order)
+        {
+            await context.AddAsync(order);
+            await context.SaveChangesAsync();
         }
     }
 }

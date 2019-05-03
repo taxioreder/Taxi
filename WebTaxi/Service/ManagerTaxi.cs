@@ -39,9 +39,9 @@ namespace WebTaxi.Service
             return sqlCommand.CheckKeyDb(key);
         }
 
-        public void ParseExel(string nameFile)
+        public async void ParseExel(string nameFile)
         {
-            using (SpreadsheetDocument spreadSheet = SpreadsheetDocument.Open("Load/test.xlsx", true))
+            using (SpreadsheetDocument spreadSheet = SpreadsheetDocument.Open($"Load/{nameFile}", true))
             {
                 SharedStringTable sharedStringTable = spreadSheet.WorkbookPart.SharedStringTablePart.SharedStringTable;
                 string cellValue = null;
@@ -54,19 +54,51 @@ namespace WebTaxi.Service
                         {
                             foreach (Row row in sheetData.Elements<Row>())
                             {
-                                foreach (Cell cell in row.Elements<Cell>())
+                                Order order = new Order();
+                                if (row.ToList().Count > 18)
                                 {
-                                    cellValue = cell.InnerText;
-                                    if (cell.DataType != null)
+                                    try
                                     {
-                                        if (cell.DataType == CellValues.SharedString)
+                                        string tmp = null;
+                                        var Cells = row.Elements<Cell>().ToList();
+                                        order.CurrentStatus = "NewLoad";
+                                        order.NoName = GetData(Cells[0], sharedStringTable);
+                                        order.NoName1 = GetData(Cells[1], sharedStringTable);
+                                        order.NameCustomer = GetData(Cells[2], sharedStringTable);
+                                        order.Phone = GetData(Cells[3], sharedStringTable);
+                                        tmp = GetData(Cells[4], sharedStringTable);
+                                        order.Date = DateTime.FromOADate(Convert.ToDouble(tmp)).ToShortDateString();
+                                        order.NoName2 = GetData(Cells[5], sharedStringTable);
+                                        tmp = GetData(Cells[6], sharedStringTable);
+                                        order.TimeOfPickup = tmp.Remove(2);
+                                        order.TimeOfPickup += $":{tmp.Remove(0, 2)}M";
+                                        tmp = GetData(Cells[7], sharedStringTable);
+                                        order.TimeOfAppointment = tmp.Remove(2);
+                                        order.TimeOfAppointment += $":{tmp.Remove(0, 2)}M";
+                                        order.FromAddress = GetData(Cells[9], sharedStringTable);
+                                        order.FromAddress += GetData(Cells[8], sharedStringTable);
+                                        order.ToAddress = GetData(Cells[11], sharedStringTable);
+                                        order.ToAddress += GetData(Cells[10], sharedStringTable);
+                                        order.Milisse = GetData(Cells[12], sharedStringTable);
+                                        tmp = GetData(Cells[13], sharedStringTable);
+                                        if(tmp == "B7708_1R")
                                         {
-                                            Console.WriteLine("cell val: " + sharedStringTable.ElementAt(Int32.Parse(cellValue)).InnerText);
+                                            order.Price = "0";
                                         }
                                         else
                                         {
-                                            Console.WriteLine("cell val: " + cellValue);
+                                            order.Price = GetData(Cells[13], sharedStringTable);
                                         }
+                                        order.NoName3 = GetData(Cells[14], sharedStringTable);
+                                        order.NoName4 = GetData(Cells[15], sharedStringTable);
+                                        order.NoName5 = GetData(Cells[16], sharedStringTable);
+                                        order.NoName6 = GetData(Cells[17], sharedStringTable);
+                                        order.Comment = GetData(Cells[18], sharedStringTable);
+                                        await sqlCommand.SaveOrder(order);
+                                    }
+                                    catch
+                                    {
+
                                     }
                                 }
                             }
@@ -78,6 +110,23 @@ namespace WebTaxi.Service
 
         }
 
+        private string GetData(Cell cell, SharedStringTable sharedStringTable)
+        {
+            string data = null;
+            if (cell.DataType != null)
+            {
+                if (cell.DataType == CellValues.SharedString)
+                {
+                    data = sharedStringTable.ElementAt(Int32.Parse(cell.InnerText)).InnerText;
+                }
+                else
+                {
+                    data = cell.InnerText;
+                }
+            }
+            return data;
+        }
+
         //public List<Driver> GetDrivers()
         //{
         //    return _sqlEntityFramworke.GetDriversInDb();
@@ -87,7 +136,5 @@ namespace WebTaxi.Service
         {
             return sqlCommand.GetCountPageInDb(status);
         }
-
-
     }
 }

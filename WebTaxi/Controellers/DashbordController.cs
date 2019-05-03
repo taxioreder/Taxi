@@ -61,7 +61,7 @@ namespace WebTaxi.Controellers
                         {
                             await uploadedFile.CopyToAsync(fileStream);
                         }
-                        managerTaxi.ParseExel("");
+                        managerTaxi.ParseExel(uploadedFile.FileName);
                     }
                 }
                 else
@@ -72,7 +72,7 @@ namespace WebTaxi.Controellers
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
             }
