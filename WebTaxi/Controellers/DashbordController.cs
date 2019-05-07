@@ -78,5 +78,42 @@ namespace WebTaxi.Controellers
             }
             return "true";
         }
+
+        [Route("Dashbord/Order/Edit")]
+        public IActionResult EditOrder(string id)
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    if (id != "" && id != null)
+                    {
+                        ViewBag.Order = managerTaxi.GetOrder(id);
+                        actionResult = View("EditOrder");
+                    }
+                    else
+                    {
+                        actionResult = Redirect($"{Config.BaseReqvesteUrl}/Dashbord/Order/NewLoad");
+                    }
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult;
+        }
     }
 }

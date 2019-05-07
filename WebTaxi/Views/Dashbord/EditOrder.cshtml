@@ -1,0 +1,207 @@
+﻿<div class="body">
+    <input class="backBtn" type="button" value="← Back to Orders" onclick="history.back();" />
+    <form action="SavaOrder" method="post">
+        <input type="text" name="idOrder" style="display:none;" value="@ViewBag.Order.ID" />
+        <div class="contentBody">
+            <div class="content">
+                <p class="inpLabe">Name Customer</p>
+                <input name="nameCustomer" class="inpText" type="text" value="@ViewBag.Order.NameCustomer" />
+                <p class="inpLabe">Phone</ p>
+                <input name="phone" class="inpText" type="text" value="@ViewBag.Order.Phone" />
+                <p class="inpLabe">Phone</ p>
+                <input name="phone" class="inpText" type="text" value="@ViewBag.Order.Phone" />
+                <p class="inpLabe">Phone</ p>
+                <input name="phone" class="inpText" type="text" value="@ViewBag.Order.Phone" />
+                <p class="inpLabe">From Address</ p>
+                <input name="fromAddress" class="inpText" type="text" value="@ViewBag.Order.FromAddress" />
+                <p class="inpLabe">To Address</ p>
+                <input name="toAddress" class="inpText" type="text" value="@ViewBag.Order.ToAddress" />
+                <p class="inpLabe">NoName</ p>
+                <input name="noName" class="inpText" type="text" value="@ViewBag.Order.NoName" />
+                <p class="inpLabe">NoName 1</ p>
+                <input name="noName1" class="inpText" type="text" value="@ViewBag.Order.NoName1" />
+                <p class="inpLabe">NoName 2</ p>
+                <input name="noNam2" class="inpText" type="text" value="@ViewBag.Order.NoName2" />
+            </div>
+            <div class="content">
+                <p class="inpLabe">Status</p>
+                <select name="status" class="dropDown">
+                    <option value="">------------------------------------</option>
+                    <option value="NewLoad">NewLoad</option>
+                    <option value="Picked up">Picked up</option>
+                    <option value="Delivered">Delivered</option>
+                </select>
+                <p class="inpLabe">Date</p>
+                <input name="date" class="inpText" type="text" value="@ViewBag.Order.Date" />
+                <p class="inpLabe">Time Of Pickup</p>
+                <input name="timeOfPickup" class="inpText" type="text" value="@ViewBag.Order.TimeOfPickup" />
+                <p class="inpLabe">Time Of Appointment</p>
+                <input name="timeOfAppointment" class="inpText" type="text" value="@ViewBag.Order.TimeOfAppointment" />
+                <p class="inpLabe">Milisse</p>
+                <input name="milisse" class="inpText" type="text" value="@ViewBag.Order.Milisse" />
+                <p class="inpLabe">Price</p>
+                <input name="price" class="inpText" type="text" value="@ViewBag.Order.Price" />
+                <p class="inpLabe">NoName 3</ p>
+                <input name="noNam3" class="inpText" type="text" value="@ViewBag.Order.NoName3" />
+                <p class="inpLabe">NoName 4</ p>
+                <input name="noName4" class="inpText" type="text" value="@ViewBag.Order.NoName4" />
+                <p class="inpLabe">NoName 5</ p>
+                <input name="noNam5" class="inpText" type="text" value="@ViewBag.Order.NoName5" />
+                <input class="btnSave" value="Save" type="submit" />
+                <a class="btnArchived" href="Config.BaseReqvesteUrl/Dashbord/Order/ArchivedOrder?id=@ViewBag.Order.ID">Archive</a>
+                <a class="btnDeleted" href="Config.BaseReqvesteUrl/Dashbord/Order/DeletedOrder?id=@ViewBag.Order.ID&status=NewLoad">Deleted</a>
+            </div>
+        </div>
+    </form>
+</div>
+<style>
+    * {
+        margin: 0px;
+    }
+
+    .btnAddandRevoveVech {
+        border: none;
+        width: 30px;
+        background-color: #f9a038;
+        color: #000000;
+    }
+
+    .btnSave {
+        margin: 2px;
+        background-color: #323b85;
+        border-style: double;
+        border-color: #8faac3;
+        border-radius: 10px;
+        color: white;
+        width: 100px;
+        height: 40px;
+        border-style: double;
+    }
+
+    .btnArchived {
+        margin: 2px;
+        background-color: #329703;
+        border-color: #33db26;
+        border-radius: 10px;
+        color: white;
+        padding: 7px;
+        font-size: 17px;
+        border-style: double;
+    }
+
+    .btnDeleted {
+        margin: 2px;
+        background-color: #b51616;
+        border-color: #893030;
+        border-radius: 10px;
+        color: white;
+        padding: 7px;
+        font-size: 17px;
+        text-align: center;
+        border-style: double;
+    }
+
+    btnSave:hover {
+        background-color: #8c8ac2;
+    }
+
+
+    .btnD:hover {
+        background: rgba(243, 167, 76, 0.29);
+    }
+
+    .dropDown {
+        width: 100%;
+        height: 30px;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+        padding: 2px;
+        font-size: 18px;
+        color: rgb(51, 51, 51);
+        border-color: rgba(51, 51, 51, 0.4);
+        margin-bottom: 15px;
+    }
+
+    .inpTextTr {
+        border: none;
+        width: 97%;
+        background-color: rgba(228, 228, 228, 0.40);
+        color: rgb(51, 51, 51);
+        padding: 5px;
+    }
+
+    tr {
+        display: table-row;
+        vertical-align: inherit;
+        border-color: inherit;
+    }
+
+    td, th {
+        text-align: center;
+        color: rgb(51, 51, 51);
+    }
+
+    td {
+        background-color: rgba(228, 228, 228, 0.40);
+    }
+
+    .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .headTabe {
+        font-size: 21px;
+        margin-left: 10px;
+        color: rgb(51, 51, 51);
+    }
+
+    .bodyTable {
+        margin: 15px;
+    }
+
+    .inpLabe {
+        font-size: 18px;
+        color: rgb(51, 51, 51);
+        margin-top: 10px;
+    }
+
+    .inpText {
+        width: 100%;
+        height: 25px;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+        padding: 2px;
+        font-size: 16px;
+        color: rgb(51, 51, 51);
+        border-color: rgba(51, 51, 51, 0.24);
+        margin-bottom: 15px;
+    }
+
+    .content {
+        width: 40%;
+    }
+
+    .contentBody {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .backBtn {
+        background: none;
+        border: none;
+        font-size: 17px;
+        color: #ffd7a6;
+        margin-bottom: 20px;
+    }
+
+    .body {
+        margin-top: 30px;
+        margin-left: 5px;
+        margin-right: 5px;
+        padding: 10px;
+    }
+</style>

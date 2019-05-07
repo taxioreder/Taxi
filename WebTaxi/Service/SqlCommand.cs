@@ -106,5 +106,10 @@ namespace WebTaxi.Service
             await context.AddAsync(order);
             await context.SaveChangesAsync();
         }
+
+        public Order GetShipping(string id)
+        {
+            return context.Orders.FirstOrDefault(o => o.ID == Convert.ToInt32(id));
+        }
     }
 }

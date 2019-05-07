@@ -43,7 +43,7 @@
                     </p>
                 </div>
                 <div class="blockData" style="margin-left:auto;">
-                    <a class="btnId" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID&stasus=NewLoad">Edit</a>
+                    <a class="btnId" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
                     <select onchange="SelectAssining(this.options[this.selectedIndex].value)" class="btnId" style="width:100px">
                         <option value="">Assign</option>
                         @*@for (int j = 0; j < ViewBag.Drivers.Count; j++)

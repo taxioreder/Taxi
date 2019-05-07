@@ -137,5 +137,10 @@ namespace WebTaxi.Service
         {
             return sqlCommand.GetCountPageInDb(status);
         }
+
+        public Order GetOrder(string id)
+        {
+            return sqlCommand.GetShipping(id);
+        }
     }
 }
