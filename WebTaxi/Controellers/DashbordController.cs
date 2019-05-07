@@ -45,7 +45,7 @@ namespace WebTaxi.Controellers
 
         [HttpPost]
         [Route("Dashbord/SaveFile")]
-        public async Task<string> AddFile(IFormFile uploadedFile)
+        public string AddFile(IFormFile uploadedFile)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace WebTaxi.Controellers
                         string path = "Load/"+uploadedFile.FileName;
                         using (var fileStream = new FileStream(path, FileMode.Create))
                         {
-                            await uploadedFile.CopyToAsync(fileStream);
+                            uploadedFile.CopyTo(fileStream);
                         }
                         managerTaxi.ParseExel(uploadedFile.FileName);
                     }

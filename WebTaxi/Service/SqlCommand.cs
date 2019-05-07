@@ -1,5 +1,6 @@
 ﻿using DBAplication;
 using DBAplication.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,6 +96,13 @@ namespace WebTaxi.Service
 
         public async Task SaveOrder(Order order)
         {
+            Order orderDb = await context.Orders.FirstOrDefaultAsync(o => o.Comment == order.Comment && o.Date == order.Date && o.FromAddress == order.FromAddress && o.Milisse == order.Milisse && o.NameCustomer == order.NameCustomer
+            && o.NoName == order.NoName && o.NoName1 == order.NoName1 && o.NoName2 == order.NoName2 && o.NoName3 == order.NoName3 && o.NoName4 == order.NoName4 && o.NoName5 == order.NoName5 && o.NoName6 == order.NoName6
+            && o.Phone == order.Phone && o.Price == order.Price && o.TimeOfAppointment == order.TimeOfAppointment && o.TimeOfPickup == order.TimeOfPickup && o.ToAddress == order.ToAddress);
+            if(orderDb != null)
+            {
+                return;
+            }
             await context.AddAsync(order);
             await context.SaveChangesAsync();
         }

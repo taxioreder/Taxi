@@ -4,6 +4,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebTaxi.Service
 {
@@ -81,7 +82,7 @@ namespace WebTaxi.Service
                                         order.ToAddress += GetData(Cells[10], sharedStringTable);
                                         order.Milisse = GetData(Cells[12], sharedStringTable);
                                         tmp = GetData(Cells[13], sharedStringTable);
-                                        if(tmp == "B7708_1R")
+                                        if(tmp == "B7708_1R" || tmp == "B7708_1")
                                         {
                                             order.Price = "0";
                                         }

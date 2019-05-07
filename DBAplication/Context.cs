@@ -9,7 +9,8 @@ namespace DBAplication
         public DbSet<Order> Orders { get; set; }
         public Context()
         {
-            Database.Migrate();
+            //Database.Migrate();
+            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

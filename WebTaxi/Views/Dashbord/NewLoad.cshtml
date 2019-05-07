@@ -81,8 +81,13 @@
             let url = "@ViewBag.BaseUrl/Dashbord/SaveFile";
             let xmlHttp = new XMLHttpRequest();
             xmlHttp.onreadystatechange = function () { 
-                if (xmlHttp.status != 200) {
+                if (xmlHttp.status == 200) {
+                    delay(500);
                     window.location.reload();
+                }
+                else if (xmlHttp.status == 0)
+                {
+
                 }
                 else {
                     loadExel.style.visibility = "hidden";
@@ -90,9 +95,21 @@
                 }
             }
             let formData = new FormData();
-            formData.append("uploadedFile", fille.files[0]);  
+            formData.append("uploadedFile", fille.files[0]);
             xmlHttp.open("POST", url, true);
             xmlHttp.send(formData);
+             
+        }
+    }
+
+    function delay(ms) {
+        var cur_d = new Date();
+        var cur_ticks = cur_d.getTime();
+        var ms_passed = 0;
+        while(ms_passed < ms) {
+            var d = new Date(); 
+            var ticks = d.getTime();
+            ms_passed = ticks - cur_ticks;
         }
     }
 
