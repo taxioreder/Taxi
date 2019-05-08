@@ -4,10 +4,9 @@
         <input type="text" name="idOrder" style="display:none;" value="@ViewBag.Order.ID" />
         <div class="contentBody">
             <div class="content">
+                <input name="idLoad" style="display:none;" class="inpText" type="text" value="@ViewBag.Order.ID" />
                 <p class="inpLabe">Name Customer</p>
                 <input name="nameCustomer" class="inpText" type="text" value="@ViewBag.Order.NameCustomer" />
-                <p class="inpLabe">Phone</ p>
-                <input name="phone" class="inpText" type="text" value="@ViewBag.Order.Phone" />
                 <p class="inpLabe">Phone</ p>
                 <input name="phone" class="inpText" type="text" value="@ViewBag.Order.Phone" />
                 <p class="inpLabe">Phone</ p>
@@ -22,6 +21,8 @@
                 <input name="noName1" class="inpText" type="text" value="@ViewBag.Order.NoName1" />
                 <p class="inpLabe">NoName 2</ p>
                 <input name="noNam2" class="inpText" type="text" value="@ViewBag.Order.NoName2" />
+                <p class="inpLabe">NoName 4</ p>
+                <input name="noName4" class="inpText" type="text" value="@ViewBag.Order.NoName4" />
             </div>
             <div class="content">
                 <p class="inpLabe">Status</p>
@@ -42,11 +43,11 @@
                 <p class="inpLabe">Price</p>
                 <input name="price" class="inpText" type="text" value="@ViewBag.Order.Price" />
                 <p class="inpLabe">NoName 3</ p>
-                <input name="noNam3" class="inpText" type="text" value="@ViewBag.Order.NoName3" />
-                <p class="inpLabe">NoName 4</ p>
-                <input name="noName4" class="inpText" type="text" value="@ViewBag.Order.NoName4" />
+                <input name="noName3" class="inpText" type="text" value="@ViewBag.Order.NoName3" />
                 <p class="inpLabe">NoName 5</ p>
-                <input name="noNam5" class="inpText" type="text" value="@ViewBag.Order.NoName5" />
+                <input name="noName5" class="inpText" type="text" value="@ViewBag.Order.NoName5" />
+                <p class="inpLabe">NoName 6</ p>
+                <input name="noName6" class="inpText" type="text" value="@ViewBag.Order.NoName6" />
                 <input class="btnSave" value="Save" type="submit" />
                 <a class="btnArchived" href="Config.BaseReqvesteUrl/Dashbord/Order/ArchivedOrder?id=@ViewBag.Order.ID">Archive</a>
                 <a class="btnDeleted" href="Config.BaseReqvesteUrl/Dashbord/Order/DeletedOrder?id=@ViewBag.Order.ID&status=NewLoad">Deleted</a>

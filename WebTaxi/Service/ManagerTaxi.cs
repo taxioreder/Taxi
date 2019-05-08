@@ -4,7 +4,6 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebTaxi.Service
 {
@@ -141,6 +140,13 @@ namespace WebTaxi.Service
         public Order GetOrder(string id)
         {
             return sqlCommand.GetShipping(id);
+        }
+
+        public void Updateorder(string idLoad, string nameCustomer, string phone, string fromAddress, string toAddress, string noName, string noName1,
+           string noName2, string status, string date, string timeOfPickup, string timeOfAppointment, string milisse, string price, string noName3, string noNam4, string noNam5, string noNam6)
+        {
+            sqlCommand.UpdateorderInDb(idLoad, nameCustomer, phone, fromAddress, toAddress, noName, noName1, noName2, status, date, timeOfPickup,
+                        timeOfAppointment, milisse, price, noName3, noNam4, noNam5, noNam6);
         }
     }
 }

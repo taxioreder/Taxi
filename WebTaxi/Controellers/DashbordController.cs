@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using WebTaxi.Service;
 
 namespace WebTaxi.Controellers
@@ -105,6 +104,38 @@ namespace WebTaxi.Controellers
                     if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
                     {
                         Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult;
+        }
+
+        [Route("Dashbord/Order/SavaOrder")]
+        public IActionResult SaveOrder(string idLoad, string nameCustomer, string phone, string fromAddress, string toAddress, string noName, string noName1,
+           string noName2, string status, string date, string timeOfPickup, string timeOfAppointment, string milisse, string price, string noName3, string noName4, string noName5, string noName6)
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvtho", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    managerTaxi.Updateorder(idLoad, nameCustomer, phone, fromAddress, toAddress, noName, noName1, noName2, status, date, timeOfPickup,
+                        timeOfAppointment, milisse, price, noName3, noName4, noName5, noName6);
+                    actionResult = Redirect($"{Config.BaseReqvesteUrl}/Dashbord/Order/NewLoad");
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvtho"))
+                    {
+                        Response.Cookies.Delete("KeyAvtho");
                     }
                     actionResult = Redirect(Config.BaseReqvesteUrl);
                 }
