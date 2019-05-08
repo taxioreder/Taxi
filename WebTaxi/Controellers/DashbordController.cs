@@ -146,5 +146,65 @@ namespace WebTaxi.Controellers
             }
             return actionResult;
         }
+
+        [Route("Dashbord/Order/ArchivedOrder")]
+        public IActionResult DeletedOrder(string id)
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvtho", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    managerTaxi.ArchvedOrder(id);
+                    actionResult = Redirect($"{Config.BaseReqvesteUrl}/Dashbord/Order/NewLoad");
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvtho"))
+                    {
+                        Response.Cookies.Delete("KeyAvtho");
+                    }
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult;
+        }
+
+        [Route("Dashbord/Order/DeletedOrder")]
+        public IActionResult DeletedOrder(string id, string status)
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvtho", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    managerTaxi.DeletedOrder(id);
+                    actionResult = Redirect($"{Config.BaseReqvesteUrl}/Dashbord/Order/{status}");
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvtho"))
+                    {
+                        Response.Cookies.Delete("KeyAvtho");
+                    }
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult;
+        }
     }
 }

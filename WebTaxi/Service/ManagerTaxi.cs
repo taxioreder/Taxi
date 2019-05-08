@@ -148,5 +148,15 @@ namespace WebTaxi.Service
             sqlCommand.UpdateorderInDb(idLoad, nameCustomer, phone, fromAddress, toAddress, noName, noName1, noName2, status, date, timeOfPickup,
                         timeOfAppointment, milisse, price, noName3, noNam4, noNam5, noNam6);
         }
+
+        public void ArchvedOrder(string id)
+        {
+            sqlCommand.RecurentOnArchived(id);
+        }
+
+        public void DeletedOrder(string id)
+        {
+            sqlCommand.RecurentOnDeleted(id);
+        }
     }
 }

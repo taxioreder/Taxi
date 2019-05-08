@@ -135,5 +135,27 @@ namespace WebTaxi.Service
             order.NoName6 = noName6 != null ? noName6 : order.NoName6;
             await context.SaveChangesAsync();
         }
+
+        public async void RecurentOnArchived(string id)
+        {
+            context.Orders.Load();
+            Order order = await context.Orders.FirstOrDefaultAsync(s => s.ID == Convert.ToInt32(id));
+            if (order != null)
+            {
+                order.CurrentStatus = "Archived";
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async void RecurentOnDeleted(string id)
+        {
+            context.Orders.Load();
+            Order shipping = await context.Orders.FirstOrDefaultAsync(s => s.ID == Convert.ToInt32(id));
+            if (shipping != null)
+            {
+                shipping.CurrentStatus = "Deleted";
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }
