@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DBAplication.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using WebTaxi.Service;
 
 namespace WebTaxi.Controellers
@@ -124,7 +126,7 @@ namespace WebTaxi.Controellers
             {
                 string key = null;
                 ViewBag.BaseUrl = Config.BaseReqvesteUrl;
-                Request.Cookies.TryGetValue("KeyAvtho", out key);
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
                 if (managerTaxi.CheckKey(key))
                 {
                     managerTaxi.Updateorder(idLoad, nameCustomer, phone, fromAddress, toAddress, noName, noName1, noName2, status, date, timeOfPickup,
@@ -133,9 +135,9 @@ namespace WebTaxi.Controellers
                 }
                 else
                 {
-                    if (Request.Cookies.ContainsKey("KeyAvtho"))
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
                     {
-                        Response.Cookies.Delete("KeyAvtho");
+                        Response.Cookies.Delete("KeyAvthoTaxi");
                     }
                     actionResult = Redirect(Config.BaseReqvesteUrl);
                 }
@@ -155,7 +157,7 @@ namespace WebTaxi.Controellers
             {
                 string key = null;
                 ViewBag.BaseUrl = Config.BaseReqvesteUrl;
-                Request.Cookies.TryGetValue("KeyAvtho", out key);
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
                 if (managerTaxi.CheckKey(key))
                 {
                     managerTaxi.ArchvedOrder(id);
@@ -163,9 +165,9 @@ namespace WebTaxi.Controellers
                 }
                 else
                 {
-                    if (Request.Cookies.ContainsKey("KeyAvtho"))
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
                     {
-                        Response.Cookies.Delete("KeyAvtho");
+                        Response.Cookies.Delete("KeyAvthoTaxi");
                     }
                     actionResult = Redirect(Config.BaseReqvesteUrl);
                 }
@@ -185,22 +187,52 @@ namespace WebTaxi.Controellers
             {
                 string key = null;
                 ViewBag.BaseUrl = Config.BaseReqvesteUrl;
-                Request.Cookies.TryGetValue("KeyAvtho", out key);
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
                 if (managerTaxi.CheckKey(key))
                 {
                     managerTaxi.DeletedOrder(id);
-                    actionResult = Redirect($"{Config.BaseReqvesteUrl}/Dashbord/Order/{status}");
+                    actionResult = Redirect($"{Config.BaseReqvesteUrl}/Dashbord/Order/NewLoad");
                 }
                 else
                 {
-                    if (Request.Cookies.ContainsKey("KeyAvtho"))
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
                     {
-                        Response.Cookies.Delete("KeyAvtho");
+                        Response.Cookies.Delete("KeyAvthoTaxi");
                     }
                     actionResult = Redirect(Config.BaseReqvesteUrl);
                 }
             }
             catch (Exception)
+            {
+
+            }
+            return actionResult;
+        }
+
+        [Route("Dashbord/Order/Creat")]
+        public async Task<IActionResult> CreatOrderpage()
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    Order order = await managerTaxi.CreateShiping();
+                    actionResult = Redirect($"{Config.BaseReqvesteUrl}/Dashbord/Order/Edit?id={order.ID}");
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception e)
             {
 
             }

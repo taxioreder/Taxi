@@ -58,22 +58,22 @@ namespace WebTaxi.Service
             {
                 try
                 {
-                    orders = orders.GetRange((20 * page) - 20, 20);
+                    orders = orders.GetRange((20 * page) - 25, 25);
                 }
                 catch (Exception)
                 {
-                    orders = orders.GetRange((20 * page) - 20, orders.Count % 20);
+                    orders = orders.GetRange((20 * page) - 25, orders.Count % 25);
                 }
             }
             else
             {
                 try
                 {
-                    orders = orders.GetRange(0, 20);
+                    orders = orders.GetRange(0, 25);
                 }
                 catch (Exception)
                 {
-                    orders = orders.GetRange(0, orders.Count % 20);
+                    orders = orders.GetRange(0, orders.Count % 25);
                 }
             }
             return orders;
@@ -88,8 +88,8 @@ namespace WebTaxi.Service
         {
             int countPage = 0;
             List<Order> orders = context.Orders.ToList().FindAll(s => s.CurrentStatus == status);
-            countPage = orders.Count / 20;
-            int remainderPage = orders.Count % 20;
+            countPage = orders.Count / 25;
+            int remainderPage = orders.Count % 25;
             countPage = remainderPage > 0 ? countPage + 1 : countPage;
             return countPage;
         }
@@ -156,6 +156,16 @@ namespace WebTaxi.Service
                 shipping.CurrentStatus = "Deleted";
                 await context.SaveChangesAsync();
             }
+        }
+
+        public async Task<Order> CreateShipping()
+        {
+            Order order = new Order();
+            order.CurrentStatus = "NewLoad";
+            context.Orders.Add(order);
+            await context.SaveChangesAsync();
+            Order order1 = context.Orders.FirstOrDefault(s => s.ID == order.ID);
+            return order1;
         }
     }
 }

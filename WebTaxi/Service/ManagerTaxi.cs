@@ -4,6 +4,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebTaxi.Service
 {
@@ -157,6 +158,11 @@ namespace WebTaxi.Service
         public void DeletedOrder(string id)
         {
             sqlCommand.RecurentOnDeleted(id);
+        }
+
+        public async Task<Order> CreateShiping()
+        {
+            return await sqlCommand.CreateShipping();
         }
     }
 }
