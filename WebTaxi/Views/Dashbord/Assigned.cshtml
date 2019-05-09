@@ -9,8 +9,8 @@
         <span id="errorExel" style="color:red; margin:10px; visibility:hidden;">File is not Excel or file is not valid</span>
     </div>
     <nav>
-        <input class="btnSt activeBtn" type="button" value="New load" onclick="window.location.href='@Url.Action("NewLoad", "Dashbord")';" />
-        <input class="btnSt" type="button" value="Assigned" onclick="window.location.href='@Url.Action("Assigned", "Dashbord")';" />
+        <input class="btnSt" type="button" value="New load" onclick="window.location.href='@Url.Action("NewLoad", "Dashbord")';" />
+        <input class="btnSt activeBtn" type="button" value="Assigned" onclick="window.location.href='@Url.Action("Assigned", "Dashbord")';" />
         <input class="btnSt" type="button" value="Picked up" onclick="window.location.href='@Url.Action("Pickedup", "Dashbord")';" />
         <input class="btnSt" type="button" value="Delivered" onclick="window.location.href='@Url.Action("Delivered", "Dashbord")';" />
         <input class="btnSt" type="button" value="Paid" onclick="window.location.href='@Url.Action("Paid", "Dashbord")';" />
@@ -20,40 +20,45 @@
     <div class="filling">
         @for (int i = 0; i < ViewBag.Orders.Count; i++)
         {
-        <div class="orders">
-            <input class="btnId" type="button" value="Name Customer: @ViewBag.Orders[i].NameCustomer">
-            <span class="stPData">$@ViewBag.Orders[i].Price</span>
-            <p class="stPData">
-                @ViewBag.Orders[i].Milisse Milles, Pickup time @ViewBag.Orders[i].Date @ViewBag.Orders[i].TimeOfPickup ±5 Min
-                <br />
-                Phone: @ViewBag.Orders[i].Phone
-            </p>
-            <div class="bodyBlock">
-                <div class="blockData">
-                    <h5 class="headPH4">ORIGIN</h5>
-                    <p class="stPData">
-                        @ViewBag.Orders[i].FromAddress
-                    </p>
-                </div>
-                <div class="blockData">
-                    <h5 class="headPH4">DESTINATION</h5>
-                    <p class="stPData">
-                        @ViewBag.Orders[i].ToAddress
-                    </p>
-                </div>
-                <div class="blockData" style="margin-left:auto;">
-                    <a class="btnId" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
-                    <select onchange="SelectAssining(this.options[this.selectedIndex].value)" class="btnId" style="width:100px">
-                        <option value="">Assign</option>
-                        @for (int j = 0; j < ViewBag.Drivers.Count; j++)
-                        {
-                            <option value="@ViewBag.Orders[i].ID,@ViewBag.Drivers[j].ID">@ViewBag.Drivers[j].FullName</option>
-                        }
-                    </select>
-                    <a class="btnId" style="width:60px" href="DeletedOrder?id=@ViewBag.Orders[i].ID">Deleted</a>
+            <div class="orders">
+                <input class="btnId" type="button" value="Name Customer: @ViewBag.Orders[i].NameCustomer">
+                <span class="stPData">$@ViewBag.Orders[i].Price</span>
+                <p class="stPData">
+                    @ViewBag.Orders[i].Milisse Milles, Pickup time @ViewBag.Orders[i].Date @ViewBag.Orders[i].TimeOfPickup ±5 Min
+                    <br />
+                    Phone: @ViewBag.Orders[i].Phone
+                </p>
+                <div class="bodyBlock">
+                    <div class="blockData">
+                        <h5 class="headPH4">ORIGIN</h5>
+                        <p class="stPData">
+                            @ViewBag.Orders[i].FromAddress
+                        </p>
+                    </div>
+                    <div class="blockData">
+                        <h5 class="headPH4">DESTINATION</h5>
+                        <p class="stPData">
+                            @ViewBag.Orders[i].ToAddress
+                        </p>
+                    </div>
+                    <div class="blockData" style="margin-left:auto;">
+                        <a class="btnId" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
+                        <select onchange="SelectAssining(this.options[this.selectedIndex].value)" class="btnId" style="width:100px">
+                            <option value="">Reassang</option>
+                            <option value="@ViewBag.Orders[i].ID,Unassign">Unassign</option>
+                            @for (int j = 0; j < ViewBag.Drivers.Count; j++)
+                            {
+                                <option value="@ViewBag.Orders[i].ID,@ViewBag.Drivers[j].ID">@ViewBag.Drivers[j].FullName</option>
+                            }
+                        </select>
+                        <a class="btnId" style="width:60px" href="DeletedOrder?id=@ViewBag.Orders[i].ID">Deleted</a>
+                        <div style="display:flex">
+                            <p class="stPData">Assigned to @ViewBag.Orders[i].Driverr.FullName</p>
+                            <p class="stPData">Phone: @ViewBag.Orders[i].Driverr.PhoneNumber</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
         }
         @if (ViewBag.count != 1)
         {
@@ -79,7 +84,7 @@
         else {
             let url = "@ViewBag.BaseUrl/Dashbord/SaveFile";
             let xmlHttp = new XMLHttpRequest();
-            xmlHttp.onreadystatechange = function () { 
+            xmlHttp.onreadystatechange = function () {
                 if (xmlHttp.status == 200) {
                     delay(500);
                     window.location.reload();
@@ -97,7 +102,7 @@
             formData.append("uploadedFile", fille.files[0]);
             xmlHttp.open("POST", url, true);
             xmlHttp.send(formData);
-             
+
         }
     }
 
@@ -106,15 +111,25 @@
         var cur_ticks = cur_d.getTime();
         var ms_passed = 0;
         while(ms_passed < ms) {
-            var d = new Date(); 
+            var d = new Date();
             var ticks = d.getTime();
             ms_passed = ticks - cur_ticks;
         }
     }
 
-    function SelectAssining(idOrderAndIdDriver) {
-        let statusResponse;
-        if (idOrderAndIdDriver != "") {
+   function SelectAssining(idOrderAndIdDriver) {
+        var statusResponse;
+        if (idOrderAndIdDriver.split(',')[1] == "Unassign") {
+            let url = "@ViewBag.BaseUrl/Dashbord/Unassign";
+            let xmlHttp = new XMLHttpRequest();
+            let idOrder = idOrderAndIdDriver.split(',')[0];
+            var body = 'idOrder=' + encodeURIComponent(idOrder);
+            xmlHttp.open("POST", url, false);
+            xmlHttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xmlHttp.send(body);
+            statusResponse = xmlHttp.responseText;
+        }
+        else if (idOrderAndIdDriver != "") {
             let idOrder = idOrderAndIdDriver.split(',')[0];
             let idDriver = idOrderAndIdDriver.split(',')[1];
             let url = "@ViewBag.BaseUrl/Dashbord/Assign";
@@ -126,7 +141,7 @@
             xmlHttp.send(body);
             statusResponse = xmlHttp.responseText;
         }
-
+        
         if (statusResponse == "True") {
             window.location.reload();
         }
@@ -268,9 +283,8 @@
         border-width: 1px;
         border-color: rgba(51, 51, 51, 0.3);
     }
-    
+
     input[type="file"] {
         display: none;
     }
-
 </style>

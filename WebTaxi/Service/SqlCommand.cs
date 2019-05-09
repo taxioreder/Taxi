@@ -167,5 +167,75 @@ namespace WebTaxi.Service
             Order order1 = context.Orders.FirstOrDefault(s => s.ID == order.ID);
             return order1;
         }
+
+        public List<Driver> GetDrivers(int page)
+        {
+            List<Driver> drivers = null;
+            drivers = context.Drivers.ToList();
+
+            if (page == -1)
+            {
+            }
+            else if (page != 0)
+            {
+                try
+                {
+                    drivers = drivers.GetRange((20 * page) - 20, 20);
+                }
+                catch (Exception)
+                {
+                    drivers = drivers.GetRange((20 * page) - 20, drivers.Count % 20);
+                }
+            }
+            else
+            {
+                try
+                {
+                    drivers = drivers.GetRange(0, 20);
+                }
+                catch (Exception)
+                {
+                    drivers = drivers.GetRange(0, drivers.Count % 20);
+                }
+            }
+            return drivers;
+        }
+
+        public async void AddDriver(Driver driver)
+        {
+            await context.Drivers.AddAsync(driver);
+            await context.SaveChangesAsync();
+        }
+
+        public async void RemoveDriveInDb(int id)
+        {
+            context.Drivers.Remove(context.Drivers.FirstOrDefault(d => d.ID == id));
+            await context.SaveChangesAsync();
+        }
+
+        public List<Driver> GetDriversInDb()
+        {
+           // context.geolocations.Load();
+            return context.Drivers.ToList();
+        }
+
+        public async void AddDriversInOrder(string idOrder, string idDriver)
+        {
+            context.Drivers.Load();
+            Order order = context.Orders.FirstOrDefault<Order>(s => s.ID == Convert.ToInt32(idOrder));
+            Driver driver = context.Drivers.FirstOrDefault<Driver>(d => d.ID == Convert.ToInt32(idDriver));
+            order.Driver = driver;
+            order.CurrentStatus = "Assigned";
+            await context.SaveChangesAsync();
+        }
+
+        public async void RemoveDriversInOrder(string idOrder)
+        {
+            context.Drivers.Load();
+            Order order = context.Orders.FirstOrDefault<Order>(s => s.ID == Convert.ToInt32(idOrder));
+            order.Driver = null;
+            order.CurrentStatus = "NewLoad";
+            await context.SaveChangesAsync();
+        }
     }
 }

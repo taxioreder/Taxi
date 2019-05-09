@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using WebTaxi.Service;
@@ -24,9 +25,201 @@ namespace WebTaxi.Controellers
                 if (managerTaxi.CheckKey(key))
                 {
                     ViewBag.Orders = managerTaxi.GetOrders("NewLoad", page);
-                    //ViewBag.Drivers = managerTaxi.GetDrivers();
+                    ViewBag.Drivers = managerTaxi.GetDrivers();
                     ViewBag.count = managerTaxi.GetCountPage("NewLoad");
                     actionResult = View("NewLoad");
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult;
+        }
+
+        [Route("Dashbord/Order/Archived")]
+        public IActionResult Archived(int page)
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    ViewBag.Orders = managerTaxi.GetOrders("Archived", page);
+                    ViewBag.Drivers = managerTaxi.GetDrivers();
+                    ViewBag.count = managerTaxi.GetCountPage("Archived");
+                    actionResult = View("Archived");
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult;
+        }
+
+        [Route("Dashbord/Order/Assigned")]
+        public IActionResult Assigned(int page)
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    ViewBag.Orders = managerTaxi.GetOrders("Assigned", page);
+                    ViewBag.Drivers = managerTaxi.GetDrivers();
+                    ViewBag.count = managerTaxi.GetCountPage("Assigned");
+                    actionResult = View("Assigned");
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult;
+        }
+
+        [Route("Dashbord/Order/Deleted")]
+        public IActionResult Deleted(int page)
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    ViewBag.Orders = managerTaxi.GetOrders("Deleted", page);
+                    ViewBag.Drivers = managerTaxi.GetDrivers();
+                    ViewBag.count = managerTaxi.GetCountPage("Deleted");
+                    actionResult = View("Deleted");
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult;
+        }
+
+        [Route("Dashbord/Order/Delivered")]
+        public IActionResult Delivered(int page)
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    List<Order> shippings = managerTaxi.GetOrders("Delivered", page);
+                    //ViewBag.Drivers = managerTaxi.GetDrivers();
+                    ViewBag.count = managerTaxi.GetCountPage("Delivered");
+                    actionResult = View("Delivered");
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult;
+        }
+
+        [Route("Dashbord/Order/Paid")]
+        public IActionResult Paid(int page)
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    ViewBag.Orders = managerTaxi.GetOrders("Paid", page);
+                    ViewBag.Drivers = managerTaxi.GetDrivers();
+                    ViewBag.count = managerTaxi.GetCountPage("Paid");
+                    actionResult = View("Paid");
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult;
+        }
+
+        [Route("Dashbord/Order/Pickedup")]
+        public IActionResult Pickedup(int page)
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    ViewBag.Orders = managerTaxi.GetOrders("Picked up", page);
+                    ViewBag.Drivers = managerTaxi.GetDrivers();
+                    ViewBag.count = managerTaxi.GetCountPage("Pickedup");
+                    actionResult = View("Pickedup");
                 }
                 else
                 {
@@ -181,7 +374,7 @@ namespace WebTaxi.Controellers
 
         [Route("Dashbord/Order/DeletedOrder")]
         public IActionResult DeletedOrder(string id, string status)
-        {
+            {
             IActionResult actionResult = null;
             try
             {
@@ -237,6 +430,84 @@ namespace WebTaxi.Controellers
 
             }
             return actionResult;
+        }
+
+        [Route("Dashbord/Assign")]
+        [HttpPost]
+        public string DriverSelect(string idOrder, string idDriver)
+        {
+            bool actionResult = false;
+            try
+            {
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                string key = null;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    if ((idDriver != null && idDriver != "") && (idOrder != null && idOrder != ""))
+                    {
+                        managerTaxi.Assign(idOrder, idDriver);
+                        actionResult = true;
+                    }
+                    else
+                    {
+                        actionResult = false;
+                    }
+
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    actionResult = false;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult.ToString();
+        }
+
+        [Route("Dashbord/Unassign")]
+        [HttpPost]
+        public string DriverUnSelect(string idOrder)
+        {
+            bool actionResult = false;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    if (idOrder != null && idOrder != "")
+                    {
+                        managerTaxi.Unassign(idOrder);
+                        actionResult = true;
+                    }
+                    else
+                    {
+                        actionResult = false;
+                    }
+
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    actionResult = false;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult.ToString();
         }
     }
 }

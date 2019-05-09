@@ -21,5 +21,6 @@
         public string NoName5 { get; set; }
         public string NoName6 { get; set; }
         public string Comment { get; set; }
+        public Driver Driver { get; set; }
     }
 }
