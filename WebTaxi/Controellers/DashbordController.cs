@@ -152,8 +152,8 @@ namespace WebTaxi.Controellers
                 Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
                 if (managerTaxi.CheckKey(key))
                 {
-                    List<Order> shippings = managerTaxi.GetOrders("Delivered", page);
-                    //ViewBag.Drivers = managerTaxi.GetDrivers();
+                    ViewBag.Orders = managerTaxi.GetOrders("Delivered", page);
+                    ViewBag.Drivers = managerTaxi.GetDrivers();
                     ViewBag.count = managerTaxi.GetCountPage("Delivered");
                     actionResult = View("Delivered");
                 }
@@ -343,7 +343,7 @@ namespace WebTaxi.Controellers
         }
 
         [Route("Dashbord/Order/ArchivedOrder")]
-        public IActionResult DeletedOrder(string id)
+        public IActionResult ArchivedOrder(string id)
         {
             IActionResult actionResult = null;
             try
@@ -373,7 +373,7 @@ namespace WebTaxi.Controellers
         }
 
         [Route("Dashbord/Order/DeletedOrder")]
-        public IActionResult DeletedOrder(string id, string status)
+        public IActionResult DeletedOrder(string id)
             {
             IActionResult actionResult = null;
             try
