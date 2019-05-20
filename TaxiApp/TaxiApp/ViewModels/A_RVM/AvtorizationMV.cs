@@ -5,6 +5,8 @@ using Prism.Mvvm;
 using Rg.Plugins.Popup.Services;
 using TaxiApp.Service;
 using TaxiApp.View;
+using TaxiApp.View.AppPage;
+using Xamarin.Forms;
 
 namespace TaxiApp.ViewModels.A_RVM
 {
@@ -65,7 +67,7 @@ namespace TaxiApp.ViewModels.A_RVM
             {
                 App.isAvtorization = true;
                 CrossSettings.Current.AddOrUpdateValue("Token", token);
-                FeedBack = "Commplet";
+                App.Current.MainPage = new NavigationPage(new FullOrder(managerTaxi));
                 //await Task.Run(() =>
                 //{
                 //    DependencyService.Get<IStore>().OnTokenRefresh();

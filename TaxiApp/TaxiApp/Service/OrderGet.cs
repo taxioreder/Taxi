@@ -1,25 +1,25 @@
-﻿using RestSharp;
-using System;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RestSharp;
+using System;
+using System.Collections.Generic;
+using TaxiApp.Models;
 
 namespace TaxiApp.Service
 {
-    class A_R
+    internal class OrderGet
     {
-        private A_R a_R = null;
-
-        public int Avthorization(string login, string password, ref string description, ref string token)
+        internal int ActiveOreder(string token, ref string description, ref List<Order> orders)
         {
             IRestResponse response = null;
             string content = null;
             try
             {
                 RestClient client = new RestClient(Config.BaseReqvesteUrl);
-                RestRequest request = new RestRequest("Api.Mobile/Avtorization", Method.POST);
-                request.AddHeader("Accept", "application/json");
+                RestRequest request = new RestRequest("Api.Mobile/Order", Method.POST);
                 client.Timeout = 10000;
-                request.AddParameter("email", login);
-                request.AddParameter("password", password);
+                request.AddHeader("Accept", "application/json");
+                request.AddParameter("token", token);
                 response = client.Execute(request);
                 content = response.Content;
             }
@@ -33,11 +33,11 @@ namespace TaxiApp.Service
             }
             else
             {
-                return GetData(content, ref description, ref token); ;
+                return GetData(content, ref description, ref orders);
             }
         }
 
-        private int GetData(string respJsonStr, ref string description, ref string token)
+        private int GetData(string respJsonStr, ref string description, ref List<Order> orders)
         {
             respJsonStr = respJsonStr.Replace("\\", "");
             respJsonStr = respJsonStr.Remove(0, 1);
@@ -46,8 +46,10 @@ namespace TaxiApp.Service
             string status = responseAppS.Value<string>("Status");
             if (status == "success")
             {
-                token = responseAppS
-                    .Value<string>("ResponseStr");
+                orders = JsonConvert.DeserializeObject<List<Order>>(responseAppS.
+                        SelectToken("ResponseStr").ToString());
+                description = responseAppS
+                    .Value<string>("Description");
                 return 3;
             }
             else

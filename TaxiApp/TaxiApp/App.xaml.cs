@@ -1,5 +1,6 @@
 ﻿using Plugin.Settings;
 using TaxiApp.View.A_R;
+using TaxiApp.View.AppPage;
 using Xamarin.Forms;
 
 namespace TaxiApp
@@ -7,6 +8,7 @@ namespace TaxiApp
     public partial class App : Application
     {
         internal static bool isAvtorization;
+        internal static bool isNetwork = true;
 
         public App()
         {
@@ -20,7 +22,7 @@ namespace TaxiApp
             else
             {
                 isAvtorization = true;
-                //MainPage = new NavigationPage(new TabPage(new Service.ManagerDispatchMob()));
+                MainPage = new NavigationPage(new FullOrder(new Service.ManagerTaxi()));
             }
         }
 

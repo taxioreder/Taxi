@@ -1,11 +1,13 @@
 ﻿using Plugin.Connectivity;
-using System;
+using System.Collections.Generic;
+using TaxiApp.Models;
 
 namespace TaxiApp.Service
 {
     public class ManagerTaxi
     {
         private A_R a_R = null;
+        private OrderGet orderGet = null;
 
         internal int A_RWork(string typeR_A, string username, string password, ref string description, ref string token)
         {
@@ -20,6 +22,21 @@ namespace TaxiApp.Service
             }
             a_R = null;
             return stateA_R;
+        }
+
+        public int OrderWork(string typeOrder, string token, ref string description, ref List<Order> orders)
+        {
+            orderGet = new OrderGet();
+            int stateOrder = 1;
+            if (CrossConnectivity.Current.IsConnected)
+            {
+                if (typeOrder == "OrderGet")
+                {
+                    stateOrder = orderGet.ActiveOreder(token, ref description, ref orders);
+                }
+            }
+            orderGet = null;
+            return stateOrder;
         }
     }
 }

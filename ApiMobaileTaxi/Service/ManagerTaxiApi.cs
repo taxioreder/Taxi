@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using DBAplication.Model;
 
 namespace ApiMobaileTaxi.Service
 {
@@ -34,6 +36,16 @@ namespace ApiMobaileTaxi.Service
                 token += i * new Random().Next(1, 1000) + password[i];
             }
             return token;
+        }
+
+        internal bool GetOrdersForToken(string token, ref List<Order> orders)
+        {
+            bool isToken = sqlCoommandTaxiApi.CheckToken(token);
+            if (isToken)
+            {
+                orders = sqlCoommandTaxiApi.GetOrdersForToken(token);
+            }
+            return isToken;
         }
     }
 }

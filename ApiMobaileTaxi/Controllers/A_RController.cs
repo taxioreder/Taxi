@@ -5,8 +5,7 @@ using Newtonsoft.Json;
 
 namespace ApiMobaileTaxi.Controllers
 {
-    [Route("api.Mobaile")]
-    [ApiController]
+    [Route("Api.Mobile")]
     public class A_RController : ControllerBase
     {
         ManagerTaxiApi managerTaxi = new ManagerTaxiApi();
