@@ -41,7 +41,7 @@
                             @ViewBag.Orders[i].ToAddress
                         </p>
                     </div>
-                    <div class="blockData" style="margin-left:auto;">
+                    <div class="blockBtn">
                         <a class="btnId" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
                         <select onchange="SelectAssining(this.options[this.selectedIndex].value)" class="btnId" style="width:100px">
                             <option value="">Reassang</option>
@@ -177,10 +177,6 @@
                 background-color: #ddd;
             }
 
-    .bodyBlock {
-        display: flex;
-    }
-
     .blockData {
         margin-right: 30px;
         width: 30%;
@@ -188,7 +184,7 @@
 
     .headPH4 {
         margin: 7px;
-        font-size: 22px;
+        font-size: 18px;
         color: #ad7d52;
     }
 
@@ -196,8 +192,8 @@
         color: white;
         background-color: darkgray;
         display: inline-block;
-        padding: 10px;
-        font-size: 14px;
+        padding: 7px;
+        font-size: 12px;
         font-weight: 400;
         text-align: center;
         border: 2px solid;
@@ -231,16 +227,17 @@
     .stPData {
         margin: 5px;
         color: #421f0e;
-        font-size: 20px;
+        font-size: 15px;
     }
 
     .orders {
-        width: 90%;
-        border-bottom: solid;
+        width: 15%;
+        border: solid;
         border-width: 1px;
         border-color: rgba(51, 51, 51, 0.3);
-        padding: 45px;
+        padding: 20px;
         margin-bottom: 5px;
+        margin: 10px;
     }
 
     .body {
@@ -282,6 +279,9 @@
         border-top: solid;
         border-width: 1px;
         border-color: rgba(51, 51, 51, 0.3);
+        display:flex;
+        justify-content:space-between;
+        flex-wrap:wrap;
     }
 
     input[type="file"] {

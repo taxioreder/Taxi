@@ -21,10 +21,21 @@
                                         <BoxView BackgroundColor="#000000" WidthRequest="8" />
                                         <StackLayout Padding="10">
                                             <StackLayout Orientation="Horizontal">
-                                                <Label Text="Load Id:" FontSize="17"/>
-                                                <Label Text="{Binding idOrder}" FontSize="17"/>
-                                                <Image Source="{Binding IcoStatus}"  HeightRequest="8" Margin="50, 0, 0, 0"/>
-                                                <Label x:Name="idOrder" Text="{Binding Id}" IsVisible="False" FontSize="17"/>
+                                                <Label Text="Name Customer:" FontSize="17"/>
+                                                <Label Text="{Binding NameCustomer}" FontSize="17"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
+                                                <Label Text="Phone:" FontSize="15" TextColor="Black"/>
+                                                <Label Text="{Binding Phone}" FontSize="15" TextColor="Blue" >
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1"/>
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
+                                                <Label Text="Car feed date and time:" FontSize="15" TextColor="Black"/>
+                                                <Label Text="{Binding Date}" FontSize="15" />
+                                                <Label Text="{Binding TimeOfPickup}" FontSize="15" />
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>
@@ -34,6 +45,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Label Text="IMPORTANT: lateness to order from, no more than 5 minutes" Margin="10" FontSize="15"  TextColor="Red"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

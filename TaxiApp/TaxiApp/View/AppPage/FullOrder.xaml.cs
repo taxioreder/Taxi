@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.Messaging;
+using System;
 using TaxiApp.Service;
 using TaxiApp.ViewModels.AppPageMV;
 using Xamarin.Forms;
@@ -10,7 +11,7 @@ namespace TaxiApp.View.AppPage
     public partial class FullOrder : ContentPage
     {
         private FullOrderMV fullOrderMV = null;
-
+            
         public FullOrder(ManagerTaxi managerTaxi)
         {
             InitializeComponent();
@@ -26,6 +27,13 @@ namespace TaxiApp.View.AppPage
         private void ToolbarItem_Clicked(object sender, EventArgs e)
         {
             fullOrderMV.OutAccount();
+        }
+
+        private void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)
+        {
+            var phoneDialer = CrossMessaging.Current.PhoneDialer;
+            if (phoneDialer.CanMakePhoneCall)
+                phoneDialer.MakePhoneCall(((Label)sender).Text);
         }
     }
 }
