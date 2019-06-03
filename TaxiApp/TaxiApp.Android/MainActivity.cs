@@ -6,6 +6,8 @@ using Android.OS;
 using Xamarin.Forms.Platform.Android;
 using Firebase;
 using Plugin.FirebasePushNotification;
+using Plugin.Geolocator;
+using Plugin.Permissions;
 
 namespace TaxiApp.Droid
 {
@@ -32,12 +34,13 @@ namespace TaxiApp.Droid
             Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, bundle);
             FirebaseApp.InitializeApp(Android.App.Application.Context);
             FirebasePushNotificationManager.ProcessIntent(this, Intent);
+            
             LoadApplication(new App());
         }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
+            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }

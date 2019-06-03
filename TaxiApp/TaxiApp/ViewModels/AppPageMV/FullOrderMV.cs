@@ -1,11 +1,11 @@
 ﻿using Plugin.Settings;
 using Prism.Commands;
 using Prism.Mvvm;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TaxiApp.Models;
 using TaxiApp.Service;
+using TaxiApp.Service.Net;
 using TaxiApp.View.A_R;
 using Xamarin.Forms;
 
@@ -47,6 +47,7 @@ namespace TaxiApp.ViewModels.AppPageMV
             set => SetProperty(ref isRefr, value);
         }
 
+        [System.Obsolete]
         private async void Init()
         {
             IsRefr = true;
@@ -54,7 +55,7 @@ namespace TaxiApp.ViewModels.AppPageMV
             string description = null;
             int state = 0;
             List<Order> orders1 = null;
-            //await Task.Run(() => Utils.CheckNet());
+            await Task.Run(() => Utils.CheckNet());
             if (App.isNetwork)
             {
                 await Task.Run(() =>

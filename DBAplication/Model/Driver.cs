@@ -9,6 +9,6 @@
         public string Password { get; set; }
         public string Token { get; set; }
         public string TokenShope { get; set; }
-       // public Geolocations geolocations { get; set; }
+        public Geolocations geolocations { get; set; }
     }
 }

@@ -8,6 +8,7 @@ namespace DBAplication
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Driver> Drivers { get; set; }
+        public DbSet<Geolocations> Geolocations { get; set; }
 
         public Context()
         {

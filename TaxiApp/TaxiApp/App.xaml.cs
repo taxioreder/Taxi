@@ -1,4 +1,5 @@
 ﻿using Plugin.Settings;
+using TaxiApp.Service.GeloctionGPS;
 using TaxiApp.View.A_R;
 using TaxiApp.View.AppPage;
 using Xamarin.Forms;
@@ -8,7 +9,8 @@ namespace TaxiApp
     public partial class App : Application
     {
         internal static bool isAvtorization;
-        internal static bool isNetwork = true;
+        internal static bool isNetwork;
+        internal static bool isStart;
 
         public App()
         {
@@ -26,19 +28,31 @@ namespace TaxiApp
             }
         }
 
-        protected override void OnStart()
+        protected override async void OnStart()
         {
-            // Handle when your app starts
+            if (isAvtorization)
+            {
+                isStart = true;
+                Utils.StartListening();
+            }
         }
 
-        protected override void OnSleep()
+        protected override async void OnSleep()
         {
-            // Handle when your app sleeps
+            if (isAvtorization)
+            {
+                isStart = false;
+                Utils.StopListening();
+            }
         }
 
-        protected override void OnResume()
+        protected override async void OnResume()
         {
-            // Handle when your app resumes
+            if (isAvtorization)
+            {
+                isStart = true;
+                Utils.StartListening();
+            }
         }
     }
 }
