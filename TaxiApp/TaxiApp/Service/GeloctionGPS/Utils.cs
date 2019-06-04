@@ -47,7 +47,7 @@ namespace TaxiApp.Service.GeloctionGPS
             {
                 if (App.isNetwork)
                 {
-                    //ReqvestGPS(e.Position.Longitude.ToString(), e.Position.Latitude.ToString());
+                    ReqvestGPS(e.Position.Longitude.ToString(), e.Position.Latitude.ToString());
                 }
             });
         }
@@ -60,7 +60,7 @@ namespace TaxiApp.Service.GeloctionGPS
             {
                 string token = CrossSettings.Current.GetValueOrDefault("Token", "");
                 RestClient client = new RestClient(Config.BaseReqvesteUrl);
-                RestRequest request = new RestRequest("Mobile/GPS/Save", Method.POST);
+                RestRequest request = new RestRequest("Api.Mobile/GPS/Save", Method.POST);
                 request.AddHeader("Accept", "application/json");
                 client.Timeout = 10000;
                 request.AddParameter("token", token);

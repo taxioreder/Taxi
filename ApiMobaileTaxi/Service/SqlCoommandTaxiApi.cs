@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DBAplication;
 using DBAplication.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiMobaileTaxi.Service
 {
@@ -42,6 +44,15 @@ namespace ApiMobaileTaxi.Service
             }
             orders1.AddRange(orders.FindAll(s => s.CurrentStatus == "Assigned" || s.CurrentStatus == "Picked up"));
             return orders1;
+        }
+
+        internal async void SaveGPSLocationData(string token, Geolocations geolocations)
+        {
+            Driver driver = context.Drivers.Where(d => d.Token == token)
+                .Include(d => d.geolocations)
+                .FirstOrDefault();
+            driver.geolocations = geolocations;
+            await context.SaveChangesAsync();
         }
     }
 }

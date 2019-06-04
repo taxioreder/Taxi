@@ -1,0 +1,61 @@
+﻿<span class="metadata-marker" style="display: none;" data-region_tag="html-body"></span>
+<div id="map"></div>
+<div id="dataDriverGPS" style="display:none">
+    @foreach (var drive in ViewBag.Driver)
+    {
+        @if (drive.geolocations != null)
+        {
+            <div>
+                <input type="text" value=@drive.geolocations.Longitude />
+                <input type="text" value=@drive.geolocations.Latitude />
+                <input type="text" value=@drive.FullName />
+            </div>
+        }
+    }
+</div>
+<script>
+    var map;
+    function initMap() {
+        var features = [];
+        let elmDataGps = dataDriverGPS.children;
+        for (let i = 0; i < elmDataGps.length; i++) {
+            features.push(
+                {
+                    position: new google.maps.LatLng(parseFloat(elmDataGps[i].children[1].value.replace(',', '.')), parseFloat(elmDataGps[i].children[0].value.replace(',', '.'))),
+                    name: elmDataGps[i].children[2].value,
+                });
+        }
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: new google.maps.LatLng(48.367044, -105.452607),
+            mapTypeId: 'roadmap'
+        });
+        features.forEach(function (feature) {
+            var marker = new google.maps.Marker({
+                position: feature.position,
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                title: feature.name,
+            });
+            marker.addListener('click', function () {
+                new google.maps.InfoWindow({
+                    content: "<h3>Driver: "+feature.name+"</h3>"
+                }).open(map, marker);
+            });
+        });
+    }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVZjv5rqdWCv3peDZR7r8O0XjDrdDsztA&callback=initMap"></script>
+<style>
+    #map {
+        height: 100%;
+        width: 101%
+    }
+
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style> 

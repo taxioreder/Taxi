@@ -38,6 +38,11 @@ namespace ApiMobaileTaxi.Service
             return token;
         }
 
+        internal bool CheckToken(string token)
+        {
+            return sqlCoommandTaxiApi.CheckToken(token);
+        }
+
         internal bool GetOrdersForToken(string token, ref List<Order> orders)
         {
             bool isToken = sqlCoommandTaxiApi.CheckToken(token);
@@ -47,5 +52,14 @@ namespace ApiMobaileTaxi.Service
             }
             return isToken;
         }
+        
+        public void SaveGPSLocationData(string token, string longitude, string latitude)
+        {
+            Geolocations geolocations = new Geolocations();
+            geolocations.Latitude = latitude;
+            geolocations.Longitude = longitude;
+            sqlCoommandTaxiApi.SaveGPSLocationData(token, geolocations);
+        }
+
     }
 }
