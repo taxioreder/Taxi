@@ -33,9 +33,26 @@
                                                 </Label>
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
-                                                <Label Text="Car feed date and time:" FontSize="15" TextColor="Black"/>
+                                                <Label Text="Pecked up time:" FontSize="15" TextColor="Black"/>
                                                 <Label Text="{Binding Date}" FontSize="15" />
                                                 <Label Text="{Binding TimeOfPickup}" FontSize="15" />
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
+                                                <Label Text="From Address" FontSize="15" TextColor="Black"/>
+                                                <Label Text="{Binding FromAddress}" FontSize="15" />
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
+                                                <Label Text="To Address" FontSize="15" TextColor="Black"/>
+                                                <Label Text="{Binding ToAddress}" FontSize="15" />
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
+                                                <Label Text="Status Order" FontSize="15" TextColor="Black"/>
+                                                <Label Text="" FontSize="15" />
+                                                <Label Text="Start" FontSize="15" TextColor="Blue">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_2"/>
+                                                    </Label.GestureRecognizers>
+                                                </Label>
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>

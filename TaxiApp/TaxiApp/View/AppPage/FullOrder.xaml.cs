@@ -2,6 +2,7 @@
 using System;
 using TaxiApp.Service;
 using TaxiApp.ViewModels.AppPageMV;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -34,6 +35,18 @@ namespace TaxiApp.View.AppPage
             var phoneDialer = CrossMessaging.Current.PhoneDialer;
             if (phoneDialer.CanMakePhoneCall)
                 phoneDialer.MakePhoneCall(((Label)sender).Text);
+        }
+
+        private async void TapGestureRecognizer_Tapped_2(object sender, EventArgs e)
+        {
+            
+            var placemark = new Placemark
+            {
+                Thoroughfare = fullOrderMV.Orders[0].ToAddress
+            };
+            var options = new MapLaunchOptions { Name = "1", NavigationMode = NavigationMode.Driving };
+
+            await Map.OpenAsync(placemark, options);
         }
     }
 }
