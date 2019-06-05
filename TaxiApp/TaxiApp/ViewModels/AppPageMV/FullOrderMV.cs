@@ -77,5 +77,11 @@ namespace TaxiApp.ViewModels.AppPageMV
             }
             IsRefr = false;
         }
+
+        public void GetLonAndLanToAddress(string address)
+        {
+            bool isReqvest = true;
+            managerTaxi.ApiGoogleMapsWork("GetGetLonAndLanToAddress", address, ref isReqvest);
+        }
     }
 }

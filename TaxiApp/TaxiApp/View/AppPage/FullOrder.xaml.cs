@@ -1,4 +1,6 @@
-﻿using Plugin.Messaging;
+﻿using Plugin.Geofence;
+using Plugin.Geofence.Abstractions;
+using Plugin.Messaging;
 using System;
 using TaxiApp.Service;
 using TaxiApp.ViewModels.AppPageMV;
@@ -34,19 +36,24 @@ namespace TaxiApp.View.AppPage
         {
             var phoneDialer = CrossMessaging.Current.PhoneDialer;
             if (phoneDialer.CanMakePhoneCall)
+            {
                 phoneDialer.MakePhoneCall(((Label)sender).Text);
+            }
         }
 
         private async void TapGestureRecognizer_Tapped_2(object sender, EventArgs e)
         {
-            
-            var placemark = new Placemark
-            {
-                Thoroughfare = fullOrderMV.Orders[0].ToAddress
-            };
-            var options = new MapLaunchOptions { Name = "1", NavigationMode = NavigationMode.Driving };
-
-            await Map.OpenAsync(placemark, options);
+            fullOrderMV.GetLonAndLanToAddress(fullOrderMV.Orders[0].ToAddress);
+            //CrossGeofence.Current.StartMonitoring(new GeofenceCircularRegion("1", 48.448173, 35.032135, 100)
+            //{
+            //    StayedInThresholdDuration = TimeSpan.FromSeconds(10),
+            //});
+            //var placemark = new Placemark
+            //{
+            //    Thoroughfare = fullOrderMV.Orders[0].ToAddress
+            //};
+            //var options = new MapLaunchOptions { Name = "1", NavigationMode = NavigationMode.Driving };
+            //await Map.OpenAsync(placemark, options);
         }
     }
 }

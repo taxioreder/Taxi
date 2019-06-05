@@ -8,6 +8,7 @@ namespace TaxiApp.Service
     {
         private A_R a_R = null;
         private OrderGet orderGet = null;
+        private Api_Map_Google api_Map_Google = null;
 
         internal int A_RWork(string typeR_A, string username, string password, ref string description, ref string token)
         {
@@ -37,6 +38,21 @@ namespace TaxiApp.Service
             }
             orderGet = null;
             return stateOrder;
+        }
+
+        public void ApiGoogleMapsWork(string typeOrder, string address, ref bool isReqvest)
+        {
+            api_Map_Google = new Api_Map_Google();
+            int stateOrder = 1;
+            if (CrossConnectivity.Current.IsConnected)
+            {
+                if (typeOrder == "GetGetLonAndLanToAddress")
+                {
+                    api_Map_Google.GetGetLonAndLanToAddress(address, ref isReqvest);
+                }
+            }
+            api_Map_Google = null;
+            //return stateOrder;
         }
     }
 }

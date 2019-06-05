@@ -6,8 +6,6 @@ namespace TaxiApp.Service
 {
     class A_R
     {
-        private A_R a_R = null;
-
         public int Avthorization(string login, string password, ref string description, ref string token)
         {
             IRestResponse response = null;
