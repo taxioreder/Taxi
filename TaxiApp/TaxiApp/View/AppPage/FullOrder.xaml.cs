@@ -2,6 +2,7 @@
 using Plugin.Geofence.Abstractions;
 using Plugin.Messaging;
 using System;
+using TaxiApp.Models;
 using TaxiApp.Service;
 using TaxiApp.ViewModels.AppPageMV;
 using Xamarin.Essentials;
@@ -43,17 +44,18 @@ namespace TaxiApp.View.AppPage
 
         private async void TapGestureRecognizer_Tapped_2(object sender, EventArgs e)
         {
-            fullOrderMV.GetLonAndLanToAddress(fullOrderMV.Orders[0].ToAddress);
-            //CrossGeofence.Current.StartMonitoring(new GeofenceCircularRegion("1", 48.448173, 35.032135, 100)
-            //{
-            //    StayedInThresholdDuration = TimeSpan.FromSeconds(10),
-            //});
-            //var placemark = new Placemark
-            //{
-            //    Thoroughfare = fullOrderMV.Orders[0].ToAddress
-            //};
-            //var options = new MapLaunchOptions { Name = "1", NavigationMode = NavigationMode.Driving };
-            //await Map.OpenAsync(placemark, options);
+            location locationFrom = await fullOrderMV.GetLonAndLanToAddress(fullOrderMV.Orders[0].FromAddress);
+            location locationTo = await fullOrderMV.GetLonAndLanToAddress(fullOrderMV.Orders[0].ToAddress);
+            if (locationFrom != null)
+            {
+                DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID.ToString(), Convert.ToDouble(locationFrom.lat), Convert.ToDouble(locationFrom.lng), Convert.ToDouble(locationTo.lat), Convert.ToDouble(locationTo.lng), 0.001000);
+                var placemark = new Placemark
+                {
+                    Thoroughfare = fullOrderMV.Orders[0].FromAddress
+                };
+                var options = new MapLaunchOptions { Name = "1", NavigationMode = NavigationMode.Driving };
+                await Map.OpenAsync(placemark, options);
+            }
         }
     }
 }

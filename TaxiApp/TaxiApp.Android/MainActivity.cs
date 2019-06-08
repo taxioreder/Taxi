@@ -7,12 +7,15 @@ using Xamarin.Forms.Platform.Android;
 using Firebase;
 using Plugin.FirebasePushNotification;
 using Plugin.Permissions;
+using System;
 
 namespace TaxiApp.Droid
 {
     [Activity(Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        static MainActivity Instance = null;
+
         protected override void OnCreate(Bundle bundle)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -34,6 +37,12 @@ namespace TaxiApp.Droid
             FirebaseApp.InitializeApp(Android.App.Application.Context);
             FirebasePushNotificationManager.ProcessIntent(this, Intent);
             LoadApplication(new App());
+            Instance = this;
+        }
+
+        public static MainActivity GetInstance()
+        {
+            return Instance;
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

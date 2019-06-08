@@ -17,35 +17,35 @@ namespace TaxiApp.Droid
 
         public override void OnCreate()
         {
-            base.OnCreate();
-            AppContext = this.ApplicationContext;
-            CrossGeofence.Initialize<CrossGeofenceListener>();
-            CrossGeofence.GeofenceListener.OnAppStarted();
-            StartService();
+            //base.OnCreate();
+            //AppContext = this.ApplicationContext;
+            //CrossGeofence.Initialize<CrossGeofenceListener>();
+            //CrossGeofence.GeofenceListener.OnAppStarted();
+            //StartService();
         }
 
         public static void StartService()
         {
-            AppContext.StartService(new Intent(AppContext, typeof(GeofenceService)));
+            //AppContext.StartService(new Intent(AppContext, typeof(GeofenceService)));
 
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Kitkat)
-            {
+            //if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Kitkat)
+            //{
 
-                PendingIntent pintent = PendingIntent.GetService(AppContext, 0, new Intent(AppContext, typeof(GeofenceService)), 0);
-                AlarmManager alarm = (AlarmManager)AppContext.GetSystemService(Context.AlarmService);
-                alarm.Cancel(pintent);
-            }
+            //    PendingIntent pintent = PendingIntent.GetService(AppContext, 0, new Intent(AppContext, typeof(GeofenceService)), 0);
+            //    AlarmManager alarm = (AlarmManager)AppContext.GetSystemService(Context.AlarmService);
+            //    alarm.Cancel(pintent);
+            //}
         }
 
         public static void StopService()
         {
-            AppContext.StopService(new Intent(AppContext, typeof(GeofenceService)));
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Kitkat)
-            {
-                PendingIntent pintent = PendingIntent.GetService(AppContext, 0, new Intent(AppContext, typeof(GeofenceService)), 0);
-                AlarmManager alarm = (AlarmManager)AppContext.GetSystemService(Context.AlarmService);
-                alarm.Cancel(pintent);
-            }
+            //AppContext.StopService(new Intent(AppContext, typeof(GeofenceService)));
+            //if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Kitkat)
+            //{
+            //    PendingIntent pintent = PendingIntent.GetService(AppContext, 0, new Intent(AppContext, typeof(GeofenceService)), 0);
+            //    AlarmManager alarm = (AlarmManager)AppContext.GetSystemService(Context.AlarmService);
+            //    alarm.Cancel(pintent);
+            //}
         }
     }
 }

@@ -40,19 +40,15 @@ namespace TaxiApp.Service
             return stateOrder;
         }
 
-        public void ApiGoogleMapsWork(string typeOrder, string address, ref bool isReqvest)
+        public bool ApiGoogleMapsWork(string typeOrder, string address, ref location locationt)
         {
             api_Map_Google = new Api_Map_Google();
-            int stateOrder = 1;
-            if (CrossConnectivity.Current.IsConnected)
+            if (typeOrder == "GetGetLonAndLanToAddress")
             {
-                if (typeOrder == "GetGetLonAndLanToAddress")
-                {
-                    api_Map_Google.GetGetLonAndLanToAddress(address, ref isReqvest);
-                }
+                return api_Map_Google.GetGetLonAndLanToAddress(address, ref locationt);
             }
             api_Map_Google = null;
-            //return stateOrder;
+            return false;
         }
     }
 }

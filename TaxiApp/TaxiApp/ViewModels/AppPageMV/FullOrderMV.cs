@@ -78,10 +78,20 @@ namespace TaxiApp.ViewModels.AppPageMV
             IsRefr = false;
         }
 
-        public void GetLonAndLanToAddress(string address)
+        public async Task<location> GetLonAndLanToAddress(string address)
         {
-            bool isReqvest = true;
-            managerTaxi.ApiGoogleMapsWork("GetGetLonAndLanToAddress", address, ref isReqvest);
+            location location = null;
+            await Task.Run(() => Utils.CheckNet());
+            if (App.isNetwork)
+            {
+                bool isReqvest = managerTaxi.ApiGoogleMapsWork("GetGetLonAndLanToAddress", address, ref location);
+                if (!isReqvest && location == null)
+                {
+                    location = null;
+                    // poupTypeError
+                }
+            }
+            return location;
         }
     }
 }

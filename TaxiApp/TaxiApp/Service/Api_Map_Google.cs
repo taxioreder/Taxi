@@ -9,7 +9,7 @@ namespace TaxiApp.Service
     public class Api_Map_Google
     {
         //https://maps.googleapis.com/maps/api/geocode/json?address=QUINCY,494,WILLARDST,APT3,02169&key=AIzaSyBg0nsyrrsmGyw9Iiw0TOu4HI6o8Jt1jHU
-        public void GetGetLonAndLanToAddress(string address, ref bool isReqvest)
+        public bool GetGetLonAndLanToAddress(string address, ref location location)
         {
             IRestResponse response = null;
             string content = null;
@@ -22,33 +22,34 @@ namespace TaxiApp.Service
             }
             catch (Exception)
             {
-                isReqvest = false;
+                return false;
             }
             if (content == "" || response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                isReqvest = false;
+                return false;
             }
             else
             {
-                GetData(content, ref isReqvest);
+               return GetData(content, ref location);
             }
         }
 
-        private void GetData(string respJsonStr, ref bool isReqvest)
+        private bool GetData(string respJsonStr, ref location location)
         {
-            location steps = null;
+            bool isReqvest = false;
             var responseAppS = JObject.Parse(respJsonStr);
             var status = responseAppS.Value<string>("status");
             if (status == "OK")
             {
                 var stepJson = responseAppS.GetValue("results").First.Value<JToken>("geometry").Value<JToken>("location").ToString();
-                steps = JsonConvert.DeserializeObject<location>(stepJson);
+                location = JsonConvert.DeserializeObject<location>(stepJson);
                 isReqvest = true;
             }
             else
             {
                 isReqvest = false;
             }
+            return isReqvest;
         }
     }
 }

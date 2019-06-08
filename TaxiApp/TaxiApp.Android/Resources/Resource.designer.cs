@@ -4187,6 +4187,9 @@ namespace TaxiApp.Droid
 			// aapt resource value: 0x7f090037
 			public const int abc_toolbar_collapse_description = 2131296311;
 			
+			// aapt resource value: 0x7f09004e
+			public const int app_name = 2131296334;
+			
 			// aapt resource value: 0x7f090045
 			public const int appbar_scrolling_view_behavior = 2131296325;
 			
@@ -4365,8 +4368,8 @@ namespace TaxiApp.Droid
 			// aapt resource value: 0x7f0d016e
 			public const int Animation_Design_BottomSheetDialog = 2131558766;
 			
-			// aapt resource value: 0x7f0d0191
-			public const int AppCompatDialogStyle = 2131558801;
+			// aapt resource value: 0x7f0d0192
+			public const int AppCompatDialogStyle = 2131558802;
 			
 			// aapt resource value: 0x7f0d00a9
 			public const int Base_AlertDialog_AppCompat = 2131558569;
@@ -4870,10 +4873,13 @@ namespace TaxiApp.Droid
 			public const int CardView_Light = 2131558414;
 			
 			// aapt resource value: 0x7f0d018f
-			public const int MainTheme = 2131558799;
+			public const int Dexter_Internal_Theme_Transparent = 2131558799;
 			
 			// aapt resource value: 0x7f0d0190
-			public const int MainTheme_Base = 2131558800;
+			public const int MainTheme = 2131558800;
+			
+			// aapt resource value: 0x7f0d0191
+			public const int MainTheme_Base = 2131558801;
 			
 			// aapt resource value: 0x7f0d002d
 			public const int Platform_AppCompat = 2131558445;
