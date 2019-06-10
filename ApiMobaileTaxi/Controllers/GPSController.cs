@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace ApiMobaileTaxi.Controllers
 {
     [Route("Api.Mobile")]
-    [ApiController]
     public class GPSController : ControllerBase
     {
         private ManagerTaxiApi managerTaxi = new ManagerTaxiApi();

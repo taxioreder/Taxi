@@ -52,8 +52,8 @@ namespace WebTaxi.Service
         public List<Order> GetShippings(string status, int page)
         {
             List<Order> orders = null;
+            List<Order> ordersTmp = new List<Order>();
             orders = context.Orders.ToList().FindAll(o => o.CurrentStatus == status);
-
             if (page != 0)
             {
                 try
@@ -76,7 +76,19 @@ namespace WebTaxi.Service
                     orders = orders.GetRange(0, orders.Count % 25);
                 }
             }
-            return orders;
+            foreach (var order in orders)
+            {
+                int orderIndex = ordersTmp.FindIndex(o => (o.FromZip == order.FromZip && o.ToZip == order.ToZip) || (o.FromZip == order.FromZip || o.ToZip == order.ToZip));
+                if (orderIndex == -1)
+                {
+                    ordersTmp.Add(order);
+                }
+                else
+                {
+                    ordersTmp.Insert(orderIndex + 1, order);
+                }
+            }
+            return ordersTmp;
         }
 
         public bool CheckKeyDb(string key)
@@ -94,17 +106,27 @@ namespace WebTaxi.Service
             return countPage;
         }
 
-        public async Task SaveOrder(Order order)
+        public void SaveOrder(Order order)
         {
-            Order orderDb = await context.Orders.FirstOrDefaultAsync(o => o.Comment == order.Comment && o.Date == order.Date && o.FromAddress == order.FromAddress && o.Milisse == order.Milisse && o.NameCustomer == order.NameCustomer
-            && o.NoName == order.NoName && o.NoName1 == order.NoName1 && o.NoName2 == order.NoName2 && o.NoName3 == order.NoName3 && o.NoName4 == order.NoName4 && o.NoName5 == order.NoName5 && o.NoName6 == order.NoName6
-            && o.Phone == order.Phone && o.Price == order.Price && o.TimeOfAppointment == order.TimeOfAppointment && o.TimeOfPickup == order.TimeOfPickup && o.ToAddress == order.ToAddress);
-            if(orderDb != null)
+            List<Order> orders = context.Orders.ToList();
+            Order orderDb = orders.FirstOrDefault(o => o.Comment == order.Comment && o.Date == order.Date && o.FromAddress == order.FromAddress && o.Milisse == order.Milisse && o.NameCustomer == order.NameCustomer
+         && o.NoName == order.NoName && o.NoName1 == order.NoName1 && o.NoName2 == order.NoName2 && o.NoName3 == order.NoName3 && o.NoName4 == order.NoName4 && o.NoName5 == order.NoName5 && o.NoName6 == order.NoName6
+         && o.Phone == order.Phone && o.Price == order.Price && o.TimeOfAppointment == order.TimeOfAppointment && o.TimeOfPickup == order.TimeOfPickup && o.ToAddress == order.ToAddress);
+            if (orderDb != null)
             {
                 return;
             }
-            await context.AddAsync(order);
-            await context.SaveChangesAsync();
+            int orderIndex = orders.FindIndex(o => (o.FromZip == order.FromZip && o.ToZip == order.ToZip) || (o.FromZip == order.FromZip || o.ToZip == order.ToZip));
+            //if(orderIndex == -1)
+            //{
+                context.Orders.Add(order);
+            //}
+            //else
+            //{
+            //    orders.Insert(orderIndex + 1, order);
+            //    context.UpdateRange(orders);
+            //}
+            context.SaveChanges();
         }
 
         public Order GetShipping(string id)
@@ -215,7 +237,7 @@ namespace WebTaxi.Service
 
         public List<Driver> GetDriversInDb()
         {
-           // context.geolocations.Load();
+            context.Geolocations.Load();
             return context.Drivers.ToList();
         }
 

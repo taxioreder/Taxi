@@ -13,7 +13,9 @@
         public string TimeOfPickup { get; set; }
         public string TimeOfAppointment { get; set; }
         public string FromAddress { get; set; }
+        public int FromZip { get; set; }
         public string ToAddress { get; set; }
+        public int ToZip { get; set; }
         public string Milisse { get; set; }
         public string Price { get; set; }
         public string NoName3 { get; set; }

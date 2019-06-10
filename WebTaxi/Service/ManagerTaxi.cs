@@ -40,13 +40,11 @@ namespace WebTaxi.Service
             return sqlCommand.CheckKeyDb(key);
         }
 
-        public async void ParseExel(string nameFile)
+        public void ParseExel(string nameFile)
         {
             using (SpreadsheetDocument spreadSheet = SpreadsheetDocument.Open($"Load/{nameFile}", true))
             {
                 SharedStringTable sharedStringTable = spreadSheet.WorkbookPart.SharedStringTablePart.SharedStringTable;
-                string cellValue = null;
-
                 foreach (WorksheetPart worksheetPart in spreadSheet.WorkbookPart.WorksheetParts)
                 {
                     foreach (SheetData sheetData in worksheetPart.Worksheet.Elements<SheetData>())
@@ -77,9 +75,13 @@ namespace WebTaxi.Service
                                         order.TimeOfAppointment = tmp.Remove(2);
                                         order.TimeOfAppointment += $":{tmp.Remove(0, 2)}M";
                                         order.FromAddress = GetData(Cells[9], sharedStringTable);
-                                        order.FromAddress += GetData(Cells[8], sharedStringTable);
+                                        order.FromAddress += GetData(Cells[8], sharedStringTable).Replace(",,", ",");
+                                        order.FromAddress = order.FromAddress.ToLower();
+                                        order.FromZip = Convert.ToInt32(order.FromAddress.Split(',').Last());
                                         order.ToAddress = GetData(Cells[11], sharedStringTable);
-                                        order.ToAddress += GetData(Cells[10], sharedStringTable);
+                                        order.ToAddress += GetData(Cells[10], sharedStringTable).Replace(",,", ",");
+                                        order.ToAddress = order.ToAddress.ToLower();
+                                        order.ToZip = Convert.ToInt32(order.ToAddress.Split(',').Last());
                                         order.Milisse = GetData(Cells[12], sharedStringTable);
                                         tmp = GetData(Cells[13], sharedStringTable);
                                         if(tmp == "B7708_1R" || tmp == "B7708_1")
@@ -95,7 +97,7 @@ namespace WebTaxi.Service
                                         order.NoName5 = GetData(Cells[16], sharedStringTable);
                                         order.NoName6 = GetData(Cells[17], sharedStringTable);
                                         order.Comment = GetData(Cells[18], sharedStringTable);
-                                        await sqlCommand.SaveOrder(order);
+                                        sqlCommand.SaveOrder(order);
                                     }
                                     catch
                                     {
