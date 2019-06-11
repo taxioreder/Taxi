@@ -173,38 +173,6 @@ namespace WebTaxi.Controellers
             return actionResult;
         }
 
-        [Route("Dashbord/Order/Paid")]
-        public IActionResult Paid(int page)
-        {
-            IActionResult actionResult = null;
-            try
-            {
-                string key = null;
-                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
-                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
-                if (managerTaxi.CheckKey(key))
-                {
-                    ViewBag.Orders = managerTaxi.GetOrders("Paid", page);
-                    ViewBag.Drivers = managerTaxi.GetDrivers();
-                    ViewBag.count = managerTaxi.GetCountPage("Paid");
-                    actionResult = View("Paid");
-                }
-                else
-                {
-                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
-                    {
-                        Response.Cookies.Delete("KeyAvthoTaxi");
-                    }
-                    actionResult = Redirect(Config.BaseReqvesteUrl);
-                }
-            }
-            catch (Exception)
-            {
-
-            }
-            return actionResult;
-        }
-
         [Route("Dashbord/Order/Pickedup")]
         public IActionResult Pickedup(int page)
         {
