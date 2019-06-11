@@ -13,12 +13,11 @@
         <input class="btnSt" type="button" value="Assigned" onclick="window.location.href='@Url.Action("Assigned", "Dashbord")';" />
         <input class="btnSt" type="button" value="Picked up" onclick="window.location.href='@Url.Action("Pickedup", "Dashbord")';" />
         <input class="btnSt" type="button" value="Delivered" onclick="window.location.href='@Url.Action("Delivered", "Dashbord")';" />
-        <input class="btnSt" type="button" value="Paid" onclick="window.location.href='@Url.Action("Paid", "Dashbord")';" />
         <input class="btnSt" type="button" value="Archived" onclick="window.location.href='@Url.Action("Archived", "Dashbord")';" />
         <input class="btnSt" type="button" value="Deleted" onclick="window.location.href='@Url.Action("Deleted", "Dashbord")';" />
     </nav>
     <div class="filling">
-        <table class="tegTable" id="grid">
+        <table class="tegTable">
             <tr>
                 <th>Name Customer</th>
                 <th>Price</th>
@@ -184,11 +183,6 @@
             transition: 0.3s;
             background-color: rgb(51, 51, 51);
         }
-
-    /*.orders:hover {
-        width: 40%;
-        transition: 0.4s;
-    }*/
 
     .body {
         margin-top: 30px;

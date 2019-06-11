@@ -70,7 +70,7 @@ namespace WebTaxi.Controellers
 
         [HttpPost]
         [Route("Driver/Drivers/CreateDriver")]
-        public IActionResult CreateDriver(string fullName, string emailAddress, string password, string phoneNumbe)
+        public IActionResult CreateDriver(string fullName, string emailAddress, string password, string phoneNumbe, int zipCod)
         {
             IActionResult actionResult = null;
             try
@@ -83,7 +83,7 @@ namespace WebTaxi.Controellers
                     if ((fullName != null && fullName != "") && (emailAddress != null && emailAddress != "") && (emailAddress != null && emailAddress != "")
                         && (password != null && password != "") && (fullName != null && fullName != ""))
                     {
-                        managerTaxi.CreateDriver(fullName, emailAddress, password, phoneNumbe);
+                        managerTaxi.CreateDriver(fullName, emailAddress, password, phoneNumbe, zipCod);
                         actionResult = Redirect($"{Config.BaseReqvesteUrl}/Driver/Drivers");
                     }
                     else

@@ -13,40 +13,46 @@
         <input class="btnSt" type="button" value="Assigned" onclick="window.location.href='@Url.Action("Assigned", "Dashbord")';" />
         <input class="btnSt" type="button" value="Picked up" onclick="window.location.href='@Url.Action("Pickedup", "Dashbord")';" />
         <input class="btnSt" type="button" value="Delivered" onclick="window.location.href='@Url.Action("Delivered", "Dashbord")';" />
-        <input class="btnSt" type="button" value="Paid" onclick="window.location.href='@Url.Action("Paid", "Dashbord")';" />
         <input class="btnSt" type="button" value="Archived" onclick="window.location.href='@Url.Action("Archived", "Dashbord")';" />
         <input class="btnSt activeBtn" type="button" value="Deleted" onclick="window.location.href='@Url.Action("Deleted", "Dashbord")';" />
     </nav>
     <div class="filling">
-        @for (int i = 0; i < ViewBag.Orders.Count; i++)
-        {
-            <div class="orders">
-                <input class="btnId" type="button" value="Name Customer: @ViewBag.Orders[i].NameCustomer">
-                <span class="stPData">$@ViewBag.Orders[i].Price</span>
-                <p class="stPData">
-                    @ViewBag.Orders[i].Milisse Milles, Pickup time @ViewBag.Orders[i].Date @ViewBag.Orders[i].TimeOfPickup ±5 Min
-                    <br />
-                    Phone: @ViewBag.Orders[i].Phone
-                </p>
-                <div class="bodyBlock">
-                    <div class="blockData">
-                        <h5 class="headPH4">ORIGIN</h5>
-                        <p class="stPData">
-                            @ViewBag.Orders[i].FromAddress
-                        </p>
-                    </div>
-                    <div class="blockData">
-                        <h5 class="headPH4">DESTINATION</h5>
-                        <p class="stPData">
-                            @ViewBag.Orders[i].ToAddress
-                        </p>
-                    </div>
-                    <div class="blockBtn">
-                        <a class="btnId" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
-                    </div>
-                </div>
-            </div>
-        }
+        <table class="tegTable" id="grid">
+            <tr>
+                <th>Name Customer</th>
+                <th>Price</th>
+                <th>Miless</th>
+                <th>Pickup time</th>
+                <th>Phone</th>
+                <th>From Address</th>
+                <th>To Address</th>
+                <th>Control</th>
+            </tr>
+            @for (int i = 0; i < ViewBag.Orders.Count; i++)
+            {
+                <tr id="@ViewBag.Orders[i].ID">
+
+                    <td class="orderTd orderTdBorderStart"><span>@ViewBag.Orders[i].NameCustomer</span></td>
+                    <td class="orderTd orderTdBorderSrandart"><span class="stPData">$@ViewBag.Orders[i].Price</span></td>
+                    <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].Milisse Milles</span></td>
+                    <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].Date @ViewBag.Orders[i].TimeOfPickup ±5 Min</span></td>
+                    <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].Phone</span></td>
+                    <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].FromAddress</span></td>
+                    <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].ToAddress</span></td>
+                    <td class="orderTd orderTdBorderEnd">
+                        <a class="" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
+                        <select onchange="SelectAssining(this.options[this.selectedIndex].value)" class="" style="width:100px">
+                            <option value="">Assign</option>
+                            @for (int j = 0; j < ViewBag.Drivers.Count; j++)
+                            {
+                                <option value="@ViewBag.Orders[i].ID,@ViewBag.Drivers[j].ID">@ViewBag.Drivers[j].FullName</option>
+                            }
+                        </select>
+                        <a class="" style="width:60px" href="DeletedOrder?id=@ViewBag.Orders[i].ID">Deleted</a>
+                    </td>
+                </tr>
+            }
+        </table>
         @if (ViewBag.count != 1)
         {
             <div class="center">
@@ -139,40 +145,35 @@
         margin: 0px;
     }
 
-    .center {
-        text-align: end;
-        margin: 10px;
-        margin-right: 70px;
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+   tr:nth-child(odd) { background-color: rgba(181, 181, 181, 0.28); }
+
+    .orderTd {
+        height: 30px;
+        vertical-align: central; 
+        text-align: center; 
+        height: 40px; 
+        padding: 2px;
     }
 
-    .pagination {
-        display: inline-block;
+    .orderTdBorderEnd {
+        border-left: 1px solid rgba(172, 172, 172, 0.45);
+        border-top: 1px solid rgba(172, 172, 172, 0.45);
+        border-bottom: 1px solid rgba(172, 172, 172, 0.45);
+    }
+    
+    .orderTdBorderStart {
+        border-right: 1px solid rgba(172, 172, 172, 0.45);
+        border-top: 1px solid rgba(172, 172, 172, 0.45);
+        border-bottom: 1px solid rgba(172, 172, 172, 0.45);
     }
 
-        .pagination a {
-            color: #d97e2b;
-            float: left;
-            padding: 8px 16px;
-            text-decoration: none;
-            transition: background-color .3s;
-            border: none;
-            margin: 0 4px;
-        }
-
-            .pagination a:hover:not(.active) {
-                background-color: #ddd;
-            }
-
-    .blockData {
-        margin-right: 30px;
-        width: 30%;
+    .orderTdBorderSrandart {
+        border: 1px solid rgba(172, 172, 172, 0.45);
     }
 
-    .headPH4 {
-        margin: 7px;
-        font-size: 18px;
-        color: #ad7d52;
+    .tegTable {
+        width:98%;
+        border-collapse: collapse;
     }
 
     .btnCreateoOrder {
@@ -193,40 +194,7 @@
             background-color: rgb(51, 51, 51);
         }
 
-    .btnId {
-        color: rgba(45,45,45,0.88);
-        background: none;
-        display: inline-block;
-        padding: 10px;
-        font-size: 16px;
-        font-weight: 400;
-        text-align: center;
-        border: 1px solid;
-        border-radius: 4px;
-    }
-
-        .btnId:hover {
-            background-color: rgba(45,45,45,0.98);
-            color: white;
-            transition: 0.5s;
-        }
-
-    .stPData {
-        margin: 5px;
-        color: #421f0e;
-        font-size: 15px;
-    }
-
-    .orders {
-        width: 15%;
-        border: solid;
-        border-width: 1px;
-        border-color: rgba(51, 51, 51, 0.3);
-        padding: 20px;
-        margin-bottom: 5px;
-        margin: 10px;
-    }
-
+   
     .body {
         margin-top: 30px;
         margin-left: 5px;
@@ -266,9 +234,6 @@
         border-top: solid;
         border-width: 1px;
         border-color: rgba(51, 51, 51, 0.3);
-        display:flex;
-        justify-content:space-between;
-        flex-wrap:wrap;
     }
 
     input[type="file"] {
