@@ -44,5 +44,38 @@ namespace ApiMobaileTaxi.Controllers
             }
             return respons;
         }
+
+        [HttpPost]
+        [Route("Order/RecurentOrderDrive")]
+        public string RecurentOrderDrive(string token, string status, int idorder)
+        {
+            string respons = null;
+            if (token == null || token == "")
+            {
+                return JsonConvert.SerializeObject(new ResponseAppS("failed", "1", null));
+            }
+            try
+            {
+                List<Order> orders = null;
+                bool isToken = ManagerMobileApi.CheckToken(token);
+                if (isToken)
+                {
+                    Task.Run(() =>
+                    {
+                        ManagerMobileApi.RecurentOrderDrive(token, status, idorder);
+                    });
+                    respons = JsonConvert.SerializeObject(new ResponseAppS("success", null, orders));
+                }
+                else
+                {
+                    respons = JsonConvert.SerializeObject(new ResponseAppS("failed", "2", null));
+                }
+            }
+            catch (Exception)
+            {
+                respons = JsonConvert.SerializeObject(new ResponseAppS("failed", "Technical work on the service", null));
+            }
+            return respons;
+        }
     }
 }

@@ -53,29 +53,7 @@ namespace WebTaxi.Service
         {
             List<Order> orders = null;
             List<Order> ordersTmp = new List<Order>();
-            orders = context.Orders.ToList().FindAll(o => o.CurrentStatus == status);
-            if (page != 0)
-            {
-                try
-                {
-                    orders = orders.GetRange((20 * page) - 25, 25);
-                }
-                catch (Exception)
-                {
-                    orders = orders.GetRange((20 * page) - 25, orders.Count % 25);
-                }
-            }
-            else
-            {
-                try
-                {
-                    orders = orders.GetRange(0, 25);
-                }
-                catch (Exception)
-                {
-                    orders = orders.GetRange(0, orders.Count % 25);
-                }
-            }
+            orders = context.Orders.Where(o => o.CurrentStatus == status).ToList();
             foreach (var order in orders)
             {
                 int orderIndex = ordersTmp.FindIndex(o => (o.FromZip == order.FromZip && o.ToZip == order.ToZip) || (o.FromZip == order.FromZip || o.ToZip == order.ToZip));
@@ -86,6 +64,28 @@ namespace WebTaxi.Service
                 else
                 {
                     ordersTmp.Insert(orderIndex + 1, order);
+                }
+            }
+            if (page != 0)
+            {
+                try
+                {
+                    ordersTmp = ordersTmp.GetRange((20 * page) - 25, 25);
+                }
+                catch (Exception)
+                {
+                    ordersTmp = ordersTmp.GetRange((20 * page) - 25, orders.Count % 25);
+                }
+            }
+            else
+            {
+                try
+                {
+                    ordersTmp = ordersTmp.GetRange(0, 25);
+                }
+                catch (Exception)
+                {
+                    ordersTmp = ordersTmp.GetRange(0, orders.Count % 25);
                 }
             }
             return ordersTmp;
@@ -184,6 +184,7 @@ namespace WebTaxi.Service
         {
             Order order = new Order();
             order.CurrentStatus = "NewLoad";
+            order.CurrentOrder = "New";
             context.Orders.Add(order);
             await context.SaveChangesAsync();
             Order order1 = context.Orders.FirstOrDefault(s => s.ID == order.ID);

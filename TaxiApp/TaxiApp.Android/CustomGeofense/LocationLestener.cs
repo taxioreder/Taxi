@@ -11,7 +11,7 @@ namespace TaxiApp.Droid.CustomGeofense
     {
         public static string ACTION_PROCESS_LOCATIOM = "TaxiApp.Droid.CustomGeofense.UPDATE_LOCATION";
 
-        public override void OnReceive(Context context, Intent intent)
+        public override async void OnReceive(Context context, Intent intent)
         {
             if (intent != null)
             {
@@ -27,8 +27,19 @@ namespace TaxiApp.Droid.CustomGeofense
                             &&(GefenceLocation.gefenceModel.FromLng - GefenceLocation.gefenceModel.Radius < lastloc.Longitude && GefenceLocation.gefenceModel.FromLng + GefenceLocation.gefenceModel.Radius > lastloc.Longitude))
                         {
                             gefenceManager = new GefenceManager();
-                            GefenceLocation.gefenceModel.Status = "To";
+                            GefenceLocation.gefenceModel.Status = "Order";
+                            await gefenceManager.RecurentStatusOrder("DriveTo", GefenceLocation.gefenceModel.Id);
                             gefenceManager.GoDriveTo(GefenceLocation.gefenceModel.ToLat, GefenceLocation.gefenceModel.ToLng);
+                        }
+                    }
+                    else if (GefenceLocation.gefenceModel != null && GefenceLocation.gefenceModel.Status == "Order")
+                    {
+                        if ((GefenceLocation.gefenceModel.ToLat - (GefenceLocation.gefenceModel.Radius + 0.001000) < lastloc.Latitude && GefenceLocation.gefenceModel.ToLat + (GefenceLocation.gefenceModel.Radius + 0.001000) > lastloc.Latitude)
+                            && (GefenceLocation.gefenceModel.ToLng - (GefenceLocation.gefenceModel.Radius + 0.001000) < lastloc.Longitude && GefenceLocation.gefenceModel.ToLng + (GefenceLocation.gefenceModel.Radius + 0.001000) > lastloc.Longitude))
+                        {
+                            gefenceManager = new GefenceManager();
+                            GefenceLocation.gefenceModel.Status = "To";
+                            await gefenceManager.RecurentStatusOrder("Next", GefenceLocation.gefenceModel.Id);
                         }
                     }
                     else if(GefenceLocation.gefenceModel != null && GefenceLocation.gefenceModel.Status == "To")
@@ -36,7 +47,9 @@ namespace TaxiApp.Droid.CustomGeofense
                         if ((GefenceLocation.gefenceModel.ToLat - GefenceLocation.gefenceModel.Radius < lastloc.Latitude && GefenceLocation.gefenceModel.ToLat + GefenceLocation.gefenceModel.Radius > lastloc.Latitude)
                             && (GefenceLocation.gefenceModel.ToLng - GefenceLocation.gefenceModel.Radius < lastloc.Longitude && GefenceLocation.gefenceModel.ToLng + GefenceLocation.gefenceModel.Radius > lastloc.Longitude))
                         {
+                            gefenceManager = new GefenceManager();
                             GefenceLocation.gefenceModel.Status = "None";
+                            await gefenceManager.RecurentStatusOrder("NewNext", GefenceLocation.gefenceModel.Id);
                             GefenceLocation.gefenceModel.PendingIntent.Cancel();
                             GefenceLocation.gefenceModel = null;
                             if (MainActivity.GetInstance() == null)

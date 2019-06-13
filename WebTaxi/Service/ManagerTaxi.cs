@@ -172,7 +172,7 @@ namespace WebTaxi.Service
             return sqlCommand.GetDrivers(pag);
         }
 
-        public void CreateDriver(string fullName, string emailAddress, string password, string phoneNumbe, int zipCod)
+        public void CreateDriver(string fullName, string emailAddress, string password, string phoneNumbe, string zipCod)
         {
             Driver driver = new Driver();
             driver.FullName = fullName;

@@ -2,7 +2,7 @@
 {
     public interface IGeofence
     {
-        void StartGeofence(string id, double fromLat, double fromLng, double tooLat, double toLng, double radius);
+        void StartGeofence(int id, double fromLat, double fromLng, double tooLat, double toLng, double radius);
         void StopGeofence();
     }
 }

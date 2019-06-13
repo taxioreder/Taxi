@@ -71,7 +71,7 @@ namespace TaxiApp.Droid.CustomGeofense
             
         }
 
-        public void StartGeofence(string Id, double fromLat, double fromLng, double tooLat, double toLng, double radius)
+        public void StartGeofence(int Id, double fromLat, double fromLng, double tooLat, double toLng, double radius)
         {
             gefenceModel = new GefenceModel();
             gefenceModel.FromLat = fromLat;
@@ -80,6 +80,7 @@ namespace TaxiApp.Droid.CustomGeofense
             gefenceModel.ToLng = toLng;
             gefenceModel.Status = "From";
             gefenceModel.Radius = radius;
+            gefenceModel.Id = Id;
             Dexter.WithActivity(MainActivity)
                 .WithPermission(Manifest.Permission.AccessFineLocation)
                 .WithListener(this)

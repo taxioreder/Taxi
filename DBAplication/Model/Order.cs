@@ -4,6 +4,7 @@
     {
         public int ID { get; set; }
         public string CurrentStatus { get; set; }
+        public string CurrentOrder { get; set; }
         public string NoName { get; set; }
         public string NoName1 { get; set; }
         public string NameCustomer { get; set; }

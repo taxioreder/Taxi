@@ -78,6 +78,26 @@ namespace TaxiApp.ViewModels.AppPageMV
             IsRefr = false;
         }
 
+        private async void ActionForOrder()
+        {
+            if(Orders[0].CurrentOrder == "New")
+            {
+                //PopUp Info New Order Plese Accept
+            }
+            else if(Orders[0].CurrentOrder == "DriveFrome")
+            {
+                //PopUp Go to Navigation From Order, Yes No
+            }
+            else if (Orders[0].CurrentOrder == "DriveTo")
+            {
+                //PopUp Go to Navigation to Order, Yes No
+            }
+            else if (Orders[0].CurrentOrder == "NewNext")
+            {
+                //PopUp Info Order Avtomatik Accept Order of 5 min
+            }
+        }
+
         public async Task<location> GetLonAndLanToAddress(string address)
         {
             location location = null;

@@ -70,7 +70,7 @@ namespace WebTaxi.Controellers
 
         [HttpPost]
         [Route("Driver/Drivers/CreateDriver")]
-        public IActionResult CreateDriver(string fullName, string emailAddress, string password, string phoneNumbe, int zipCod)
+        public IActionResult CreateDriver(string fullName, string emailAddress, string password, string phoneNumbe, string zipCod)
         {
             IActionResult actionResult = null;
             try
