@@ -11,7 +11,7 @@ namespace TaxiApp.Service.Geofence
     {
         public async void GoDriveTo(double lat, double lng)
         {
-            var options = new MapLaunchOptions { Name = "2", NavigationMode = Xamarin.Essentials.NavigationMode.Driving };
+            var options = new MapLaunchOptions { Name = "1", NavigationMode = Xamarin.Essentials.NavigationMode.Driving };
             await Map.OpenAsync(lat, lng, options);
         }
 

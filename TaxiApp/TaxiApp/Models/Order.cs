@@ -36,5 +36,63 @@
                 }
             }
         }
+
+        public string ColorOrder
+        {
+            get
+            {
+                if (CurrentOrder == "Next")
+                {
+                    return "#BDBDBD";
+                }
+                else
+                {
+                    return "#FFFFFF";
+                }
+            }
+        }
+
+        public string BtnStart
+        {
+            get
+            {
+                if (CurrentOrder == "Next")
+                {
+                    return "";
+                }
+                else if (CurrentOrder == "New")
+                {
+                    return "Start";
+                }
+                else if(CurrentOrder == "DriveFrome")
+                {
+                    return "Build a route to the client";
+                }
+                else if (CurrentOrder == "DriveTo")
+                {
+                    return "Build a route to the end point";
+                }
+                else if (CurrentOrder == "NewNext")
+                {
+                    return "Start or or start through (Timer) ";
+                }
+                return "";
+            }
+        }
+
+        public bool IsVisableCloseOrder
+        {
+            get
+            {
+                if (CurrentOrder == "New" || CurrentOrder == "NewNext" || CurrentOrder == "Next")
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
     }
 }

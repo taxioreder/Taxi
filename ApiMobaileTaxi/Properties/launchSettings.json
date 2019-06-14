@@ -19,7 +19,7 @@
     },
     "ApiMobaileTaxi": {
       "commandName": "Project",
-      "applicationUrl": "http://46.98.111.245:8098",
+      "applicationUrl": "http://46.98.81.254:8098",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

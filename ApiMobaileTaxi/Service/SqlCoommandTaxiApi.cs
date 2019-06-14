@@ -96,8 +96,11 @@ namespace ApiMobaileTaxi.Service
             Order order1 = GetOrdersForToken(token).FirstOrDefault(o => o.CurrentOrder == "Next");
             order.CurrentOrder = "None";
             order.CurrentStatus = "Delivered";
-            order1.CurrentOrder = "NewNext";
-            order1.CurrentStatus = "Assigned";
+            if (order1 != null)
+            {
+                order1.CurrentOrder = "NewNext";
+                order1.CurrentStatus = "Assigned";
+            }
             await context.SaveChangesAsync();
         }
     }

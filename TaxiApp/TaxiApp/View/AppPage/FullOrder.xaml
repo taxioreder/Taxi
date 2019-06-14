@@ -14,7 +14,7 @@
                         <ViewCell>
                             <ViewCell.View>
                                 <Frame Margin="0, 5, 0, 5" Padding="0" BackgroundColor="White" HasShadow="True" CornerRadius="2" OutlineColor="#C3CBCD">
-                                    <StackLayout Orientation="Horizontal" x:Name="st" IsEnabled="{Binding IsEnable}">
+                                    <StackLayout Orientation="Horizontal" x:Name="st" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding ColorOrder}">
                                         <StackLayout.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="1"/>
                                         </StackLayout.GestureRecognizers>
@@ -47,10 +47,17 @@
                                             </StackLayout>
                                             <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
                                                 <Label Text="Status Order" FontSize="15" TextColor="Black"/>
-                                                <Label Text="{Binding CurrentOrder}" FontSize="15" />
-                                                <Label Text="Start" FontSize="15" TextColor="Blue" IsEnabled="{Binding IsEnable}">
+                                                <Label x:Name="currentOL" Text="{Binding CurrentOrder}" FontSize="15" />
+                                                <Label Text="{Binding BtnStart}" FontSize="15" TextColor="Blue" IsEnabled="{Binding IsEnable}">
                                                     <Label.GestureRecognizers>
                                                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_2"/>
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0" IsVisible="{Binding IsVisableCloseOrder}">
+                                                <Label Text="Close order" FontSize="15" TextColor="Blue">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer />
                                                     </Label.GestureRecognizers>
                                                 </Label>
                                             </StackLayout>
