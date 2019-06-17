@@ -46,21 +46,21 @@ namespace TaxiApp.View.AppPage
         private async void TapGestureRecognizer_Tapped_2(object sender, EventArgs e)
         {
             Label label = ((Label)sender).FindByName<Label>("currentOL");
+            GefenceManager gefenceManager = new GefenceManager();
+            location locationFrom = await fullOrderMV.GetLonAndLanToAddress(fullOrderMV.Orders[0].FromAddress);
+            location locationTo = await fullOrderMV.GetLonAndLanToAddress(fullOrderMV.Orders[0].ToAddress);
             if (label.Text == "New" || label.Text == "NewNext")
             {
-                GefenceManager gefenceManager = new GefenceManager();
-                location locationFrom = await fullOrderMV.GetLonAndLanToAddress(fullOrderMV.Orders[0].FromAddress);
-                location locationTo = await fullOrderMV.GetLonAndLanToAddress(fullOrderMV.Orders[0].ToAddress);
                 if (locationFrom != null && locationTo != null)
                 {
                     await gefenceManager.RecurentStatusOrder("DriveFrome", fullOrderMV.Orders[0].ID);
                     try
                     {
-                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, Convert.ToDouble(locationFrom.lat), Convert.ToDouble(locationFrom.lng), Convert.ToDouble(locationTo.lat), Convert.ToDouble(locationTo.lng), 0.000600);
+                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "From", Convert.ToDouble(locationFrom.lat), Convert.ToDouble(locationFrom.lng), Convert.ToDouble(locationTo.lat), Convert.ToDouble(locationTo.lng), 0.000800);
                     }
                     catch
                     {
-                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, Convert.ToDouble(locationFrom.lat.Replace('.', ',')), Convert.ToDouble(locationFrom.lng.Replace('.', ',')), Convert.ToDouble(locationTo.lat.Replace('.', ',')), Convert.ToDouble(locationTo.lng.Replace('.', ',')), 0.000200);
+                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "From", Convert.ToDouble(locationFrom.lat.Replace('.', ',')), Convert.ToDouble(locationFrom.lng.Replace('.', ',')), Convert.ToDouble(locationTo.lat.Replace('.', ',')), Convert.ToDouble(locationTo.lng.Replace('.', ',')), 0.000800);
                     }
                     var placemark = new Placemark
                     {
@@ -72,21 +72,43 @@ namespace TaxiApp.View.AppPage
             }
             else if(label.Text == "DriveFrome")
             {
-                var placemark = new Placemark
+                if (locationFrom != null && locationTo != null)
                 {
-                    Thoroughfare = fullOrderMV.Orders[0].FromAddress
-                };
-                var options = new MapLaunchOptions { Name = "2", NavigationMode = NavigationMode.Driving };
-                await Map.OpenAsync(placemark, options);
+                    try
+                    {
+                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "From", Convert.ToDouble(locationFrom.lat), Convert.ToDouble(locationFrom.lng), Convert.ToDouble(locationTo.lat), Convert.ToDouble(locationTo.lng), 0.000800);
+                    }
+                    catch
+                    {
+                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "From", Convert.ToDouble(locationFrom.lat.Replace('.', ',')), Convert.ToDouble(locationFrom.lng.Replace('.', ',')), Convert.ToDouble(locationTo.lat.Replace('.', ',')), Convert.ToDouble(locationTo.lng.Replace('.', ',')), 0.000800);
+                    }
+                    var placemark = new Placemark
+                    {
+                        Thoroughfare = fullOrderMV.Orders[0].FromAddress
+                    };
+                    var options = new MapLaunchOptions { Name = "2", NavigationMode = NavigationMode.Driving };
+                    await Map.OpenAsync(placemark, options);
+                }
             }
             else if (label.Text == "DriveTo")
             {
-                var placemark = new Placemark
+                if (locationFrom != null && locationTo != null)
                 {
-                    Thoroughfare = fullOrderMV.Orders[0].ToAddress
-                };
-                var options = new MapLaunchOptions { Name = "3", NavigationMode = NavigationMode.Driving };
-                await Map.OpenAsync(placemark, options);
+                    try
+                    {
+                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "Order", Convert.ToDouble(locationFrom.lat), Convert.ToDouble(locationFrom.lng), Convert.ToDouble(locationTo.lat), Convert.ToDouble(locationTo.lng), 0.000800);
+                    }
+                    catch
+                    {
+                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "Order", Convert.ToDouble(locationFrom.lat.Replace('.', ',')), Convert.ToDouble(locationFrom.lng.Replace('.', ',')), Convert.ToDouble(locationTo.lat.Replace('.', ',')), Convert.ToDouble(locationTo.lng.Replace('.', ',')), 0.000800);
+                    }
+                    var placemark = new Placemark
+                    {
+                        Thoroughfare = fullOrderMV.Orders[0].ToAddress
+                    };
+                    var options = new MapLaunchOptions { Name = "3", NavigationMode = NavigationMode.Driving };
+                    await Map.OpenAsync(placemark, options);
+                }
             }
         }
     }

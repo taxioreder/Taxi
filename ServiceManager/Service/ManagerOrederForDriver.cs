@@ -21,7 +21,7 @@ namespace ServiceManager.Service
 
         private void Work()
         {
-            int period = 60000 * 30;
+            int period = 60000 * 2;
             Task.Run(() =>
             {
                 while (true)
