@@ -5,14 +5,16 @@
     <div class="contentBody">
         @for (int i = 0; i < ViewBag.Drivers.Count; i++)
         {
-            <div class="contentDriver">
-                <p class="inpData">@ViewBag.Drivers[i].FullName</p>
-                <span class="inpData">Email: @ViewBag.Drivers[i].EmailAddress</span>
-                <span class="inpData">, </span>
-                <span class="inpData">Phone: @ViewBag.Drivers[i].PhoneNumber</span><br /> <br />
-                <input class="btnId" value="Edit" type="button" />
-                <input class="btnId" value="Remove" type="button" onclick="Remove(@ViewBag.Drivers[i].ID)" />
-            </div>
+        <div class="contentDriver">
+            <p class="inpData">@ViewBag.Drivers[i].FullName</p>
+            <span class="inpData">Email: @ViewBag.Drivers[i].EmailAddress</span>
+            <span class="inpData">, </span>
+            <span class="inpData">Phone: @ViewBag.Drivers[i].PhoneNumber</span><br /> <br />
+            <span class="inpData">Address of the driver: @ViewBag.Drivers[i].ZipCod</span><br /> <br />
+            <input type="checkbox" checked="@ViewBag.Drivers[i].IsWork" onclick="Check(this.checked, @ViewBag.Drivers[i].ID)" class="btnId">Now works<br>
+            <input class="btnId" value="Edit" type="button" />
+            <input class="btnId" value="Remove" type="button" onclick="Remove(@ViewBag.Drivers[i].ID)"  />
+        </div>
         }
     </div>
 </div>
@@ -20,6 +22,21 @@
 <script>
     function Remove(id) {
         document.location.href = "@ViewBag.BaseUrl/Driver/Drivers/Remove?id="+id;
+    }
+
+    function Check(checked, id) {
+        let url = "@ViewBag.BaseUrl/Driver/Drivers/Check?checkedDrive=" + checked + "&idDriver=" +id;
+        let xmlHttp = new XMLHttpRequest();
+        let body = "checkedDrive=" + checked + "&idDriver=" +id;
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.status == 200) {
+
+            }
+            else {
+            }
+        }
+        xmlHttp.open("GET", url, true);
+        xmlHttp.send();
     }
 </script>
 

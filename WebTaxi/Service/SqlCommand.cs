@@ -30,6 +30,13 @@ namespace WebTaxi.Service
             }
         }
 
+        public async void ReCheckWorkInDb(int idDriver, bool checkedDriver)
+        {
+            Driver driver = await context.Drivers.FirstOrDefaultAsync(d => d.ID == idDriver);
+            driver.IsWork = checkedDriver;
+            await context.SaveChangesAsync();
+        }
+
         public bool ExistsDataUser(string login, string password)
         {
             return context.Admins.FirstOrDefault(u => u.Login == login && u.Password == password) != null;

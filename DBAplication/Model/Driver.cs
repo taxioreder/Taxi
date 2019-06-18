@@ -10,6 +10,7 @@
         public string Token { get; set; }
         public string TokenShope { get; set; }
         public string ZipCod { get; set; }
+        public bool IsWork { get; set; }
         public Geolocations geolocations { get; set; }
     }
 }

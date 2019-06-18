@@ -17,6 +17,11 @@ namespace WebTaxi.Service
             sqlCommand = new SqlCommand();
         }
 
+        public void ReCheckWork(int idDriver, bool checkedDriver)
+        {
+            sqlCommand.ReCheckWorkInDb(idDriver, checkedDriver);
+        }
+
         public bool Avthorization(string login, string password)
         {
             return sqlCommand.ExistsDataUser(login, password);

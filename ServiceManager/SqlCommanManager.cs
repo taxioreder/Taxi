@@ -21,7 +21,7 @@ namespace ServiceManager
         {
             context.Drivers.Load();
             List<Driver> drivers = null;
-             List<Order> orders = context.Orders.ToList().Where(o => (o.Driver != null && o.CurrentStatus == "Assigned" || o.CurrentStatus == "Picked up")).ToList();
+             List<Order> orders = context.Orders.ToList().Where(o => (o.Driver != null && o.Driver.IsWork && o.CurrentStatus == "Assigned" || o.CurrentStatus == "Picked up")).ToList();
             if(orders == null || orders.Count == 0)
             {
                 drivers = context.Drivers.ToList();

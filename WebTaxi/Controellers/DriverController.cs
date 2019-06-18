@@ -137,5 +137,37 @@ namespace WebTaxi.Controellers
             }
             return actionResult;
         }
+
+
+        [HttpGet]
+        [Route("Driver/Drivers/Check")]
+        public string ReCheckWork(bool checkedDrive, int idDriver)
+        {
+            string actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    managerTaxi.ReCheckWork(idDriver, checkedDrive);
+                    actionResult = "true";
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    actionResult = "noAvtoriz";
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return actionResult;
+        }
     }
 }
