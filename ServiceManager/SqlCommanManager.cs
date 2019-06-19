@@ -46,5 +46,15 @@ namespace ServiceManager
             order.CurrentStatus = "Assigned";
             await context.SaveChangesAsync();
         }
+
+        public async void SetWorkDrive()
+        {
+            List<Driver> drivers = context.Drivers.ToList();
+            foreach(var driver in drivers)
+            {
+                driver.IsWork = true;
+            }
+            await context.SaveChangesAsync();
+        }
     }
 }

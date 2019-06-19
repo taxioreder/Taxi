@@ -27,9 +27,25 @@ namespace ServiceManager.Service
                 while (true)
                 {
                     SetOrderForDrivers();
+                    if(CheckTime())
+                    {
+                        sqlCommanManager.SetWorkDrive();
+                    }
                     Thread.Sleep(period);
                 }
             });
+        }
+
+        private bool CheckTime()
+        {
+            if(7 <= DateTime.Now.Hour && 8 > DateTime.Now.Hour)
+            {
+                if(30 <= DateTime.Now.Minute && 34 > DateTime.Now.Minute)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private async void SetOrderForDrivers()
