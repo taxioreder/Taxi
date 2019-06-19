@@ -4,5 +4,6 @@
     {
         void StartGeofence(int id, string status, double fromLat, double fromLng, double tooLat, double toLng, double radius);
         void StopGeofence();
+        void ContinueGeofence(string status);
     }
 }

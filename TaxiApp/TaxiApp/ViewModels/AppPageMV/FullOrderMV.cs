@@ -48,7 +48,7 @@ namespace TaxiApp.ViewModels.AppPageMV
         }
 
         [System.Obsolete]
-        private async void Init()
+        public async void Init()
         {
             IsRefr = true;
             string token = CrossSettings.Current.GetValueOrDefault("Token", "");

@@ -103,5 +103,13 @@ namespace ApiMobaileTaxi.Service
             }
             await context.SaveChangesAsync();
         }
+
+        public async void RecurentCancelOrder(int idOrder)
+        {
+            Order order = await context.Orders.FirstOrDefaultAsync(o => o.ID == idOrder);
+            order.CurrentOrder = "New";
+            order.CurrentStatus = "NewLoad";
+            await context.SaveChangesAsync();
+        }
     }
 }

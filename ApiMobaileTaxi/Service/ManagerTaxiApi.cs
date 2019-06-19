@@ -62,6 +62,10 @@ namespace ApiMobaileTaxi.Service
             {
                 sqlCoommandTaxiApi.RecurentTwoOrder(token, idorder);
             }
+            else if (status == "Cancel")
+            {
+                sqlCoommandTaxiApi.RecurentCancelOrder(idorder);
+            }
         }
 
         private location SerchMinDistance(location locationsEndAddress, List<location> locationsOrder)

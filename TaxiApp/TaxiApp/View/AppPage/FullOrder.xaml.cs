@@ -111,5 +111,36 @@ namespace TaxiApp.View.AppPage
                 }
             }
         }
+
+        [Obsolete]
+        private async void TapGestureRecognizer_Tapped_3(object sender, EventArgs e)
+        {
+            fullOrderMV.IsRefr = true;
+            GefenceManager gefenceManager = new GefenceManager();
+            DependencyService.Get<Service.Geofence.IGeofence>().StopGeofence();
+            await gefenceManager.RecurentStatusOrder("Next", fullOrderMV.Orders[0].ID);
+            await gefenceManager.RecurentStatusOrder("NewNext", fullOrderMV.Orders[0].ID);
+            fullOrderMV.Init();
+        }
+
+        [Obsolete]
+        private async void TapGestureRecognizer_Tapped_4(object sender, EventArgs e)
+        {
+            fullOrderMV.IsRefr = true;
+            GefenceManager gefenceManager = new GefenceManager();
+            DependencyService.Get<Service.Geofence.IGeofence>().ContinueGeofence("Order");
+            await gefenceManager.RecurentStatusOrder("DriveTo", fullOrderMV.Orders[0].ID);
+            fullOrderMV.Init();
+        }
+
+        [Obsolete]
+        private async void TapGestureRecognizer_Tapped_5(object sender, EventArgs e)
+        {
+            fullOrderMV.IsRefr = true;
+            GefenceManager gefenceManager = new GefenceManager();
+            DependencyService.Get<Service.Geofence.IGeofence>().StopGeofence();
+            await gefenceManager.RecurentStatusOrder("Cancel", fullOrderMV.Orders[0].ID);
+            fullOrderMV.Init();
+        }
     }
 }

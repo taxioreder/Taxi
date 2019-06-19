@@ -74,7 +74,7 @@
                 }
                 else if (CurrentOrder == "NewNext")
                 {
-                    return "Start or or start through (Timer) ";
+                    return "Start";
                 }
                 return "";
             }
@@ -84,14 +84,37 @@
         {
             get
             {
-                if (CurrentOrder == "New" || CurrentOrder == "NewNext" || CurrentOrder == "Next")
-                {
-                    return false;
-                }
-                else
+                if (CurrentOrder == "DriveTo")
                 {
                     return true;
                 }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool IsVisableContinueOrder
+        {
+            get
+            {
+                if (CurrentOrder == "DriveFrome")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool IsVisableCancelOrder
+        {
+            get
+            {
+                return true;
             }
         }
     }

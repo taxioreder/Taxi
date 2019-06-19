@@ -92,8 +92,19 @@ namespace TaxiApp.Droid.CustomGeofense
 
         public void StopGeofence()
         {
-            gefenceModel.PendingIntent.Cancel();
-            gefenceModel = null;
+            if (gefenceModel != null)
+            {
+                gefenceModel.PendingIntent.Cancel();
+                gefenceModel = null;
+            }
+        }
+
+        public void ContinueGeofence(string status)
+        {
+            if(gefenceModel != null)
+            {
+                gefenceModel.Status = status;
+            }
         }
     }
 }
