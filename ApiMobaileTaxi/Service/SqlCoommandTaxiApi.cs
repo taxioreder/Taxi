@@ -63,6 +63,8 @@ namespace ApiMobaileTaxi.Service
             if(status == "DriveFrome")
             {
                 order.CurrentStatus = "Picked up";
+                order.isAccept = true;
+                order.IsVisableAccept = false;
             }
             await context.SaveChangesAsync();
         }
@@ -80,17 +82,17 @@ namespace ApiMobaileTaxi.Service
             return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && (Convert.ToDateTime($"{o.Date} {o.TimeOfPickup}") > DateTime.Now && DateTime.Now > Convert.ToDateTime($"{o.Date} {o.TimeOfPickup}").AddHours(-3))).ToList();
         }
 
-        public async void AsiignedNext(int idOrder, int idDriverCurent)
+        public void AsiignedNext(int idOrder, int idDriverCurent)
         {
-            Driver driver = await context.Drivers.FirstOrDefaultAsync(d => d.ID == idDriverCurent);
-            Order order = await context.Orders.FirstOrDefaultAsync(o => o.ID == idOrder);
+            Driver driver = context.Drivers.FirstOrDefault(d => d.ID == idDriverCurent);
+            Order order =  context.Orders.FirstOrDefault(o => o.ID == idOrder);
             order.CurrentOrder = "Next";
             order.CurrentStatus = "Assigned";
             order.Driver = driver;
-            await context.SaveChangesAsync();
+            context.SaveChanges();
         }
 
-        public async void RecurentTwoOrder(string token, int idOrder)
+        public async Task<Order> RecurentTwoOrder(string token, int idOrder)
         {
             Order order = await context.Orders.FirstOrDefaultAsync(o => o.ID == idOrder);
             Order order1 = GetOrdersForToken(token).FirstOrDefault(o => o.CurrentOrder == "Next");
@@ -100,8 +102,10 @@ namespace ApiMobaileTaxi.Service
             {
                 order1.CurrentOrder = "NewNext";
                 order1.CurrentStatus = "Assigned";
+                order1.isAccept = false;
             }
             await context.SaveChangesAsync();
+            return order1;
         }
 
         public async void RecurentCancelOrder(int idOrder)
@@ -109,6 +113,18 @@ namespace ApiMobaileTaxi.Service
             Order order = await context.Orders.FirstOrDefaultAsync(o => o.ID == idOrder);
             order.CurrentOrder = "New";
             order.CurrentStatus = "NewLoad";
+            await context.SaveChangesAsync();
+        }
+
+        public Order GetOrderDb(int idDOrder)
+        {
+            return context.Orders.Include(o => o.Driver).FirstOrDefault(d => d.ID == idDOrder);
+        }
+
+        public async void SetAcceptVisable(int idDOrder)
+        {
+            Order order = context.Orders.FirstOrDefault(d => d.ID == idDOrder);
+            order.IsVisableAccept = true;
             await context.SaveChangesAsync();
         }
     }

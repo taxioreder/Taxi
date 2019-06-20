@@ -118,8 +118,7 @@ namespace TaxiApp.View.AppPage
             fullOrderMV.IsRefr = true;
             GefenceManager gefenceManager = new GefenceManager();
             DependencyService.Get<Service.Geofence.IGeofence>().StopGeofence();
-            await gefenceManager.RecurentStatusOrder("Next", fullOrderMV.Orders[0].ID);
-            await gefenceManager.RecurentStatusOrder("NewNext", fullOrderMV.Orders[0].ID);
+            await gefenceManager.RecurentStatusOrder("NextNewNext", fullOrderMV.Orders[0].ID);
             fullOrderMV.Init();
         }
 
