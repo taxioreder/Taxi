@@ -56,11 +56,11 @@ namespace TaxiApp.View.AppPage
                     await gefenceManager.RecurentStatusOrder("DriveFrome", fullOrderMV.Orders[0].ID);
                     try
                     {
-                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "From", Convert.ToDouble(locationFrom.lat), Convert.ToDouble(locationFrom.lng), Convert.ToDouble(locationTo.lat), Convert.ToDouble(locationTo.lng), 0.000800);
+                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "From", Convert.ToDouble(locationFrom.lat), Convert.ToDouble(locationFrom.lng), Convert.ToDouble(locationTo.lat), Convert.ToDouble(locationTo.lng), 0.0015);
                     }
                     catch
                     {
-                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "From", Convert.ToDouble(locationFrom.lat.Replace('.', ',')), Convert.ToDouble(locationFrom.lng.Replace('.', ',')), Convert.ToDouble(locationTo.lat.Replace('.', ',')), Convert.ToDouble(locationTo.lng.Replace('.', ',')), 0.000800);
+                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "From", Convert.ToDouble(locationFrom.lat.Replace('.', ',')), Convert.ToDouble(locationFrom.lng.Replace('.', ',')), Convert.ToDouble(locationTo.lat.Replace('.', ',')), Convert.ToDouble(locationTo.lng.Replace('.', ',')), 0.0015);
                     }
                     var placemark = new Placemark
                     {
@@ -76,11 +76,11 @@ namespace TaxiApp.View.AppPage
                 {
                     try
                     {
-                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "From", Convert.ToDouble(locationFrom.lat), Convert.ToDouble(locationFrom.lng), Convert.ToDouble(locationTo.lat), Convert.ToDouble(locationTo.lng), 0.000800);
+                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "From", Convert.ToDouble(locationFrom.lat), Convert.ToDouble(locationFrom.lng), Convert.ToDouble(locationTo.lat), Convert.ToDouble(locationTo.lng), 0.0015);
                     }
                     catch
                     {
-                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "From", Convert.ToDouble(locationFrom.lat.Replace('.', ',')), Convert.ToDouble(locationFrom.lng.Replace('.', ',')), Convert.ToDouble(locationTo.lat.Replace('.', ',')), Convert.ToDouble(locationTo.lng.Replace('.', ',')), 0.000800);
+                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "From", Convert.ToDouble(locationFrom.lat.Replace('.', ',')), Convert.ToDouble(locationFrom.lng.Replace('.', ',')), Convert.ToDouble(locationTo.lat.Replace('.', ',')), Convert.ToDouble(locationTo.lng.Replace('.', ',')), 0.0015);
                     }
                     var placemark = new Placemark
                     {
@@ -96,11 +96,11 @@ namespace TaxiApp.View.AppPage
                 {
                     try
                     {
-                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "Order", Convert.ToDouble(locationFrom.lat), Convert.ToDouble(locationFrom.lng), Convert.ToDouble(locationTo.lat), Convert.ToDouble(locationTo.lng), 0.000800);
+                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "Order", Convert.ToDouble(locationFrom.lat), Convert.ToDouble(locationFrom.lng), Convert.ToDouble(locationTo.lat), Convert.ToDouble(locationTo.lng), 0.0025);
                     }
                     catch
                     {
-                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "Order", Convert.ToDouble(locationFrom.lat.Replace('.', ',')), Convert.ToDouble(locationFrom.lng.Replace('.', ',')), Convert.ToDouble(locationTo.lat.Replace('.', ',')), Convert.ToDouble(locationTo.lng.Replace('.', ',')), 0.000800);
+                        DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.Orders[0].ID, "Order", Convert.ToDouble(locationFrom.lat.Replace('.', ',')), Convert.ToDouble(locationFrom.lng.Replace('.', ',')), Convert.ToDouble(locationTo.lat.Replace('.', ',')), Convert.ToDouble(locationTo.lng.Replace('.', ',')), 0.0015);
                     }
                     var placemark = new Placemark
                     {

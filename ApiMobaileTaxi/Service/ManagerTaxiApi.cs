@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using ApiMobaileTaxi.Model;
 using DBAplication.Model;
@@ -34,10 +35,12 @@ namespace ApiMobaileTaxi.Service
             }
             else if(status == "DriveTo")
             {
+                File.WriteAllText("123.txt", "444");
                 sqlCoommandTaxiApi.RecurentOrderDriveDB(status, idorder);
             }
             else if (status == "Next")
             {
+                File.WriteAllText("123.txt", "333");
                 List<location> locationsOrder = new List<location>();
                 location locationOrder = null;
                 ConnectorApiMaps connectorApiMaps = new ConnectorApiMaps();

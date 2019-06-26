@@ -10,6 +10,7 @@
         <input class="btn" type="button" value="Order" @ViewData["hidden"] onclick="window.location.href='@Url.Action("NewLoad", "Dashbord")';" />
         <input class="btn" type="button" value="Drivers" @ViewData["hidden"] onclick="window.location.href='@Url.Action("Drivers", "Driver")';" />
         <input class="btn" type="button" value="GPS Traking" @ViewData["hidden"] onclick="window.location.href='@Url.Action("Map", "Geolcation")';" />
+        <input class="btn" type="button" value="Server time: @DateTime.Now" />
     </nav>
     <div style="width:99%;height:97vh;">
         @RenderBody()

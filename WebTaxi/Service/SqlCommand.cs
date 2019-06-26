@@ -27,6 +27,16 @@ namespace WebTaxi.Service
                 admin.Password = "1";
                 await context.Admins.AddAsync(admin);
                 await context.SaveChangesAsync();
+                //Admin admin1 = new Admin();
+                //admin1.Login = "2";
+                //admin1.Password = "2";
+                //await context.Admins.AddAsync(admin);
+                //await context.SaveChangesAsync();
+                //Admin admin2 = new Admin();
+                //admin2.Login = "3";
+                //admin2.Password = "3";
+                //await context.Admins.AddAsync(admin);
+                //await context.SaveChangesAsync();
             }
         }
 

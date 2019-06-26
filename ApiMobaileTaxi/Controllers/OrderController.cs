@@ -60,10 +60,7 @@ namespace ApiMobaileTaxi.Controllers
                 bool isToken = ManagerMobileApi.CheckToken(token);
                 if (isToken)
                 {
-                    Task.Run(() =>
-                    {
                         ManagerMobileApi.RecurentOrderDrive(token, status, idorder);
-                    });
                     respons = JsonConvert.SerializeObject(new ResponseAppS("success", null, orders));
                 }
                 else

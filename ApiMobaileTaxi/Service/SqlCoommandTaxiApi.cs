@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DBAplication;
@@ -15,6 +16,41 @@ namespace ApiMobaileTaxi.Service
         public SqlCoommandTaxiApi()
         {
             context = new Context();
+        }
+
+        public List<Driver> CheckOrderForDriver()
+        {
+            context.Drivers.Load();
+            List<Driver> drivers = null;
+            List<Order> orders = context.Orders.ToList().Where(o => (o.Driver != null && o.Driver.IsWork && o.CurrentStatus == "Assigned" || o.CurrentStatus == "Picked up")).ToList();
+            if (orders == null || orders.Count == 0)
+            {
+                drivers = context.Drivers.ToList();
+            }
+            else
+            {
+                drivers = context.Drivers.Where(d => orders.FirstOrDefault(o => o.Driver == d) == null).ToList();
+            }
+            return drivers;
+        }
+
+        public async Task AddDriversInOrder(string idOrder, string idDriver)
+        {
+            Order order = context.Orders.FirstOrDefault(s => s.ID == Convert.ToInt32(idOrder));
+            Driver driver = context.Drivers.FirstOrDefault(d => d.ID == Convert.ToInt32(idDriver));
+            order.Driver = driver;
+            order.CurrentStatus = "Assigned";
+            await context.SaveChangesAsync();
+        }
+
+        public async void SetWorkDrive()
+        {
+            List<Driver> drivers = context.Drivers.ToList();
+            foreach (var driver in drivers)
+            {
+                driver.IsWork = true;
+            }
+            await context.SaveChangesAsync();
         }
 
         internal bool CheckEmailAndPsw(string email, string password)
@@ -79,11 +115,13 @@ namespace ApiMobaileTaxi.Service
 
         public List<Order> GetOrders()
         {
+            File.WriteAllText("123.txt", "123");
             return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && (Convert.ToDateTime($"{o.Date} {o.TimeOfPickup}") > DateTime.Now && DateTime.Now > Convert.ToDateTime($"{o.Date} {o.TimeOfPickup}").AddHours(-3))).ToList();
         }
 
         public void AsiignedNext(int idOrder, int idDriverCurent)
         {
+            File.WriteAllText("123.txt", "222");
             Driver driver = context.Drivers.FirstOrDefault(d => d.ID == idDriverCurent);
             Order order =  context.Orders.FirstOrDefault(o => o.ID == idOrder);
             order.CurrentOrder = "Next";

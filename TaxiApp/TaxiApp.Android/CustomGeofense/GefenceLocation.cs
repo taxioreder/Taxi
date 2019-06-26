@@ -61,9 +61,9 @@ namespace TaxiApp.Droid.CustomGeofense
         {
             locationRequest = new LocationRequest();
             locationRequest.SetPriority(LocationRequest.PriorityHighAccuracy);
-            locationRequest.SetInterval(500);
-            locationRequest.SetFastestInterval(300);
-            locationRequest.SetSmallestDisplacement(10f);
+            locationRequest.SetInterval(100);
+            locationRequest.SetFastestInterval(50);
+            var s = locationRequest.SetSmallestDisplacement(1);
         }
 
         public void OnPermissionRationaleShouldBeShown(PermissionRequest p0, IPermissionToken p1)

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using ApiMobaileTaxi.BackgroundService;
+using FluentScheduler;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +28,7 @@ namespace ApiMobaileTaxi
                 app.UseDeveloperExceptionPage();
             }
             app.UseMvc();
+            JobManager.Initialize(new MyRegistr());
         }
     }
 }

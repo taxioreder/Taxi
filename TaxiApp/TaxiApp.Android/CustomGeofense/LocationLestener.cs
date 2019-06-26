@@ -22,11 +22,11 @@ namespace TaxiApp.Droid.CustomGeofense
                 //Toast.MakeText(Android.App.Application.Context, "Intent", ToastLength.Long).Show();
                 if (locationResult != null && action.Equals(ACTION_PROCESS_LOCATIOM))
                 {
-                    Toast.MakeText(Android.App.Application.Context, "Location", ToastLength.Long).Show();
+                    //Toast.MakeText(Android.App.Application.Context, "Location", ToastLength.Long).Show();
                     var lastloc = locationResult.LastLocation;
                     if(GefenceLocation.gefenceModel != null && GefenceLocation.gefenceModel.Status == "From")
                     {
-                        Toast.MakeText(Android.App.Application.Context, "From1", ToastLength.Long).Show();
+                        //Toast.MakeText(Android.App.Application.Context, "From1", ToastLength.Long).Show();
                         if ((GefenceLocation.gefenceModel.FromLat - GefenceLocation.gefenceModel.Radius < lastloc.Latitude && GefenceLocation.gefenceModel.FromLat + GefenceLocation.gefenceModel.Radius > lastloc.Latitude)
                             &&(GefenceLocation.gefenceModel.FromLng - GefenceLocation.gefenceModel.Radius < lastloc.Longitude && GefenceLocation.gefenceModel.FromLng + GefenceLocation.gefenceModel.Radius > lastloc.Longitude))
                         {
@@ -40,8 +40,8 @@ namespace TaxiApp.Droid.CustomGeofense
                     else if (GefenceLocation.gefenceModel != null && GefenceLocation.gefenceModel.Status == "Order")
                     {
                         //Toast.MakeText(Android.App.Application.Context, "Order1", ToastLength.Long).Show();
-                        if ((GefenceLocation.gefenceModel.ToLat - (GefenceLocation.gefenceModel.Radius + 0.001000) < lastloc.Latitude && GefenceLocation.gefenceModel.ToLat + (GefenceLocation.gefenceModel.Radius + 0.001000) > lastloc.Latitude)
-                            && (GefenceLocation.gefenceModel.ToLng - (GefenceLocation.gefenceModel.Radius + 0.001000) < lastloc.Longitude && GefenceLocation.gefenceModel.ToLng + (GefenceLocation.gefenceModel.Radius + 0.001000) > lastloc.Longitude))
+                        if ((GefenceLocation.gefenceModel.ToLat - (GefenceLocation.gefenceModel.Radius + 0.0015) < lastloc.Latitude && GefenceLocation.gefenceModel.ToLat + (GefenceLocation.gefenceModel.Radius + 0.003) > lastloc.Latitude)
+                            && (GefenceLocation.gefenceModel.ToLng - (GefenceLocation.gefenceModel.Radius + 0.0015) < lastloc.Longitude && GefenceLocation.gefenceModel.ToLng + (GefenceLocation.gefenceModel.Radius + 0.003) > lastloc.Longitude))
                         {
                             //Toast.MakeText(Android.App.Application.Context, "Order", ToastLength.Long).Show();
                             gefenceManager = new GefenceManager();
@@ -52,8 +52,8 @@ namespace TaxiApp.Droid.CustomGeofense
                     else if(GefenceLocation.gefenceModel != null && GefenceLocation.gefenceModel.Status == "To")
                     {
                         //Toast.MakeText(Android.App.Application.Context, "To1", ToastLength.Long).Show();
-                        if ((GefenceLocation.gefenceModel.ToLat - GefenceLocation.gefenceModel.Radius < lastloc.Latitude && GefenceLocation.gefenceModel.ToLat + GefenceLocation.gefenceModel.Radius > lastloc.Latitude)
-                            && (GefenceLocation.gefenceModel.ToLng - GefenceLocation.gefenceModel.Radius < lastloc.Longitude && GefenceLocation.gefenceModel.ToLng + GefenceLocation.gefenceModel.Radius > lastloc.Longitude))
+                        if ((GefenceLocation.gefenceModel.ToLat - (GefenceLocation.gefenceModel.Radius + 0.0025) < lastloc.Latitude && GefenceLocation.gefenceModel.ToLat + (GefenceLocation.gefenceModel.Radius + 0.002) > lastloc.Latitude)
+                            && (GefenceLocation.gefenceModel.ToLng - (GefenceLocation.gefenceModel.Radius + 0.0025) < lastloc.Longitude && GefenceLocation.gefenceModel.ToLng + (GefenceLocation.gefenceModel.Radius + 0.002) > lastloc.Longitude))
                         {
                             //Toast.MakeText(Android.App.Application.Context, "To", ToastLength.Long).Show();
                             gefenceManager = new GefenceManager();

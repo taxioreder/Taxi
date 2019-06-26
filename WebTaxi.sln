@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiApp.iOS", "TaxiApp\Taxi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxiApp", "TaxiApp\TaxiApp\TaxiApp.csproj", "{A4DD4201-9F04-4E86-B9BB-A06FEC48D03B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceManager", "ServiceManager\ServiceManager.csproj", "{3BC780AD-7452-4D33-A251-F7C310C65EE4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,18 +101,6 @@ Global
 		{A4DD4201-9F04-4E86-B9BB-A06FEC48D03B}.Release|iPhone.Build.0 = Release|Any CPU
 		{A4DD4201-9F04-4E86-B9BB-A06FEC48D03B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{A4DD4201-9F04-4E86-B9BB-A06FEC48D03B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{3BC780AD-7452-4D33-A251-F7C310C65EE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3BC780AD-7452-4D33-A251-F7C310C65EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3BC780AD-7452-4D33-A251-F7C310C65EE4}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{3BC780AD-7452-4D33-A251-F7C310C65EE4}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{3BC780AD-7452-4D33-A251-F7C310C65EE4}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{3BC780AD-7452-4D33-A251-F7C310C65EE4}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{3BC780AD-7452-4D33-A251-F7C310C65EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3BC780AD-7452-4D33-A251-F7C310C65EE4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3BC780AD-7452-4D33-A251-F7C310C65EE4}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{3BC780AD-7452-4D33-A251-F7C310C65EE4}.Release|iPhone.Build.0 = Release|Any CPU
-		{3BC780AD-7452-4D33-A251-F7C310C65EE4}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{3BC780AD-7452-4D33-A251-F7C310C65EE4}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
