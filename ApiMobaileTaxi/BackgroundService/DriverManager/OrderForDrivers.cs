@@ -3,6 +3,7 @@ using DBAplication.Model;
 using FluentScheduler;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ApiMobaileTaxi.BackgroundService.DriverManager
@@ -21,46 +22,47 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
 
         private async void SetOrderForDrivers()
         {
-            int iteration = 0;
-            List<location> locationsDriver = null;
-            List<location> locationsOrder = null;
-            List<Driver> drivers = sqlCoommandTaxiApi.CheckOrderForDriver();
-            if (drivers != null)
-            {
-                locationsDriver = new List<location>();
-                locationsOrder = new List<location>();
-                List<Order> orders = sqlCoommandTaxiApi.GetOrders();
-                foreach (var driver in drivers)
+                int iteration = 0;
+                List<location> locationsDriver = null;
+                List<location> locationsOrder = null;
+                List<Driver> drivers = sqlCoommandTaxiApi.CheckOrderForDriver();
+                if (drivers != null)
                 {
-                    location locationDriveZip = connectorApiMaps.GetGetLonAndLanToAddress(driver.ZipCod.ToString());
-                    if (locationDriveZip != null)
+                    locationsDriver = new List<location>();
+                    locationsOrder = new List<location>();
+                    List<Order> orders = sqlCoommandTaxiApi.GetOrders();
+                    foreach (var driver in drivers)
                     {
-                        locationDriveZip.ID = driver.ID.ToString();
-                        locationsDriver.Add(locationDriveZip);
+                        location locationDriveZip = connectorApiMaps.GetGetLonAndLanToAddress(driver.ZipCod.ToString());
+                        if (locationDriveZip != null)
+                        {
+                            locationDriveZip.ID = driver.ID.ToString();
+                            locationsDriver.Add(locationDriveZip);
+                        }
+                    }
+                    foreach (var order in orders)
+                    {
+                        location locationOrder = connectorApiMaps.GetGetLonAndLanToAddress(order.FromAddress.ToString());
+                        if (locationOrder != null)
+                        {
+                            locationOrder.ID = order.ID.ToString();
+                            locationsOrder.Add(locationOrder);
+                        }
+                    }
+                    iteration = locationsDriver.Count;
+                    for (int i = 0; i < iteration; i++)
+                    {
+                        if (locationsOrder.Count == 0)
+                        {
+                            break;
+                        }
+                        List<location> locations = SerchMinDistance(locationsDriver, locationsOrder);
+                        locationsOrder.Remove(locations[0]);
+                        locationsDriver.Remove(locations[1]);
+                        await sqlCoommandTaxiApi.AddDriversInOrder(locations[0].ID, locations[1].ID);
                     }
                 }
-                foreach (var order in orders)
-                {
-                    location locationOrder = connectorApiMaps.GetGetLonAndLanToAddress(order.FromAddress.ToString());
-                    if (locationOrder != null)
-                    {
-                        locationOrder.ID = order.ID.ToString();
-                        locationsOrder.Add(locationOrder);
-                    }
-                }
-                iteration = locationsDriver.Count;
-                for (int i = 0; i < iteration; i++)
-                {
-                    if (locationsOrder.Count == 0)
-                    {
-                        break;
-                    }
-                    List<location> locations = SerchMinDistance(locationsDriver, locationsOrder);
-                    locationsOrder.Remove(locations[0]);
-                    locationsDriver.Remove(locations[1]);
-                    await sqlCoommandTaxiApi.AddDriversInOrder(locations[0].ID, locations[1].ID);
-                }
-            }
+            
         }
 
         private List<location> SerchMinDistance(List<location> locationsDriver, List<location> locationsOrder)
@@ -84,6 +86,7 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             }
             locations.Add(tmpOrder);
             locations.Add(tmpDriver);
+
             return locations;
         }
 

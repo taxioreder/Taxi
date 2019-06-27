@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace ApiMobaileTaxi.Service
         {
             context.Drivers.Load();
             List<Driver> drivers = null;
-            List<Order> orders = context.Orders.ToList().Where(o => (o.Driver != null && o.Driver.IsWork && o.CurrentStatus == "Assigned" || o.CurrentStatus == "Picked up")).ToList();
+            List<Order> orders = context.Orders.Include(o => o.Driver).Where(o => (o.Driver != null && o.Driver.IsWork && o.CurrentStatus == "Assigned" || o.CurrentStatus == "Picked up")).ToList();
             if (orders == null || orders.Count == 0)
             {
                 drivers = context.Drivers.ToList();
@@ -115,8 +116,42 @@ namespace ApiMobaileTaxi.Service
 
         public List<Order> GetOrders()
         {
-            File.WriteAllText("123.txt", "123");
-            return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && (Convert.ToDateTime($"{o.Date} {o.TimeOfPickup}") > DateTime.Now && DateTime.Now > Convert.ToDateTime($"{o.Date} {o.TimeOfPickup}").AddHours(-3))).ToList();
+            string formatD = null;
+            return context.Orders.ToList().Where(o => o.CurrentStatus == "NewLoad" && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}") > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-1))).ToList();
+            
+        }
+
+        private string GetDFormat(string data)
+        {
+            DateTime date;
+            if (DateTime.TryParseExact(data, "MM.dd.yyyy", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "dd.MM.yyyy", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if(DateTime.TryParseExact(data, "yyyy.MM.dd", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "MM-dd-yyyy", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "dd-MM-yyyy", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "yyyy-MM-dd", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "MM/dd/yyyy", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "dd/MM/yyyy", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "yyyy/MM/dd", null, DateTimeStyles.None, out date))
+            {
+            }
+            return date.ToShortDateString();
         }
 
         public void AsiignedNext(int idOrder, int idDriverCurent)
