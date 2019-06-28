@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
-using System.Linq;
 
 namespace ApiMobaileTaxi.BackgroundService.DriverManager
 {
@@ -32,6 +31,49 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             {
                 return GetData(content);
             }
+        }
+
+        public int GetGetDuration(string addressTo, string addressFrom)
+        {
+            IRestResponse response = null;
+            string content = null;
+            try
+            {
+                RestClient client = new RestClient("https://maps.googleapis.com");
+                RestRequest request = new RestRequest($"maps/api/distancematrix/json?origins={addressTo}&destinations={addressFrom}&language=En&key=AIzaSyBg0nsyrrsmGyw9Iiw0TOu4HI6o8Jt1jHU", Method.GET);
+                request.Timeout = 200000;
+                response = client.Execute(request);
+                content = response.Content;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+            if (content == "" || response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return 0;
+            }
+            else
+            {
+                return GetData1(content);
+            }
+        }
+
+        private int GetData1(string respJsonStr)
+        {
+            int duration = 0;
+            var responseAppS = JObject.Parse(respJsonStr);
+            var status = responseAppS.Value<string>("status");
+            if (status == "OK")
+            {
+                duration = responseAppS.GetValue("rows").First.Value<JToken>("elements").First.Value<JToken>("duration").Value<int>("value");
+            }
+            else
+            {
+
+            }
+
+            return duration;
         }
 
         private location GetData(string respJsonStr)

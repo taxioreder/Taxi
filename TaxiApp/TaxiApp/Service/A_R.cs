@@ -15,7 +15,7 @@ namespace TaxiApp.Service
                 RestClient client = new RestClient(Config.BaseReqvesteUrl);
                 RestRequest request = new RestRequest("Api.Mobile/Avtorization", Method.POST);
                 request.AddHeader("Accept", "application/json");
-                client.Timeout = 10000;
+                client.Timeout = 20000;
                 request.AddParameter("email", login);
                 request.AddParameter("password", password);
                 response = client.Execute(request);

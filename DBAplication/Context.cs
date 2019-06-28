@@ -7,6 +7,7 @@ namespace DBAplication
     {
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderMobile> OrderMobiles { get; set; }
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<Geolocations> Geolocations { get; set; }
 
@@ -20,8 +21,8 @@ namespace DBAplication
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Taxi;Trusted_Connection=True;");
-                optionsBuilder.UseSqlServer("Data Source=127.0.0.1;Initial Catalog=WebTaxi;Integrated Security=False;User ID=123;Password=123;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Taxi;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Data Source=127.0.0.1;Initial Catalog=WebTaxi;Integrated Security=False;User ID=123;Password=123;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False");
             }
         }
     }

@@ -23,14 +23,14 @@ namespace ApiMobaileTaxi.Service
         {
             context.Drivers.Load();
             List<Driver> drivers = null;
-            List<Order> orders = context.Orders.Include(o => o.Driver).Where(o => (o.Driver != null && o.Driver.IsWork && o.CurrentStatus == "Assigned" || o.CurrentStatus == "Picked up")).ToList();
+            List<Order> orders = context.Orders.ToList().Where(o => o.Driver != null && (o.CurrentStatus == "Assigned" || o.CurrentStatus == "Picked up")).ToList();
             if (orders == null || orders.Count == 0)
             {
-                drivers = context.Drivers.ToList();
+                drivers = context.Drivers.Where(d => d.IsWork).ToList();
             }
             else
             {
-                drivers = context.Drivers.Where(d => orders.FirstOrDefault(o => o.Driver == d) == null).ToList();
+                drivers = context.Drivers.Where(d => orders.FirstOrDefault(o => o.Driver == d) == null && d.IsWork).ToList();
             }
             return drivers;
         }
@@ -116,9 +116,7 @@ namespace ApiMobaileTaxi.Service
 
         public List<Order> GetOrders()
         {
-            string formatD = null;
-            return context.Orders.ToList().Where(o => o.CurrentStatus == "NewLoad" && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}") > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-1))).ToList();
-            
+            return context.Orders.ToList().Where(o => o.CurrentStatus == "NewLoad" && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-3))).ToList();
         }
 
         private string GetDFormat(string data)

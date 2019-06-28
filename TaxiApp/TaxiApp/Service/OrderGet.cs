@@ -17,7 +17,7 @@ namespace TaxiApp.Service
             {
                 RestClient client = new RestClient(Config.BaseReqvesteUrl);
                 RestRequest request = new RestRequest("Api.Mobile/Order", Method.POST);
-                client.Timeout = 10000;
+                client.Timeout = 20000;
                 request.AddHeader("Accept", "application/json");
                 request.AddParameter("token", token);
                 response = client.Execute(request);

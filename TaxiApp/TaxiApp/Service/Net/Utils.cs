@@ -24,7 +24,7 @@ namespace TaxiApp.Service.Net
                 RestClient client = new RestClient(Config.BaseReqvesteUrl);
                 RestRequest request = new RestRequest("Api.Mobile/Net", Method.GET);
                 request.AddHeader("Accept", "application/json");
-                client.Timeout = 10000;
+                client.Timeout = 20000;
                 response = client.Execute(request);
                 content = response.Content;
                 Device.BeginInvokeOnMainThread(async () =>

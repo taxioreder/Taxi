@@ -1,6 +1,4 @@
-﻿using Plugin.Geofence;
-using Plugin.Geofence.Abstractions;
-using Plugin.Messaging;
+﻿using Plugin.Messaging;
 using System;
 using TaxiApp.Models;
 using TaxiApp.Service;
@@ -45,7 +43,8 @@ namespace TaxiApp.View.AppPage
 
         private async void TapGestureRecognizer_Tapped_2(object sender, EventArgs e)
         {
-            Label label = ((Label)sender).FindByName<Label>("currentOL");
+            fullOrderMV.IsRefr = true;
+            Label label = ((Button)sender).FindByName<Label>("currentOL");
             GefenceManager gefenceManager = new GefenceManager();
             location locationFrom = await fullOrderMV.GetLonAndLanToAddress(fullOrderMV.Orders[0].FromAddress);
             location locationTo = await fullOrderMV.GetLonAndLanToAddress(fullOrderMV.Orders[0].ToAddress);
@@ -110,6 +109,7 @@ namespace TaxiApp.View.AppPage
                     await Map.OpenAsync(placemark, options);
                 }
             }
+            fullOrderMV.IsRefr = false;
         }
 
         [Obsolete]

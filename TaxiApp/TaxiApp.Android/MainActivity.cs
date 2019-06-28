@@ -35,6 +35,21 @@ namespace TaxiApp.Droid
             return Instance;
         }
 
+
+        //PowerManager powerManager = (PowerManager)GetSystemService(PowerService);
+        //    if (Build.VERSION.SdkInt >= Build.VERSION_CODES.KitkatWatch)
+        //    {
+        //        isScreenOn = powerManager.IsInteractive;
+        //    }
+        //    else
+        //    {
+        //        isScreenOn = powerManager.IsScreenOn;
+        //    }
+        //    if (!isScreenOn)
+        //    { 
+        //        // The screen has been locked // do stuff... 
+        //    }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
