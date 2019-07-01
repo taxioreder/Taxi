@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using ApiMobaileTaxi.BackgroundService.Model;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 
 namespace ApiMobaileTaxi.BackgroundService.DriverManager
 {
@@ -33,14 +35,14 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             }
         }
 
-        public int GetGetDuration(string addressTo, string addressFrom)
+        public int GetGetDuration(string addressFrom, string addressTo)
         {
             IRestResponse response = null;
             string content = null;
             try
             {
                 RestClient client = new RestClient("https://maps.googleapis.com");
-                RestRequest request = new RestRequest($"maps/api/distancematrix/json?origins={addressTo}&destinations={addressFrom}&language=En&key=AIzaSyBg0nsyrrsmGyw9Iiw0TOu4HI6o8Jt1jHU", Method.GET);
+                RestRequest request = new RestRequest($"maps/api/distancematrix/json?origins={addressFrom}&destinations={addressTo}&language=En&key=AIzaSyBg0nsyrrsmGyw9Iiw0TOu4HI6o8Jt1jHU", Method.GET);
                 request.Timeout = 200000;
                 response = client.Execute(request);
                 content = response.Content;
@@ -57,6 +59,51 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             {
                 return GetData1(content);
             }
+        }
+
+        public List<Steps> GetGetDirections(string addressFrom, string addressTo)
+        {
+            IRestResponse response = null;
+            string content = null;
+            try
+            {
+                RestClient client = new RestClient("https://maps.googleapis.com");
+                RestRequest request = new RestRequest($"maps/api/directions/json?origin={addressFrom}&destination={addressTo}&key=AIzaSyBg0nsyrrsmGyw9Iiw0TOu4HI6o8Jt1jHU", Method.GET);
+                request.Timeout = 200000;
+                response = client.Execute(request);
+                content = response.Content;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            if (content == "" || response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+            else
+            {
+                return GetData2(content);
+            }
+        }
+
+        private List<Steps> GetData2(string respJsonStr)
+        {
+            List<Steps> steps = null;
+            var responseAppS = JObject.Parse(respJsonStr);
+            var status = responseAppS.Value<string>("status");
+            if (status == "OK")
+             {
+                steps = new List<Steps>();
+                var tmp1 = responseAppS.GetValue("routes").First.Value<JToken>("legs").First.Value<JToken>("steps").ToString();
+                steps = JsonConvert.DeserializeObject<List<Steps>>(tmp1);
+            }
+            else
+            {
+
+            }
+
+            return steps;
         }
 
         private int GetData1(string respJsonStr)
