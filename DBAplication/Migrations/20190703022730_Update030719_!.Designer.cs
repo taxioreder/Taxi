@@ -4,14 +4,16 @@ using DBAplication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DBAplication.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20190703022730_Update030719_!")]
+    partial class Update030719_
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,8 +92,6 @@ namespace DBAplication.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<string>("Date");
-
                     b.Property<int>("IDorder");
 
                     b.Property<double>("Lat");
@@ -100,9 +100,9 @@ namespace DBAplication.Migrations
 
                     b.Property<int?>("OrderMobileID");
 
-                    b.Property<string>("PTime");
-
                     b.Property<string>("Type");
+
+                    b.Property<string>("TypeTime");
 
                     b.HasKey("ID");
 

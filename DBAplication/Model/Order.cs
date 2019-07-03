@@ -23,6 +23,7 @@
         public string NoName4 { get; set; }
         public string NoName5 { get; set; }
         public string NoName6 { get; set; }
+        public int CountCustomer { get; set; }
         public string Comment { get; set; }
         public bool isAccept { get; set; }
         public bool IsVisableAccept { get; set; }

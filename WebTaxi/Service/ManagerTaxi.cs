@@ -102,6 +102,7 @@ namespace WebTaxi.Service
                                         order.NoName5 = GetData(Cells[16], sharedStringTable);
                                         order.NoName6 = GetData(Cells[17], sharedStringTable);
                                         order.Comment = GetData(Cells[18], sharedStringTable);
+                                        order.CountCustomer = 1;
                                         sqlCommand.SaveOrder(order);
                                     }
                                     catch
@@ -151,10 +152,10 @@ namespace WebTaxi.Service
         }
 
         public void Updateorder(string idLoad, string nameCustomer, string phone, string fromAddress, string toAddress, string noName, string noName1,
-           string noName2, string status, string date, string timeOfPickup, string timeOfAppointment, string milisse, string price, string noName3, string noNam4, string noNam5, string noNam6)
+           string noName2, string status, string date, string timeOfPickup, string timeOfAppointment, string milisse, string price, string noName3, string noNam4, string noNam5, string noNam6, int countCustomer)
         {
             sqlCommand.UpdateorderInDb(idLoad, nameCustomer, phone, fromAddress, toAddress, noName, noName1, noName2, status, date, timeOfPickup,
-                        timeOfAppointment, milisse, price, noName3, noNam4, noNam5, noNam6);
+                        timeOfAppointment, milisse, price, noName3, noNam4, noNam5, noNam6, countCustomer);
         }
 
         public void ArchvedOrder(string id)

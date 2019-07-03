@@ -151,8 +151,8 @@ namespace WebTaxi.Service
             return context.Orders.FirstOrDefault(o => o.ID == Convert.ToInt32(id));
         }
 
-        public async void UpdateorderInDb(string idLoad, string nameCustomer, string phone, string fromAddress, string toAddress, string noName, string noName1,
-           string noName2, string status, string date, string timeOfPickup, string timeOfAppointment, string milisse, string price, string noName3, string noNama4, string noName5, string noName6)
+        public async void UpdateorderInDb(string idLoad, string nameCustomer, string phone, string fromAddress, string toAddress, string noName, string noName1, string noName2, string status,
+            string date, string timeOfPickup, string timeOfAppointment, string milisse, string price, string noName3, string noNama4, string noName5, string noName6, int countCustomer)
         {
             Order order = context.Orders.FirstOrDefault(s => s.ID == Convert.ToInt32(idLoad));
             order.NameCustomer = nameCustomer != null ? nameCustomer : order.NameCustomer;
@@ -172,6 +172,8 @@ namespace WebTaxi.Service
             order.NoName4 = noNama4 != null ? noNama4 : order.NoName4;
             order.NoName5 = noName5 != null ? noName5 : order.NoName5;
             order.NoName6 = noName6 != null ? noName6 : order.NoName6;
+            order.NoName6 = noName6 != null ? noName6 : order.NoName6;
+            order.CountCustomer = countCustomer == 0 ? 1 : countCustomer > 4 ? 4 : countCustomer;
             await context.SaveChangesAsync();
         }
 
