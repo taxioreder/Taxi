@@ -192,11 +192,34 @@ namespace ApiMobaileTaxi.Service
             return context.Orders.Include(o => o.Driver).FirstOrDefault(d => d.ID == idDOrder);
         }
 
-        public async void SetAcceptVisable(int idDOrder)
+        public async void SetAcceptVisableDb(int idDOrder)
         {
             Order order = context.Orders.FirstOrDefault(d => d.ID == idDOrder);
             order.IsVisableAccept = true;
             await context.SaveChangesAsync();
+        }
+
+        public void SetOrederMobile(OrderMobile orderMobile, string idDrigver)
+        {
+            Driver driver = context.Drivers.FirstOrDefault(d => d.ID.ToString() == idDrigver);
+            foreach(Order order in orderMobile.Orders)
+            {
+                Order order1 = context.Orders.FirstOrDefault(o => o.ID == order.ID);
+                order.CurrentStatus = "Assigned";
+                order.CurrentOrder = "New";
+                order1.Driver = driver;
+            }
+            context.OrderMobiles.Add(orderMobile);
+            context.SaveChanges();
+        }
+
+        public OrderMobile GetOrderMobile(string token)
+        {
+            Driver driver = context.Drivers.FirstOrDefault(d => d.Token == token);
+            return context.OrderMobiles
+                .Include(o => o.Orders)
+                .Include(o => o.OnePointForAddressOrders)
+                .FirstOrDefault(o => o.IdDriver == driver.ID.ToString());
         }
     }
 }

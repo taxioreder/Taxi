@@ -20,7 +20,6 @@ namespace TaxiApp.ViewModels.AppPageMV
         public FullOrderMV(ManagerTaxi managerTaxi, INavigation navigation)
         {
             Navigation = navigation;
-            Orders = new List<Order>();
             this.managerTaxi = managerTaxi;
             RefreshCommand = new DelegateCommand(Init);
             Init();
@@ -33,11 +32,11 @@ namespace TaxiApp.ViewModels.AppPageMV
             App.Current.MainPage = new NavigationPage(new Avtorization());
         }
 
-        private List<Order> orders = null;
-        public List<Order> Orders
+        private OrderMobile orderMobile = null;
+        public OrderMobile OrderMobile
         {
-            get => orders;
-            set => SetProperty(ref orders, value);
+            get => orderMobile;
+            set => SetProperty(ref orderMobile, value);
         }
 
         private bool isRefr = false;
@@ -54,13 +53,13 @@ namespace TaxiApp.ViewModels.AppPageMV
             string token = CrossSettings.Current.GetValueOrDefault("Token", "");
             string description = null;
             int state = 0;
-            List<Order> orders1 = null;
+            OrderMobile orderMobile1 = null;
             await Task.Run(() => Utils.CheckNet());
             if (App.isNetwork)
             {
                 await Task.Run(() =>
                 {
-                    state = managerTaxi.OrderWork("OrderGet", token, ref description, ref orders1);
+                    state = managerTaxi.OrderWork("OrderMobileGet", token, ref description, ref orderMobile1);
                 });
                 if (state == 2)
                 {
@@ -68,7 +67,7 @@ namespace TaxiApp.ViewModels.AppPageMV
                 }
                 else if (state == 3)
                 {
-                    Orders = orders1;
+                    OrderMobile = orderMobile1;
                 }
                 else if (state == 4)
                 {
@@ -76,26 +75,6 @@ namespace TaxiApp.ViewModels.AppPageMV
                 }
             }
             IsRefr = false;
-        }
-
-        private async void ActionForOrder()
-        {
-            if(Orders[0].CurrentOrder == "New")
-            {
-                //PopUp Info New Order Plese Accept
-            }
-            else if(Orders[0].CurrentOrder == "DriveFrome")
-            {
-                //PopUp Go to Navigation From Order, Yes No
-            }
-            else if (Orders[0].CurrentOrder == "DriveTo")
-            {
-                //PopUp Go to Navigation to Order, Yes No
-            }
-            else if (Orders[0].CurrentOrder == "NewNext")
-            {
-                //PopUp Info Order Avtomatik Accept Order of 5 min
-            }
         }
 
         public async Task<location> GetLonAndLanToAddress(string address)

@@ -55,17 +55,20 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                     locationsOrder.Add(locationOrder);
                 }
             }
-            iteration = locationsDriver.Count;
-            for (int i = 0; i < iteration; i++)
+            if ((drivers != null && drivers.Count != 0) && (orders != null && orders.Count != 0))
             {
-                if (locationsOrder.Count == 0)
+                iteration = locationsDriver.Count;
+                for (int i = 0; i < iteration; i++)
                 {
-                    break;
+                    if (locationsOrder.Count == 0)
+                    {
+                        break;
+                    }
+                    List<location> locationsAcceptOrder = SerchMinDistance(locationsDriver, locationsOrder);
+                    locationsOrder.Remove(locationsAcceptOrder[1]);
+                    locationsDriver.Remove(locationsAcceptOrder[0]);
+                    OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders);
                 }
-                List<location> locationsAcceptOrder = SerchMinDistance(locationsDriver, locationsOrder);
-                locationsOrder.Remove(locationsAcceptOrder[1]);
-                locationsDriver.Remove(locationsAcceptOrder[0]);
-                OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders);
             }
         }
 
@@ -74,6 +77,7 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             int numberOfSeats = 4;
             orderMobile = new OrderMobile();
             orderMobile.OnePointForAddressOrders = new List<OnePointForAddressOrder>();
+            orderMobile.Status = "New";
             Order order = orders.Find(o => o.ID.ToString() == locationsAcceptOrder[1].ID);
             orderMobile.OnePointForAddressOrders.Add(new OnePointForAddressOrder(order.ID, Convert.ToDouble(locationsAcceptOrder[1].lat.Replace('.', ',')), Convert.ToDouble(locationsAcceptOrder[1].lng.Replace('.', ',')), order.TimeOfPickup, order.Date, "Start", order.FromAddress));
             orderMobile.OnePointForAddressOrders.Add(new OnePointForAddressOrder(order.ID, Convert.ToDouble(locationsAcceptOrder[1].latE.Replace('.', ',')), Convert.ToDouble(locationsAcceptOrder[1].lngE.Replace('.', ',')), order.TimeOfAppointment, order.Date, "End", order.ToAddress));
@@ -190,11 +194,8 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                             numberOfSeats -= order1.CountCustomer;
                         }
                     }
-                    else
-                    {
-                        return;
-                    }
                 }
+                sqlCoommandTaxiApi.SetOrederMobile(orderMobile, locationsAcceptOrder[0].ID);
             }
         }
 

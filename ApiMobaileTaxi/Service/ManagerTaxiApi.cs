@@ -112,7 +112,7 @@ namespace ApiMobaileTaxi.Service
             order =  sqlCoommandTaxiApi.GetOrderDb(order.ID);
             if(order.Driver == null || (order.Driver.IsWork && !order.isAccept))
             {
-                sqlCoommandTaxiApi.SetAcceptVisable(order.ID);
+                sqlCoommandTaxiApi.SetAcceptVisableDb(order.ID);
             }
         }
 
@@ -193,5 +193,9 @@ namespace ApiMobaileTaxi.Service
             sqlCoommandTaxiApi.SaveGPSLocationData(token, geolocations);
         }
 
+        public OrderMobile GetOrderMobile(string token)
+        {
+            return sqlCoommandTaxiApi.GetOrderMobile(token);
+        }
     }
 }

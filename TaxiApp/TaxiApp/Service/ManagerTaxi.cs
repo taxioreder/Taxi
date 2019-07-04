@@ -10,7 +10,7 @@ namespace TaxiApp.Service
         private OrderGet orderGet = null;
         private Api_Map_Google api_Map_Google = null;
 
-        internal int A_RWork(string typeR_A, string username, string password, ref string description, ref string token)
+        public int A_RWork(string typeR_A, string username, string password, ref string description, ref string token)
         {
             a_R = new A_R();
             int stateA_R = 1;
@@ -34,6 +34,21 @@ namespace TaxiApp.Service
                 if (typeOrder == "OrderGet")
                 {
                     stateOrder = orderGet.ActiveOreder(token, ref description, ref orders);
+                }
+            }
+            orderGet = null;
+            return stateOrder;
+        }
+
+        public int OrderWork(string typeOrder, string token, ref string description, ref OrderMobile orderMobile)
+        {
+            orderGet = new OrderGet();
+            int stateOrder = 1;
+            if (CrossConnectivity.Current.IsConnected)
+            {
+                if (typeOrder == "OrderMobileGet")
+                {
+                    stateOrder = orderGet.OrederMobile(token, ref description, ref orderMobile);
                 }
             }
             orderGet = null;

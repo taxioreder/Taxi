@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DBAplication.Model
+namespace TaxiApp.Models
 {
     public class OrderMobile
     {
