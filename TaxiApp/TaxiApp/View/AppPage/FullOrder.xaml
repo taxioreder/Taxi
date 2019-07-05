@@ -7,62 +7,71 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <ListView ItemsSource="{Binding Orders}" IsRefreshing="{Binding IsRefr}" IsPullToRefreshEnabled="True"
-                      HasUnevenRows="True" SeparatorVisibility="None" RefreshCommand="{Binding RefreshCommand}" >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ViewCell.View>
-                                <Frame Margin="0, 5, 0, 5" Padding="0" BackgroundColor="White" HasShadow="True" CornerRadius="2" OutlineColor="#C3CBCD">
-                                    <StackLayout Orientation="Horizontal" x:Name="st" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding ColorOrder}">
-                                        <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="1"/>
-                                        </StackLayout.GestureRecognizers>
-                                        <BoxView BackgroundColor="#000000" WidthRequest="8" />
-                                        <StackLayout Padding="10">
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="Name Customer:" FontSize="17"/>
-                                                <Label Text="{Binding NameCustomer}" FontSize="17"/>
-                                            </StackLayout>
-                                            <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
-                                                <Label Text="Phone:" FontSize="15" TextColor="Black"/>
-                                                <Label Text="{Binding Phone}" FontSize="15" TextColor="Blue" >
+            <StackLayout Margin="0" >
+                <Frame Padding="5" Margin="3" BorderColor="Black">
+                    <StackLayout>
+                        <ListView ItemsSource="{Binding OrderMobile.Orders}" IsPullToRefreshEnabled="True" HasUnevenRows="True" SeparatorColor="#B1AFAF" RefreshCommand="{Binding RefreshCommand}"
+                                  IsRefreshing="{Binding IsRefr}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ViewCell.View>
+                                            <StackLayout>
+                                                <Label Text="{Binding NameCustomer}" TextColor="#393939" FontSize="20" Margin="5, 3, 0, 0" >
                                                     <Label.GestureRecognizers>
-                                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1"/>
+                                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_6"/>
                                                     </Label.GestureRecognizers>
                                                 </Label>
+                                                <StackLayout x:Name="infoB" IsVisible="False">
+                                                    <FlexLayout>
+                                                        <Label Text="Phone:"/>
+                                                        <Label Text="{Binding Phone}" TextColor="Blue" Margin="2, 0, 0, 0">
+                                                            <Label.GestureRecognizers>
+                                                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1" NumberOfTapsRequired="2"/>
+                                                            </Label.GestureRecognizers>
+                                                        </Label>
+                                                        <Label Text="{Binding Date}" Margin="5, 0, 0, 0"/>
+                                                        <Label Text="{Binding TimeOfPickup}" Margin="2, 0, 0, 0"/>
+                                                    </FlexLayout>
+                                                    <StackLayout>
+                                                        <Label Text="{Binding FromAddress}" Margin="0, 0, 0, 2"/>
+                                                        <Label Text="{Binding ToAddress}"/>
+                                                    </StackLayout>
+                                                </StackLayout>
                                             </StackLayout>
-                                            <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
-                                                <Label Text="Pecked up time:" FontSize="15" TextColor="Black"/>
-                                                <Label Text="{Binding Date}" FontSize="15" />
-                                                <Label Text="{Binding TimeOfPickup}" FontSize="15" />
-                                            </StackLayout>
-                                            <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
-                                                <Label Text="From Address" FontSize="15" TextColor="Black"/>
-                                                <Label Text="{Binding FromAddress}" FontSize="15" />
-                                            </StackLayout>
-                                            <StackLayout Orientation="Horizontal" Margin="10, 0, 0, 0">
-                                                <Label Text="To Address" FontSize="15" TextColor="Black"/>
-                                                <Label Text="{Binding ToAddress}" FontSize="15" />
-                                            </StackLayout>
-                                            <FlexLayout Wrap="Wrap" Margin="10, 0, 0, 0">
-                                                <Label Text="Status Order" FontSize="15" TextColor="Black"/>
-                                                <Label x:Name="currentOL" Text="{Binding CurrentOrder}" FontSize="15" Margin="5, 0, 5, 0" />
-                                            </FlexLayout>
-                                            <FlexLayout Wrap="Wrap" Margin="10, 0, 0, 0" >
-                                                <Button Text="{Binding BtnStart}" FontSize="11" TextColor="White" IsEnabled="{Binding IsEnable}" Margin="5, 0, 5, 0" Clicked="TapGestureRecognizer_Tapped_2" BackgroundColor="Black" HeightRequest="40" BorderRadius="10"/>
-                                                <Button Text="Close order" FontSize="11" TextColor="White" IsVisible="{Binding IsVisableCloseOrder}" Margin="5, 0, 5, 0" Clicked="TapGestureRecognizer_Tapped_3" BackgroundColor="Black" HeightRequest="40" BorderRadius="10"/>
-                                                <Button Text="Continue order" FontSize="11" TextColor="White" IsVisible="{Binding IsVisableContinueOrder}" Margin="5, 0, 5, 0" Clicked="TapGestureRecognizer_Tapped_4" BackgroundColor="Black" HeightRequest="40" BorderRadius="10"/>
-                                                <Button Text="Cancel order" FontSize="11" TextColor="White" IsVisible="{Binding IsVisableCancelOrder}" Margin="5, 0, 5, 0" Clicked="TapGestureRecognizer_Tapped_5" BackgroundColor="Black" HeightRequest="40" BorderRadius="10"/>
-                                            </FlexLayout>
+                                        </ViewCell.View>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Button Text="Start" HeightRequest="40" WidthRequest="60" BackgroundColor="Black" TextColor="White" Margin="1"/>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+            <Label Text="Steps" TextColor="#393939" FontSize="20" Margin="5, 3, 0, 0">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_7"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <StackLayout x:Name="stepB" IsVisible="False">
+                <ListView ItemsSource="{Binding OrderMobile.OnePointForAddressOrders}" IsPullToRefreshEnabled="True" HasUnevenRows="True" SeparatorVisibility="None" RefreshCommand="{Binding RefreshCommand}"
+                                  IsRefreshing="{Binding IsRefr}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.View>
+                                    <Frame Padding="10" BorderColor="DarkCyan">
+                                        <StackLayout>
+                                            <Label Text="{Binding PTime}"/>
+                                            <Label Text="{Binding Address}"/>
                                         </StackLayout>
-                                    </StackLayout>
-                                </Frame>
-                            </ViewCell.View>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                    </Frame>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
             <Label Text="IMPORTANT: lateness to order from, no more than 5 minutes" Margin="10" FontSize="15"  TextColor="Red"/>
         </StackLayout>
     </ContentPage.Content>

@@ -141,5 +141,31 @@ namespace TaxiApp.View.AppPage
             //await gefenceManager.RecurentStatusOrder("Cancel", fullOrderMV.Orders[0].ID);
             //fullOrderMV.Init();
         }
+
+        private void TapGestureRecognizer_Tapped_6(object sender, EventArgs e)
+        {
+            StackLayout stackLayout = ((Label)sender).FindByName<StackLayout>("infoB");
+            if(stackLayout.IsVisible)
+            {
+                stackLayout.IsVisible = false;
+            }
+            else
+            {
+                stackLayout.IsVisible = true;
+            }
+        }
+
+        private void TapGestureRecognizer_Tapped_7(object sender, EventArgs e)
+        {
+            StackLayout stackLayout = ((Label)sender).FindByName<StackLayout>("stepB");
+            if (stackLayout.IsVisible)
+            {
+                stackLayout.IsVisible = false;
+            }
+            else
+            {
+                stackLayout.IsVisible = true;
+            }
+        }
     }
 }

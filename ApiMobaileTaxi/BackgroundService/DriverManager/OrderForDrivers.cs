@@ -154,6 +154,7 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                                         var date = orders.Find(o => o.ID == onePointForAddressOrders[j - 1].IDorder);
                                         string date1 = date.TimeOfAppointment != null ? date.TimeOfAppointment : DateTime.Parse($"{GetDFormat(date.Date)} {date.TimeOfPickup}").AddMinutes(90).ToShortTimeString();
                                         dateTime = DateTime.Parse($"{GetDFormat(onePointForAddressOrders[j - 1].Date)} {date1}");
+                                        onePointForAddressOrders[j - 1].PTime = DateTime.Parse(date.TimeOfPickup).AddMinutes(90).ToShortTimeString();
                                     }
                                     if (onePointForAddressOrders[j].Type == "Start")
                                     {
@@ -164,6 +165,7 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                                         var date = orders.Find(o => o.ID == onePointForAddressOrders[j].IDorder);
                                         string date1 = date.TimeOfAppointment != null ? date.TimeOfAppointment : DateTime.Parse($"{GetDFormat(date.Date)} {date.TimeOfPickup}").AddMinutes(90).ToShortTimeString();
                                         dateTime1 = DateTime.Parse($"{GetDFormat(onePointForAddressOrders[j].Date)} {date1}");
+                                        onePointForAddressOrders[j].PTime = DateTime.Parse(date.TimeOfPickup).AddMinutes(90).ToShortTimeString();
                                     }
                                     if (onePointForAddressOrders[j].Type == "Start"
                                         && !(dateTime.AddSeconds(duration1) < dateTime1.AddMinutes(10)
