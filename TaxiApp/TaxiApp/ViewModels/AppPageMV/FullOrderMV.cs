@@ -46,6 +46,13 @@ namespace TaxiApp.ViewModels.AppPageMV
             set => SetProperty(ref isRefr, value);
         }
 
+        private bool isOrderMobile = false;
+        public bool IsOrderMobile
+        {
+            get => isOrderMobile;
+            set => SetProperty(ref isOrderMobile, value);
+        }
+
         [System.Obsolete]
         public async void Init()
         {
@@ -68,6 +75,7 @@ namespace TaxiApp.ViewModels.AppPageMV
                 else if (state == 3)
                 {
                     OrderMobile = orderMobile1;
+                    IsOrderMobile = OrderMobile != null;
                 }
                 else if (state == 4)
                 {

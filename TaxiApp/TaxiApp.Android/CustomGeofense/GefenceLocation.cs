@@ -10,6 +10,7 @@ using Com.Karumi.Dexter;
 using Com.Karumi.Dexter.Listener;
 using Com.Karumi.Dexter.Listener.Single;
 using TaxiApp.Droid.CustomGeofense;
+using TaxiApp.Models;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(GefenceLocation))]
@@ -21,6 +22,7 @@ namespace TaxiApp.Droid.CustomGeofense
         FusedLocationProviderClient FusedLocationProviderClient;
         public static GefenceModel gefenceModel = null;
         MainActivity MainActivity = null;
+
         public bool IsListenGefence { get; set; }
 
         public GefenceLocation()
@@ -71,19 +73,14 @@ namespace TaxiApp.Droid.CustomGeofense
             
         }
 
-        public void StartGeofence(int Id, string status, double fromLat, double fromLng, double tooLat, double toLng, double radius)
+        public void StartGeofence(OrderMobile orderMobile)
         {
             if (gefenceModel == null)
             {
                 gefenceModel = new GefenceModel();
             }
-            gefenceModel.FromLat = fromLat;
-            gefenceModel.FromLng = fromLng;
-            gefenceModel.ToLat = tooLat;
-            gefenceModel.ToLng = toLng;
-            gefenceModel.Status = status;
-            gefenceModel.Radius = radius;
-            gefenceModel.Id = Id;
+            gefenceModel.OrderMobile = orderMobile;
+            gefenceModel.OnePointForAddressOrder = orderMobile.OnePointForAddressOrders[0];
             Dexter.WithActivity(MainActivity)
                 .WithPermission(Manifest.Permission.AccessFineLocation)
                 .WithListener(this)
@@ -101,10 +98,7 @@ namespace TaxiApp.Droid.CustomGeofense
 
         public void ContinueGeofence(string status)
         {
-            if(gefenceModel != null)
-            {
-                gefenceModel.Status = status;
-            }
+            
         }
     }
 }

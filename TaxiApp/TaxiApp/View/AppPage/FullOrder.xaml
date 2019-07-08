@@ -7,7 +7,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout Margin="0" >
+            <StackLayout Margin="0" IsVisible="{Binding IsOrderMobile}">
                 <Frame Padding="5" Margin="3" BorderColor="Black">
                     <StackLayout>
                         <ListView ItemsSource="{Binding OrderMobile.Orders}" IsPullToRefreshEnabled="True" HasUnevenRows="True" SeparatorColor="#B1AFAF" RefreshCommand="{Binding RefreshCommand}"
@@ -48,7 +48,7 @@
                     </StackLayout>
                 </Frame>
             </StackLayout>
-            <Label Text="Steps" TextColor="#393939" FontSize="20" Margin="5, 3, 0, 0">
+            <Label Text="Steps" TextColor="#393939" FontSize="20" Margin="5, 3, 0, 0" IsEnabled="{Binding IsOrderMobile}">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_7"/>
                 </Label.GestureRecognizers>

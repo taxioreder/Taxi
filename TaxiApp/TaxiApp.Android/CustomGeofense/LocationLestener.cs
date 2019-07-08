@@ -24,56 +24,91 @@ namespace TaxiApp.Droid.CustomGeofense
                 {
                     //Toast.MakeText(Android.App.Application.Context, "Location", ToastLength.Long).Show();
                     var lastloc = locationResult.LastLocation;
-                    if(GefenceLocation.gefenceModel != null && GefenceLocation.gefenceModel.Status == "From")
+                    int index = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.FindIndex(one => one == GefenceLocation.gefenceModel.OnePointForAddressOrder);
+                    if(GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.Count-1 == index)
                     {
-                        //Toast.MakeText(Android.App.Application.Context, "From1", ToastLength.Long).Show();
-                        if ((GefenceLocation.gefenceModel.FromLat - GefenceLocation.gefenceModel.Radius < lastloc.Latitude && GefenceLocation.gefenceModel.FromLat + GefenceLocation.gefenceModel.Radius > lastloc.Latitude)
-                            &&(GefenceLocation.gefenceModel.FromLng - GefenceLocation.gefenceModel.Radius < lastloc.Longitude && GefenceLocation.gefenceModel.FromLng + GefenceLocation.gefenceModel.Radius > lastloc.Longitude))
+                        if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.003 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.00 > lastloc.Latitude)
+                           && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.003 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.003 > lastloc.Longitude) && !GefenceLocation.gefenceModel.IsNewOrder)
                         {
-                            //Toast.MakeText(Android.App.Application.Context, "From", ToastLength.Long).Show();
-                            gefenceManager = new GefenceManager();
-                            GefenceLocation.gefenceModel.Status = "Order";
-                            await gefenceManager.RecurentStatusOrder("DriveTo", GefenceLocation.gefenceModel.Id);
-                            gefenceManager.GoDriveTo(GefenceLocation.gefenceModel.ToLat, GefenceLocation.gefenceModel.ToLng);
+                            GefenceLocation.gefenceModel.IsNewOrder = true;
+                            //NewOrder
+                        }
+                        else if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.002 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.002 > lastloc.Latitude)
+                            && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.002 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.002 > lastloc.Longitude) && GefenceLocation.gefenceModel.IsNewOrder)
+                        {
+
                         }
                     }
-                    else if (GefenceLocation.gefenceModel != null && GefenceLocation.gefenceModel.Status == "Order")
+                    else
                     {
-                        //Toast.MakeText(Android.App.Application.Context, "Order1", ToastLength.Long).Show();
-                        if ((GefenceLocation.gefenceModel.ToLat - (GefenceLocation.gefenceModel.Radius + 0.0015) < lastloc.Latitude && GefenceLocation.gefenceModel.ToLat + (GefenceLocation.gefenceModel.Radius + 0.003) > lastloc.Latitude)
-                            && (GefenceLocation.gefenceModel.ToLng - (GefenceLocation.gefenceModel.Radius + 0.0015) < lastloc.Longitude && GefenceLocation.gefenceModel.ToLng + (GefenceLocation.gefenceModel.Radius + 0.003) > lastloc.Longitude))
+                        if(GefenceLocation.gefenceModel.OnePointForAddressOrder.Type == "Start")
                         {
-                            //Toast.MakeText(Android.App.Application.Context, "Order", ToastLength.Long).Show();
-                            gefenceManager = new GefenceManager();
-                            GefenceLocation.gefenceModel.Status = "To";
-                            await gefenceManager.RecurentStatusOrder("Next", GefenceLocation.gefenceModel.Id);
-                        }
-                    }
-                    else if(GefenceLocation.gefenceModel != null && GefenceLocation.gefenceModel.Status == "To")
-                    {
-                        //Toast.MakeText(Android.App.Application.Context, "To1", ToastLength.Long).Show();
-                        if ((GefenceLocation.gefenceModel.ToLat - (GefenceLocation.gefenceModel.Radius + 0.0025) < lastloc.Latitude && GefenceLocation.gefenceModel.ToLat + (GefenceLocation.gefenceModel.Radius + 0.002) > lastloc.Latitude)
-                            && (GefenceLocation.gefenceModel.ToLng - (GefenceLocation.gefenceModel.Radius + 0.0025) < lastloc.Longitude && GefenceLocation.gefenceModel.ToLng + (GefenceLocation.gefenceModel.Radius + 0.002) > lastloc.Longitude))
-                        {
-                            //Toast.MakeText(Android.App.Application.Context, "To", ToastLength.Long).Show();
-                            gefenceManager = new GefenceManager();
-                            GefenceLocation.gefenceModel.Status = "None";
-                            await gefenceManager.RecurentStatusOrder("NewNext", GefenceLocation.gefenceModel.Id);
-                            GefenceLocation.gefenceModel.PendingIntent.Cancel();
-                            GefenceLocation.gefenceModel = null;
-                            if (MainActivity.GetInstance() == null)
+                            if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.002 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.002 > lastloc.Latitude)
+                            && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.002 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.002 > lastloc.Longitude) && GefenceLocation.gefenceModel.IsNewOrder)
                             {
-                                MainActivity mainActivity = new MainActivity();
-                                mainActivity.Intent = new Intent(context, typeof(MainActivity));
-                                mainActivity.Intent.AddFlags(ActivityFlags.NewTask);
-                                context.StartActivity(mainActivity.Intent);
+                                GefenceLocation.gefenceModel.OnePointForAddressOrder = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders[index + 1];
                             }
-                            else
+                        }
+                        else if(GefenceLocation.gefenceModel.OnePointForAddressOrder.Type == "End")
+                        {
+                            if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.0015 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.0015 > lastloc.Latitude)
+                            && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.0015 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.0015 > lastloc.Longitude) && GefenceLocation.gefenceModel.IsNewOrder)
                             {
-                                context.StartActivity(MainActivity.GetInstance().Intent);
+                                GefenceLocation.gefenceModel.OnePointForAddressOrder = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders[index + 1];
                             }
                         }
                     }
+
+                    //if(GefenceLocation.gefenceModel != null && GefenceLocation.gefenceModel.Status == "From")
+                    //{
+                    //    //Toast.MakeText(Android.App.Application.Context, "From1", ToastLength.Long).Show();
+                    //    if ((GefenceLocation.gefenceModel.FromLat - GefenceLocation.gefenceModel.Radius < lastloc.Latitude && GefenceLocation.gefenceModel.FromLat + GefenceLocation.gefenceModel.Radius > lastloc.Latitude)
+                    //        &&(GefenceLocation.gefenceModel.FromLng - GefenceLocation.gefenceModel.Radius < lastloc.Longitude && GefenceLocation.gefenceModel.FromLng + GefenceLocation.gefenceModel.Radius > lastloc.Longitude))
+                    //    {
+                    //        //Toast.MakeText(Android.App.Application.Context, "From", ToastLength.Long).Show();
+                    //        gefenceManager = new GefenceManager();
+                    //        GefenceLocation.gefenceModel.Status = "Order";
+                    //        await gefenceManager.RecurentStatusOrder("DriveTo", GefenceLocation.gefenceModel.Id);
+                    //        gefenceManager.GoDriveTo(GefenceLocation.gefenceModel.ToLat, GefenceLocation.gefenceModel.ToLng);
+                    //    }
+                    //}
+                    //else if (GefenceLocation.gefenceModel != null && GefenceLocation.gefenceModel.Status == "Order")
+                    //{
+                    //    //Toast.MakeText(Android.App.Application.Context, "Order1", ToastLength.Long).Show();
+                    //    if ((GefenceLocation.gefenceModel.ToLat - (GefenceLocation.gefenceModel.Radius + 0.0015) < lastloc.Latitude && GefenceLocation.gefenceModel.ToLat + (GefenceLocation.gefenceModel.Radius + 0.003) > lastloc.Latitude)
+                    //        && (GefenceLocation.gefenceModel.ToLng - (GefenceLocation.gefenceModel.Radius + 0.0015) < lastloc.Longitude && GefenceLocation.gefenceModel.ToLng + (GefenceLocation.gefenceModel.Radius + 0.003) > lastloc.Longitude))
+                    //    {
+                    //        //Toast.MakeText(Android.App.Application.Context, "Order", ToastLength.Long).Show();
+                    //        gefenceManager = new GefenceManager();
+                    //        GefenceLocation.gefenceModel.Status = "To";
+                    //        await gefenceManager.RecurentStatusOrder("Next", GefenceLocation.gefenceModel.Id);
+                    //    }
+                    //}
+                    //else if(GefenceLocation.gefenceModel != null && GefenceLocation.gefenceModel.Status == "To")
+                    //{
+                    //    //Toast.MakeText(Android.App.Application.Context, "To1", ToastLength.Long).Show();
+                    //    if ((GefenceLocation.gefenceModel.ToLat - (GefenceLocation.gefenceModel.Radius + 0.0025) < lastloc.Latitude && GefenceLocation.gefenceModel.ToLat + (GefenceLocation.gefenceModel.Radius + 0.002) > lastloc.Latitude)
+                    //        && (GefenceLocation.gefenceModel.ToLng - (GefenceLocation.gefenceModel.Radius + 0.0025) < lastloc.Longitude && GefenceLocation.gefenceModel.ToLng + (GefenceLocation.gefenceModel.Radius + 0.002) > lastloc.Longitude))
+                    //    {
+                    //        //Toast.MakeText(Android.App.Application.Context, "To", ToastLength.Long).Show();
+                    //        gefenceManager = new GefenceManager();
+                    //        GefenceLocation.gefenceModel.Status = "None";
+                    //        await gefenceManager.RecurentStatusOrder("NewNext", GefenceLocation.gefenceModel.Id);
+                    //        GefenceLocation.gefenceModel.PendingIntent.Cancel();
+                    //        GefenceLocation.gefenceModel = null;
+                    //        if (MainActivity.GetInstance() == null)
+                    //        {
+                    //            MainActivity mainActivity = new MainActivity();
+                    //            mainActivity.Intent = new Intent(context, typeof(MainActivity));
+                    //            mainActivity.Intent.AddFlags(ActivityFlags.NewTask);
+                    //            context.StartActivity(mainActivity.Intent);
+                    //        }
+                    //        else
+                    //        {
+                    //            context.StartActivity(MainActivity.GetInstance().Intent);
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }
