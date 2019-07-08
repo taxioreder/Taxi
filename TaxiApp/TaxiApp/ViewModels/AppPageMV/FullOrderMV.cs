@@ -17,11 +17,14 @@ namespace TaxiApp.ViewModels.AppPageMV
         private INavigation Navigation { get; set; }
         public DelegateCommand RefreshCommand { get; set; }
 
+        [System.Obsolete]
         public FullOrderMV(ManagerTaxi managerTaxi, INavigation navigation)
         {
             Navigation = navigation;
             this.managerTaxi = managerTaxi;
             RefreshCommand = new DelegateCommand(Init);
+            App.initDasbordDelegate = Init;
+            IsOrderMobile = true;
             Init();
         }
 

@@ -11,6 +11,8 @@ namespace TaxiApp
         internal static bool isAvtorization;
         internal static bool isNetwork;
         internal static bool isStart;
+        internal delegate void InitDasbordDelegate();
+        internal static InitDasbordDelegate initDasbordDelegate;
 
         public App()
         {
@@ -52,6 +54,10 @@ namespace TaxiApp
             {
                 isStart = true;
                 Utils.StartListening();
+                if(initDasbordDelegate != null)
+                {
+                    initDasbordDelegate.Invoke();
+                }
             }
         }
     }

@@ -83,7 +83,7 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             orderMobile.OnePointForAddressOrders.Add(new OnePointForAddressOrder(order.ID, Convert.ToDouble(locationsAcceptOrder[1].latE.Replace('.', ',')), Convert.ToDouble(locationsAcceptOrder[1].lngE.Replace('.', ',')), order.TimeOfAppointment, order.Date, "End", order.ToAddress));
             orderMobile.Orders = new List<Order>();
             orderMobile.IdDriver = locationsAcceptOrder[0].ID;
-            orderMobile.Orders.Add(orders.Find(o => o.ID.ToString() == locationsAcceptOrder[1].ID));
+            orderMobile.Orders.Add(order);
             numberOfSeats -= orders.Find(o => o.ID.ToString() == locationsAcceptOrder[1].ID).CountCustomer;
             List<Steps> steps = connectorApiMaps.GetGetDirections($"{locationsAcceptOrder[1].lat.ToString()},{locationsAcceptOrder[1].lng.ToString()}", $"{locationsAcceptOrder[1].latE.ToString()},{locationsAcceptOrder[1].lngE.ToString()}");
             if (orderMobile.Orders == null)

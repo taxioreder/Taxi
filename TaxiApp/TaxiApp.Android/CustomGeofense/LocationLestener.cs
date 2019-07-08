@@ -19,11 +19,9 @@ namespace TaxiApp.Droid.CustomGeofense
                 GefenceManager gefenceManager = null;
                 string action = intent.Action;
                 LocationResult locationResult = LocationResult.ExtractResult(intent);
-                //Toast.MakeText(Android.App.Application.Context, "Intent", ToastLength.Long).Show();
                 if (locationResult != null && action.Equals(ACTION_PROCESS_LOCATIOM))
                 {
                      gefenceManager = new GefenceManager();
-                    //Toast.MakeText(Android.App.Application.Context, "Location", ToastLength.Long).Show();
                     var lastloc = locationResult.LastLocation;
                     int index = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.FindIndex(one => one == GefenceLocation.gefenceModel.OnePointForAddressOrder);
                     if(GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.Count-1 == index)
@@ -39,12 +37,24 @@ namespace TaxiApp.Droid.CustomGeofense
                             {
 
                             }
+                            GefenceLocation.gefenceModel.PendingIntent.Cancel();
+                            GefenceLocation.gefenceModel = null;
+                            if (MainActivity.GetInstance() == null)
+                            {
+                                MainActivity mainActivity = new MainActivity();
+                                mainActivity.Intent = new Intent(context, typeof(MainActivity));
+                                mainActivity.Intent.AddFlags(ActivityFlags.NewTask);
+                                context.StartActivity(mainActivity.Intent);
+                            }
+                            else
+                            {
+                                context.StartActivity(MainActivity.GetInstance().Intent);
+                            }
                         }
                         else if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.003 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.003 > lastloc.Latitude)
                            && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.003 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.003 > lastloc.Longitude) && !GefenceLocation.gefenceModel.IsNewOrder)
                         {
                             GefenceLocation.gefenceModel.IsNewOrder = true;
-                            //NewOrder
                         }
                     }
                     else
