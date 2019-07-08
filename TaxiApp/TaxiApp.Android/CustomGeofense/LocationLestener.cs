@@ -22,39 +22,49 @@ namespace TaxiApp.Droid.CustomGeofense
                 //Toast.MakeText(Android.App.Application.Context, "Intent", ToastLength.Long).Show();
                 if (locationResult != null && action.Equals(ACTION_PROCESS_LOCATIOM))
                 {
+                     gefenceManager = new GefenceManager();
                     //Toast.MakeText(Android.App.Application.Context, "Location", ToastLength.Long).Show();
                     var lastloc = locationResult.LastLocation;
                     int index = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.FindIndex(one => one == GefenceLocation.gefenceModel.OnePointForAddressOrder);
                     if(GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.Count-1 == index)
                     {
-                        if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.003 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.00 > lastloc.Latitude)
+                        if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.002 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.002 > lastloc.Latitude)
+                               && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.002 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.002 > lastloc.Longitude))
+                        {
+                            if (GefenceLocation.gefenceModel.IsNewOrder)
+                            {
+
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        else if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.003 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.003 > lastloc.Latitude)
                            && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.003 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.003 > lastloc.Longitude) && !GefenceLocation.gefenceModel.IsNewOrder)
                         {
                             GefenceLocation.gefenceModel.IsNewOrder = true;
                             //NewOrder
-                        }
-                        else if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.002 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.002 > lastloc.Latitude)
-                            && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.002 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.002 > lastloc.Longitude) && GefenceLocation.gefenceModel.IsNewOrder)
-                        {
-
                         }
                     }
                     else
                     {
                         if(GefenceLocation.gefenceModel.OnePointForAddressOrder.Type == "Start")
                         {
-                            if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.002 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.002 > lastloc.Latitude)
-                            && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.002 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.002 > lastloc.Longitude) && GefenceLocation.gefenceModel.IsNewOrder)
+                            if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.0015 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.0015 > lastloc.Latitude)
+                            && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.0015 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.0015 > lastloc.Longitude))
                             {
                                 GefenceLocation.gefenceModel.OnePointForAddressOrder = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders[index + 1];
+                                gefenceManager.GoDriveTo(GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat, GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng);
                             }
                         }
                         else if(GefenceLocation.gefenceModel.OnePointForAddressOrder.Type == "End")
                         {
-                            if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.0015 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.0015 > lastloc.Latitude)
-                            && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.0015 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.0015 > lastloc.Longitude) && GefenceLocation.gefenceModel.IsNewOrder)
+                            if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.002 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.002 > lastloc.Latitude)
+                            && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.002 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.002 > lastloc.Longitude))
                             {
                                 GefenceLocation.gefenceModel.OnePointForAddressOrder = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders[index + 1];
+                                gefenceManager.GoDriveTo(GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat, GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng);
                             }
                         }
                     }

@@ -44,7 +44,7 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                        <Button Text="Start" HeightRequest="40" WidthRequest="60" BackgroundColor="Black" TextColor="White" Margin="1"/>
+                        <Button Text="Start" HeightRequest="40" WidthRequest="60" BackgroundColor="Black" TextColor="White" Margin="1" Clicked="Button_Clicked"/>
                     </StackLayout>
                 </Frame>
             </StackLayout>

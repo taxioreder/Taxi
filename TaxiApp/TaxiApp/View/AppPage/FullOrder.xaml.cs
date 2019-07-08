@@ -22,11 +22,6 @@ namespace TaxiApp.View.AppPage
             BindingContext = fullOrderMV;
         }
 
-        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
-        {
-
-        }
-
         private void ToolbarItem_Clicked(object sender, EventArgs e)
         {
             fullOrderMV.OutAccount();
@@ -141,7 +136,6 @@ namespace TaxiApp.View.AppPage
             //await gefenceManager.RecurentStatusOrder("Cancel", fullOrderMV.Orders[0].ID);
             //fullOrderMV.Init();
         }
-
         private void TapGestureRecognizer_Tapped_6(object sender, EventArgs e)
         {
             StackLayout stackLayout = ((Label)sender).FindByName<StackLayout>("infoB");
@@ -166,6 +160,16 @@ namespace TaxiApp.View.AppPage
             {
                 stackLayout.IsVisible = true;
             }
+        }
+
+        private async void Button_Clicked(object sender, EventArgs e)
+        {
+            fullOrderMV.IsRefr = true;
+            //GefenceManager gefenceManager = new GefenceManager();
+            DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.OrderMobile);
+            var options = new MapLaunchOptions { Name = "1", NavigationMode = Xamarin.Essentials.NavigationMode.Driving };
+            await Map.OpenAsync(fullOrderMV.OrderMobile.OnePointForAddressOrders[0].Lat, fullOrderMV.OrderMobile.OnePointForAddressOrders[0].Lng, options);
+            fullOrderMV.IsRefr = false;
         }
     }
 }

@@ -81,6 +81,7 @@ namespace TaxiApp.Droid.CustomGeofense
             }
             gefenceModel.OrderMobile = orderMobile;
             gefenceModel.OnePointForAddressOrder = orderMobile.OnePointForAddressOrders[0];
+            gefenceModel.IsNewOrder = false;
             Dexter.WithActivity(MainActivity)
                 .WithPermission(Manifest.Permission.AccessFineLocation)
                 .WithListener(this)
