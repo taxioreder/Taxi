@@ -15,7 +15,7 @@ namespace TaxiApp.Service.Geofence
             await Map.OpenAsync(lat, lng, options);
         }
 
-        public async Task RecurentStatusOrder(string status, int idOrder)
+        public async Task RecurentStatusOrder(int idOrderMobile, string statusOrderMobil)
         {
             IRestResponse response = null;
             string content = null;
@@ -30,8 +30,8 @@ namespace TaxiApp.Service.Geofence
                     client.Timeout = 10000;
                     request.AddHeader("Accept", "application/json");
                     request.AddParameter("token", token);
-                    request.AddParameter("status", status);
-                    request.AddParameter("idorder", idOrder);
+                    request.AddParameter("idOrderMobile", idOrderMobile);
+                    request.AddParameter("statusOrderMobil", statusOrderMobil);
                     response = client.Execute(request);
                     content = response.Content;
                 }

@@ -10,6 +10,7 @@
         public string Date { set; get; }
         public string Type { set; get; }
         public string Address { set; get; }
+        public string Status { set; get; }
 
         public OnePointForAddressOrder(int iDorder, double lat, double lng, string pTime, string date, string type, string address)
         {

@@ -31,11 +31,11 @@ namespace TaxiApp.Droid.CustomGeofense
                         {
                             if (GefenceLocation.gefenceModel.IsNewOrder)
                             {
-
+                                //ReqvestNewOrderAndEndOrder
                             }
                             else
                             {
-
+                                await gefenceManager.RecurentStatusOrder(GefenceLocation.gefenceModel.OrderMobile.ID, "EndOrder");
                             }
                             GefenceLocation.gefenceModel.PendingIntent.Cancel();
                             GefenceLocation.gefenceModel = null;
@@ -54,6 +54,7 @@ namespace TaxiApp.Droid.CustomGeofense
                         else if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.003 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.003 > lastloc.Latitude)
                            && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.003 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.003 > lastloc.Longitude) && !GefenceLocation.gefenceModel.IsNewOrder)
                         {
+
                             GefenceLocation.gefenceModel.IsNewOrder = true;
                         }
                     }
@@ -64,6 +65,7 @@ namespace TaxiApp.Droid.CustomGeofense
                             if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.0015 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.0015 > lastloc.Latitude)
                             && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.0015 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.0015 > lastloc.Longitude))
                             {
+                                await gefenceManager.RecurentStatusOrder(GefenceLocation.gefenceModel.OrderMobile.ID, "CompletePoint");
                                 GefenceLocation.gefenceModel.OnePointForAddressOrder = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders[index + 1];
                                 gefenceManager.GoDriveTo(GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat, GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng);
                             }
@@ -73,6 +75,7 @@ namespace TaxiApp.Droid.CustomGeofense
                             if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.002 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.002 > lastloc.Latitude)
                             && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.002 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.002 > lastloc.Longitude))
                             {
+                                await gefenceManager.RecurentStatusOrder(GefenceLocation.gefenceModel.OrderMobile.ID, "CompletePoint");
                                 GefenceLocation.gefenceModel.OnePointForAddressOrder = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders[index + 1];
                                 gefenceManager.GoDriveTo(GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat, GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng);
                             }

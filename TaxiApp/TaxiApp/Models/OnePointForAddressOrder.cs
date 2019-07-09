@@ -10,5 +10,6 @@
         public string Date { set; get; }
         public string Type { set; get; }
         public string Address { set; get; }
+        public string Status { set; get; }
     }
 }

@@ -77,7 +77,7 @@ namespace ApiMobaileTaxi.Controllers
 
         [HttpPost]
         [Route("Order/RecurentOrderDrive")]
-        public string RecurentOrderDrive(string token, string status, int idorder)
+        public string RecurentOrderDrive(string token, int idOrderMobile, string statusOrderMobil)
         {
             string respons = null;
             if (token == null || token == "")
@@ -90,7 +90,7 @@ namespace ApiMobaileTaxi.Controllers
                 bool isToken = ManagerMobileApi.CheckToken(token);
                 if (isToken)
                 {
-                        ManagerMobileApi.RecurentOrderDrive(token, status, idorder);
+                    ManagerMobileApi.RecurentOrderDrive(idOrderMobile, statusOrderMobil);
                     respons = JsonConvert.SerializeObject(new ResponseAppS("success", null, orders));
                 }
                 else

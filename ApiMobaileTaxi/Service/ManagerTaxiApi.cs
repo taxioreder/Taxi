@@ -27,83 +27,104 @@ namespace ApiMobaileTaxi.Service
             return token;
         }
 
-        public async void RecurentOrderDrive(string token, string status, int idorder)
+        public async void RecurentOrderDrive(int idOrderMobile, string statusOrderMobil)
         {
-            if (status == "DriveFrome")
+            if(statusOrderMobil == "StartOrder")
             {
-                sqlCoommandTaxiApi.RecurentOrderDriveDB(status, idorder);
+                await sqlCoommandTaxiApi.SetStatusMobileOrderStart(idOrderMobile);
             }
-            else if(status == "DriveTo")
+            else if(statusOrderMobil == "DriveFromPoint")
             {
-                File.WriteAllText("123.txt", "444");
-                sqlCoommandTaxiApi.RecurentOrderDriveDB(status, idorder);
+
             }
-            else if (status == "Next")
+            else if (statusOrderMobil == "NewOrder")
             {
-                File.WriteAllText("123.txt", "333");
-                List<location> locationsOrder = new List<location>();
-                location locationOrder = null;
-                ConnectorApiMaps connectorApiMaps = new ConnectorApiMaps();
-                Order order = await sqlCoommandTaxiApi.GetAddressToOrderDB(idorder);
-                List<Order> orders = sqlCoommandTaxiApi.GetOrders();
-                foreach (var order1 in orders)
-                {
-                    location locationOrder1 = connectorApiMaps.GetGetLonAndLanToAddress(order1.FromAddress.ToString());
-                    if (locationOrder1 != null)
-                    {
-                        locationOrder1.ID = order1.ID.ToString();
-                        locationsOrder.Add(locationOrder1);
-                    }
-                }
-                if (locationsOrder.Count > 0)
-                {
-                    locationOrder = connectorApiMaps.GetGetLonAndLanToAddress(order.ToAddress.ToString());
-                    location locations = SerchMinDistance(locationOrder, locationsOrder);
-                    sqlCoommandTaxiApi.AsiignedNext(Convert.ToInt32(locations.ID), order.Driver.ID);
-                }
+
             }
-            else if (status == "NewNext")
+            else if (statusOrderMobil == "CompletePoint")
             {
-                Order order = await sqlCoommandTaxiApi.RecurentTwoOrder(token, idorder);
-                if (order != null)
-                {
-                    TimerCallback tm = new TimerCallback(CheckAccept);
-                    new Timer(tm, order, 6000, Timeout.Infinite);
-                }
+                await sqlCoommandTaxiApi.SetStatusCompletPoint(idOrderMobile);
             }
-            else if (status == "NextNewNext")
+            else if (statusOrderMobil == "EndOrder")
             {
-                List<location> locationsOrder = new List<location>();
-                location locationOrder = null;
-                ConnectorApiMaps connectorApiMaps = new ConnectorApiMaps();
-                Order order = sqlCoommandTaxiApi.GetAddressToOrderDB(idorder).Result;
-                List<Order> orders = sqlCoommandTaxiApi.GetOrders();
-                foreach (var order1 in orders)
-                {
-                    location locationOrder1 = connectorApiMaps.GetGetLonAndLanToAddress(order1.FromAddress.ToString());
-                    if (locationOrder1 != null)
-                    {
-                        locationOrder1.ID = order1.ID.ToString();
-                        locationsOrder.Add(locationOrder1);
-                    }
-                }
-                if (locationsOrder.Count > 0)
-                {
-                    locationOrder = connectorApiMaps.GetGetLonAndLanToAddress(order.ToAddress.ToString());
-                    location locations = SerchMinDistance(locationOrder, locationsOrder);
-                    sqlCoommandTaxiApi.AsiignedNext(Convert.ToInt32(locations.ID), order.Driver.ID);
-                }
-                Order order2 = sqlCoommandTaxiApi.RecurentTwoOrder(token, idorder).Result;
-                if (order2 != null)
-                {
-                    TimerCallback tm = new TimerCallback(CheckAccept);
-                    new Timer(tm, order2, 60000 * 5, Timeout.Infinite);
-                }
+                await sqlCoommandTaxiApi.SetStatusMobileOrderEnd(idOrderMobile);
             }
-            else if (status == "Cancel")
-            {
-                sqlCoommandTaxiApi.RecurentCancelOrder(idorder);
-            }
+
+            //if (status == "DriveFrome")
+            //{
+            //    sqlCoommandTaxiApi.RecurentOrderDriveDB(status, idorder);
+            //}
+            //else if(status == "DriveTo")
+            //{
+            //    File.WriteAllText("123.txt", "444");
+            //    sqlCoommandTaxiApi.RecurentOrderDriveDB(status, idorder);
+            //}
+            //else if (status == "Next")
+            //{
+            //    File.WriteAllText("123.txt", "333");
+            //    List<location> locationsOrder = new List<location>();
+            //    location locationOrder = null;
+            //    ConnectorApiMaps connectorApiMaps = new ConnectorApiMaps();
+            //    Order order = await sqlCoommandTaxiApi.GetAddressToOrderDB(idorder);
+            //    List<Order> orders = sqlCoommandTaxiApi.GetOrders();
+            //    foreach (var order1 in orders)
+            //    {
+            //        location locationOrder1 = connectorApiMaps.GetGetLonAndLanToAddress(order1.FromAddress.ToString());
+            //        if (locationOrder1 != null)
+            //        {
+            //            locationOrder1.ID = order1.ID.ToString();
+            //            locationsOrder.Add(locationOrder1);
+            //        }
+            //    }
+            //    if (locationsOrder.Count > 0)
+            //    {
+            //        locationOrder = connectorApiMaps.GetGetLonAndLanToAddress(order.ToAddress.ToString());
+            //        location locations = SerchMinDistance(locationOrder, locationsOrder);
+            //        sqlCoommandTaxiApi.AsiignedNext(Convert.ToInt32(locations.ID), order.Driver.ID);
+            //    }
+            //}
+            //else if (status == "NewNext")
+            //{
+            //    Order order = await sqlCoommandTaxiApi.RecurentTwoOrder(token, idorder);
+            //    if (order != null)
+            //    {
+            //        TimerCallback tm = new TimerCallback(CheckAccept);
+            //        new Timer(tm, order, 6000, Timeout.Infinite);
+            //    }
+            //}
+            //else if (status == "NextNewNext")
+            //{
+            //    List<location> locationsOrder = new List<location>();
+            //    location locationOrder = null;
+            //    ConnectorApiMaps connectorApiMaps = new ConnectorApiMaps();
+            //    Order order = sqlCoommandTaxiApi.GetAddressToOrderDB(idorder).Result;
+            //    List<Order> orders = sqlCoommandTaxiApi.GetOrders();
+            //    foreach (var order1 in orders)
+            //    {
+            //        location locationOrder1 = connectorApiMaps.GetGetLonAndLanToAddress(order1.FromAddress.ToString());
+            //        if (locationOrder1 != null)
+            //        {
+            //            locationOrder1.ID = order1.ID.ToString();
+            //            locationsOrder.Add(locationOrder1);
+            //        }
+            //    }
+            //    if (locationsOrder.Count > 0)
+            //    {
+            //        locationOrder = connectorApiMaps.GetGetLonAndLanToAddress(order.ToAddress.ToString());
+            //        location locations = SerchMinDistance(locationOrder, locationsOrder);
+            //        sqlCoommandTaxiApi.AsiignedNext(Convert.ToInt32(locations.ID), order.Driver.ID);
+            //    }
+            //    Order order2 = sqlCoommandTaxiApi.RecurentTwoOrder(token, idorder).Result;
+            //    if (order2 != null)
+            //    {
+            //        TimerCallback tm = new TimerCallback(CheckAccept);
+            //        new Timer(tm, order2, 60000 * 5, Timeout.Infinite);
+            //    }
+            //}
+            //else if (status == "Cancel")
+            //{
+            //    sqlCoommandTaxiApi.RecurentCancelOrder(idorder);
+            //}
         }
 
         private void CheckAccept(object state)

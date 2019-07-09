@@ -19,6 +19,57 @@ namespace ApiMobaileTaxi.Service
             context = new Context();
         }
 
+        public async Task SetStatusMobileOrderStart(int idOrderMobile)
+        {
+            OrderMobile orderMobile = context.OrderMobiles
+                .Include(om => om.Orders)
+                .Include(om => om.OnePointForAddressOrders)
+                .FirstOrDefault(om => om.ID == idOrderMobile);
+            Order order = context.Orders.FirstOrDefault(o => o.ID == orderMobile.OnePointForAddressOrders[0].IDorder);
+            orderMobile.Status = "InWork";
+            orderMobile.OnePointForAddressOrders[0].Status = "DriveFromPoint";
+            order.CurrentStatus = "Picked up";
+            await context.SaveChangesAsync();
+        }
+
+        public async Task SetStatusCompletPoint(int idOrderMobile)
+        {
+            OrderMobile orderMobile = context.OrderMobiles
+                .Include(om => om.Orders)
+                .Include(om => om.OnePointForAddressOrders)
+                .FirstOrDefault(om => om.ID == idOrderMobile);
+            OnePointForAddressOrder onePointForAddressOrder = orderMobile.OnePointForAddressOrders.FirstOrDefault(om => om.Status == "DriveFromPoint");
+            Order order = context.Orders.FirstOrDefault(o => o.ID == onePointForAddressOrder.IDorder);
+            if (onePointForAddressOrder != null)
+            {
+                int index = orderMobile.OnePointForAddressOrders.IndexOf(onePointForAddressOrder);
+                orderMobile.OnePointForAddressOrders.First(om => om.Status == "DriveFromPoint").Status = "CompletePoint";
+                orderMobile.OnePointForAddressOrders[index + 1].Status = "DriveFromPoint";
+            }
+            if(onePointForAddressOrder.Type == "Start")
+            {
+                order.CurrentStatus = "Picked up";
+            }
+            else if (onePointForAddressOrder.Type == "End")
+            {
+                order.CurrentStatus = "Delivered";
+            }
+            await context.SaveChangesAsync();
+        }
+
+        public async Task SetStatusMobileOrderEnd(int idOrderMobile)
+        {
+            OrderMobile orderMobile = context.OrderMobiles
+                .Include(om => om.Orders)
+                .Include(om => om.OnePointForAddressOrders)
+                .FirstOrDefault(om => om.ID == idOrderMobile);
+            Order order = context.Orders.FirstOrDefault(o => o.ID == orderMobile.OnePointForAddressOrders[orderMobile.OnePointForAddressOrders.Count - 1].IDorder);
+            orderMobile.Status = "EndWork";
+            orderMobile.OnePointForAddressOrders[0].Status = "CompletePoint";
+            order.CurrentStatus = "Delivered";
+            await context.SaveChangesAsync();
+        }
+
         public List<Driver> CheckOrderForDriver()
         {
             context.Drivers.Load();
@@ -219,7 +270,7 @@ namespace ApiMobaileTaxi.Service
             return context.OrderMobiles
                 .Include(o => o.Orders)
                 .Include(o => o.OnePointForAddressOrders)
-                .FirstOrDefault(o => o.IdDriver == driver.ID.ToString());
+                .FirstOrDefault(o => o.IdDriver == driver.ID.ToString() && o.Status == "New" || o.Status == "InWork");
         }
     }
 }
