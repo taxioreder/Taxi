@@ -57,12 +57,15 @@ namespace ApiMobaileTaxi.Service
             await context.SaveChangesAsync();
         }
 
-        public async Task SetStatusMobileOrderEnd(int idOrderMobile)
+        public async Task SetStatusMobileOrderEnd(int idOrderMobile, string token)
         {
+            Driver driver = context.Drivers.FirstOrDefault(d => d.Token == token);
+            OrderMobile orderMobile1 = context.OrderMobiles.FirstOrDefault(om => om.IdDriver == driver.ID.ToString() && om.Status == "NewNext");
             OrderMobile orderMobile = context.OrderMobiles
                 .Include(om => om.Orders)
                 .Include(om => om.OnePointForAddressOrders)
                 .FirstOrDefault(om => om.ID == idOrderMobile);
+            orderMobile1.Status = "New";
             Order order = context.Orders.FirstOrDefault(o => o.ID == orderMobile.OnePointForAddressOrders[orderMobile.OnePointForAddressOrders.Count - 1].IDorder);
             orderMobile.Status = "EndWork";
             orderMobile.OnePointForAddressOrders[0].Status = "CompletePoint";
@@ -157,12 +160,13 @@ namespace ApiMobaileTaxi.Service
             await context.SaveChangesAsync();
         }
 
-        public async Task<Order> GetAddressToOrderDB(int idorder)
+        public async Task<BackgroundService.DriverManager.location> GetAddressToOrderDB(int idMobileOrder)
         {
-            Order order = await context.Orders
-                .Include(o => o.Driver)
-                .FirstOrDefaultAsync(o => o.ID == idorder);
-            return order;
+            OrderMobile orderMobile = await context.OrderMobiles
+                .Include(o => o.OnePointForAddressOrders)
+                .FirstOrDefaultAsync(o => o.ID == idMobileOrder);
+            OnePointForAddressOrder onePointForAddressOrder = orderMobile.OnePointForAddressOrders[orderMobile.OnePointForAddressOrders.Count - 1];
+            return new ApiMobaileTaxi.BackgroundService.DriverManager.location(onePointForAddressOrder.Lat.ToString(), onePointForAddressOrder.Lng.ToString());
         }
 
         public List<Order> GetOrders()
@@ -250,14 +254,14 @@ namespace ApiMobaileTaxi.Service
             await context.SaveChangesAsync();
         }
 
-        public void SetOrederMobile(OrderMobile orderMobile, string idDrigver)
+        public void SetOrederMobile(OrderMobile orderMobile, string idDrigver, bool isNew)
         {
             Driver driver = context.Drivers.FirstOrDefault(d => d.ID.ToString() == idDrigver);
             foreach(Order order in orderMobile.Orders)
             {
                 Order order1 = context.Orders.FirstOrDefault(o => o.ID == order.ID);
                 order.CurrentStatus = "Assigned";
-                order.CurrentOrder = "New";
+                order.CurrentOrder = isNew ? "New" : "NewNext";
                 order1.Driver = driver;
             }
             context.OrderMobiles.Add(orderMobile);

@@ -67,12 +67,12 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                     List<location> locationsAcceptOrder = SerchMinDistance(locationsDriver, locationsOrder);
                     locationsOrder.Remove(locationsAcceptOrder[1]);
                     locationsDriver.Remove(locationsAcceptOrder[0]);
-                    OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders);
+                    await OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders);
                 }
             }
         }
 
-        private void OrderOnTheWay(List<location> locationsOrder, List<location> locationsAcceptOrder, List<Order> orders, OrderMobile orderMobile = null)
+        public async Task OrderOnTheWay(List<location> locationsOrder, List<location> locationsAcceptOrder, List<Order> orders, bool isNew = true, OrderMobile orderMobile = null)
         {
             int numberOfSeats = 4;
             orderMobile = new OrderMobile();
@@ -102,7 +102,6 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                         continue;
                     }
                     bool isOnTheWayStart = false;
-                    bool isOnTheWayEnd = false;
                     double lat = 0;
                     double lng = 0;
                     double latF = Convert.ToDouble(locationsOrder[i].lat.Replace('.', ','));
@@ -181,6 +180,10 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                                     }
                                 }
                             }
+                            else
+                            {
+                                return;
+                            }
                         }
                     }
                     if (isAddOrder)
@@ -196,7 +199,7 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                         }
                     }
                 }
-                sqlCoommandTaxiApi.SetOrederMobile(orderMobile, locationsAcceptOrder[0].ID);
+                sqlCoommandTaxiApi.SetOrederMobile(orderMobile, locationsAcceptOrder[0].ID, isNew);
             }
         }
 

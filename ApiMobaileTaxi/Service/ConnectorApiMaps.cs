@@ -8,7 +8,7 @@ namespace ApiMobaileTaxi.Service
 {
     public class ConnectorApiMaps
     {
-        public location GetGetLonAndLanToAddress(string address)
+        public BackgroundService.DriverManager.location GetGetLonAndLanToAddress(string address)
         {
             IRestResponse response = null;
             string content = null;
@@ -34,21 +34,20 @@ namespace ApiMobaileTaxi.Service
             }
         }
 
-        private location GetData(string respJsonStr)
+        private BackgroundService.DriverManager.location GetData(string respJsonStr)
         {
-            location location = null;
+            BackgroundService.DriverManager.location location = null;
             var responseAppS = JObject.Parse(respJsonStr);
             var status = responseAppS.Value<string>("status");
             if (status == "OK")
             {
                 var stepJson = responseAppS.GetValue("results").First.Value<JToken>("geometry").Value<JToken>("location").ToString();
-                location = JsonConvert.DeserializeObject<location>(stepJson);
+                location = JsonConvert.DeserializeObject<BackgroundService.DriverManager.location>(stepJson);
             }
             else
             {
 
             }
-
             return location;
         }
     }

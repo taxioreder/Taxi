@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using ApiMobaileTaxi.Model;
 using DBAplication.Model;
 
@@ -27,19 +28,15 @@ namespace ApiMobaileTaxi.Service
             return token;
         }
 
-        public async void RecurentOrderDrive(int idOrderMobile, string statusOrderMobil)
+        public async void RecurentOrderDrive(int idOrderMobile, string statusOrderMobil, string token)
         {
             if(statusOrderMobil == "StartOrder")
             {
                 await sqlCoommandTaxiApi.SetStatusMobileOrderStart(idOrderMobile);
             }
-            else if(statusOrderMobil == "DriveFromPoint")
-            {
-
-            }
             else if (statusOrderMobil == "NewOrder")
             {
-
+                await WorkNewOrder(idOrderMobile, statusOrderMobil, token);
             }
             else if (statusOrderMobil == "CompletePoint")
             {
@@ -47,84 +44,39 @@ namespace ApiMobaileTaxi.Service
             }
             else if (statusOrderMobil == "EndOrder")
             {
-                await sqlCoommandTaxiApi.SetStatusMobileOrderEnd(idOrderMobile);
+                await sqlCoommandTaxiApi.SetStatusMobileOrderEnd(idOrderMobile, token);
             }
+            else if (statusOrderMobil == "NewOrderAndEndOrder")
+            {
+                await WorkNewOrder(idOrderMobile, statusOrderMobil, token);
+            }
+        }
 
-            //if (status == "DriveFrome")
-            //{
-            //    sqlCoommandTaxiApi.RecurentOrderDriveDB(status, idorder);
-            //}
-            //else if(status == "DriveTo")
-            //{
-            //    File.WriteAllText("123.txt", "444");
-            //    sqlCoommandTaxiApi.RecurentOrderDriveDB(status, idorder);
-            //}
-            //else if (status == "Next")
-            //{
-            //    File.WriteAllText("123.txt", "333");
-            //    List<location> locationsOrder = new List<location>();
-            //    location locationOrder = null;
-            //    ConnectorApiMaps connectorApiMaps = new ConnectorApiMaps();
-            //    Order order = await sqlCoommandTaxiApi.GetAddressToOrderDB(idorder);
-            //    List<Order> orders = sqlCoommandTaxiApi.GetOrders();
-            //    foreach (var order1 in orders)
-            //    {
-            //        location locationOrder1 = connectorApiMaps.GetGetLonAndLanToAddress(order1.FromAddress.ToString());
-            //        if (locationOrder1 != null)
-            //        {
-            //            locationOrder1.ID = order1.ID.ToString();
-            //            locationsOrder.Add(locationOrder1);
-            //        }
-            //    }
-            //    if (locationsOrder.Count > 0)
-            //    {
-            //        locationOrder = connectorApiMaps.GetGetLonAndLanToAddress(order.ToAddress.ToString());
-            //        location locations = SerchMinDistance(locationOrder, locationsOrder);
-            //        sqlCoommandTaxiApi.AsiignedNext(Convert.ToInt32(locations.ID), order.Driver.ID);
-            //    }
-            //}
-            //else if (status == "NewNext")
-            //{
-            //    Order order = await sqlCoommandTaxiApi.RecurentTwoOrder(token, idorder);
-            //    if (order != null)
-            //    {
-            //        TimerCallback tm = new TimerCallback(CheckAccept);
-            //        new Timer(tm, order, 6000, Timeout.Infinite);
-            //    }
-            //}
-            //else if (status == "NextNewNext")
-            //{
-            //    List<location> locationsOrder = new List<location>();
-            //    location locationOrder = null;
-            //    ConnectorApiMaps connectorApiMaps = new ConnectorApiMaps();
-            //    Order order = sqlCoommandTaxiApi.GetAddressToOrderDB(idorder).Result;
-            //    List<Order> orders = sqlCoommandTaxiApi.GetOrders();
-            //    foreach (var order1 in orders)
-            //    {
-            //        location locationOrder1 = connectorApiMaps.GetGetLonAndLanToAddress(order1.FromAddress.ToString());
-            //        if (locationOrder1 != null)
-            //        {
-            //            locationOrder1.ID = order1.ID.ToString();
-            //            locationsOrder.Add(locationOrder1);
-            //        }
-            //    }
-            //    if (locationsOrder.Count > 0)
-            //    {
-            //        locationOrder = connectorApiMaps.GetGetLonAndLanToAddress(order.ToAddress.ToString());
-            //        location locations = SerchMinDistance(locationOrder, locationsOrder);
-            //        sqlCoommandTaxiApi.AsiignedNext(Convert.ToInt32(locations.ID), order.Driver.ID);
-            //    }
-            //    Order order2 = sqlCoommandTaxiApi.RecurentTwoOrder(token, idorder).Result;
-            //    if (order2 != null)
-            //    {
-            //        TimerCallback tm = new TimerCallback(CheckAccept);
-            //        new Timer(tm, order2, 60000 * 5, Timeout.Infinite);
-            //    }
-            //}
-            //else if (status == "Cancel")
-            //{
-            //    sqlCoommandTaxiApi.RecurentCancelOrder(idorder);
-            //}
+
+        private async Task WorkNewOrder(int idOrderMobile, string statusOrderMobil, string token)
+        {
+            List<BackgroundService.DriverManager.location> locationsOrder = new List<BackgroundService.DriverManager.location>();
+            ConnectorApiMaps connectorApiMaps = new ConnectorApiMaps();
+            List<Order> orders = sqlCoommandTaxiApi.GetOrders();
+            foreach (var order1 in orders)
+            {
+                BackgroundService.DriverManager.location locationOrder1 = connectorApiMaps.GetGetLonAndLanToAddress(order1.FromAddress);
+                if (locationOrder1 != null)
+                {
+                    locationOrder1.ID = order1.ID.ToString();
+                    locationsOrder.Add(locationOrder1);
+                }
+            }
+            if (locationsOrder.Count > 0)
+            {
+                BackgroundService.DriverManager.OrderForDrivers orderForDrivers = new BackgroundService.DriverManager.OrderForDrivers();
+                BackgroundService.DriverManager.location locationOrderEnd = await sqlCoommandTaxiApi.GetAddressToOrderDB(idOrderMobile);
+                BackgroundService.DriverManager.location locations = SerchMinDistance(locationOrderEnd, locationsOrder);
+                List<BackgroundService.DriverManager.location> locationsAcceptOrder = new List<BackgroundService.DriverManager.location>();
+                locationsAcceptOrder.Add(locationOrderEnd);
+                locationsAcceptOrder.Add(locations);
+                await orderForDrivers.OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders, false);
+            }
         }
 
         private void CheckAccept(object state)
@@ -137,9 +89,9 @@ namespace ApiMobaileTaxi.Service
             }
         }
 
-        private location SerchMinDistance(location locationsEndAddress, List<location> locationsOrder)
+        private BackgroundService.DriverManager.location SerchMinDistance(BackgroundService.DriverManager.location locationsEndAddress, List<BackgroundService.DriverManager.location> locationsOrder)
         {
-            location tmpOrder = locationsOrder[0];
+            BackgroundService.DriverManager.location tmpOrder = locationsOrder[0];
             double distance = DistanceTo(Convert.ToDouble(locationsEndAddress.lat.Replace('.', ',')), Convert.ToDouble(locationsEndAddress.lng.Replace('.', ',')), Convert.ToDouble(locationsOrder[0].lat.Replace('.', ',')), Convert.ToDouble(locationsOrder[0].lng.Replace('.', ',')));
             foreach (var locationOrder in locationsOrder)
             {
@@ -153,7 +105,7 @@ namespace ApiMobaileTaxi.Service
             return tmpOrder;
         }
 
-        private double DistanceTo(double lat1, double lon1, double lat2, double lon2, char unit = 'M')
+        private double DistanceTo(double lat1, double lon1, double lat2, double lon2, char unit = 'K')
         {
             double rlat1 = Math.PI * lat1 / 180;
             double rlat2 = Math.PI * lat2 / 180;

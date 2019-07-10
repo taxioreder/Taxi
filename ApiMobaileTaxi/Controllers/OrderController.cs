@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ApiMobaileTaxi.Model;
 using ApiMobaileTaxi.Service;
 using DBAplication.Model;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -90,7 +87,7 @@ namespace ApiMobaileTaxi.Controllers
                 bool isToken = ManagerMobileApi.CheckToken(token);
                 if (isToken)
                 {
-                    ManagerMobileApi.RecurentOrderDrive(idOrderMobile, statusOrderMobil);
+                    ManagerMobileApi.RecurentOrderDrive(idOrderMobile, statusOrderMobil, token);
                     respons = JsonConvert.SerializeObject(new ResponseAppS("success", null, orders));
                 }
                 else
