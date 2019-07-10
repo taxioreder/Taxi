@@ -60,7 +60,7 @@
                         <DataTemplate>
                             <ViewCell>
                                 <ViewCell.View>
-                                    <Frame Padding="10" BorderColor="DarkCyan">
+                                    <Frame Padding="10" BorderColor="{Binding Color}" >
                                         <StackLayout>
                                             <Label Text="{Binding PTime}"/>
                                             <Label Text="{Binding Address}"/>

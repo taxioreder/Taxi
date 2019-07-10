@@ -1,4 +1,6 @@
-﻿namespace TaxiApp.Models
+﻿using Xamarin.Forms;
+
+namespace TaxiApp.Models
 {
     public class OnePointForAddressOrder
     {
@@ -11,5 +13,25 @@
         public string Type { set; get; }
         public string Address { set; get; }
         public string Status { set; get; }
+        public Color Color
+        {
+            get
+            {
+                Color color = Color.Default;
+                if(Status == "DriveFromPoint")
+                {
+                    color = Color.Blue;
+                }
+                else if(Status == "CompletePoint")
+                {
+                    color = Color.Silver;
+                }
+                else if(Status == null || Status == "")
+                {
+                    color = Color.GreenYellow;
+                }
+                return color;
+            }
+        }
     }
 }

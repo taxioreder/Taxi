@@ -130,15 +130,14 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                             if (GetEndOrderOnTheWay(steps.GetRange(steps.IndexOf(step), (steps.Count - 1) - steps.IndexOf(step)), locationsOrder[i]))
                             {
                                 GetPositionLocation(onePointForAddressOrders, locationNewE, locationsAcceptOrder[0], ref positionE);
-                                onePointForAddressOrders.Insert(positionE, new OnePointForAddressOrder(order1.ID, Convert.ToDouble(locationsOrder[i].latE.Replace('.', ',')), Convert.ToDouble(locationsOrder[i].lngE.Replace('.', ',')), order1.TimeOfAppointment, order1.Date, "End", order1.FromAddress));
+                                onePointForAddressOrders.Insert(positionE, new OnePointForAddressOrder(order1.ID, Convert.ToDouble(locationsOrder[i].latE.Replace('.', ',')), Convert.ToDouble(locationsOrder[i].lngE.Replace('.', ',')), order1.TimeOfAppointment, order1.Date, "End", order1.ToAddress));
                             }
                             else
                             {
-                                onePointForAddressOrders.Add(new OnePointForAddressOrder(order1.ID, Convert.ToDouble(locationsOrder[i].latE.Replace('.', ',')), Convert.ToDouble(locationsOrder[i].lngE.Replace('.', ',')), order1.TimeOfAppointment, order1.Date, "End", order1.FromAddress));
+                                onePointForAddressOrders.Add(new OnePointForAddressOrder(order1.ID, Convert.ToDouble(locationsOrder[i].latE.Replace('.', ',')), Convert.ToDouble(locationsOrder[i].lngE.Replace('.', ',')), order1.TimeOfAppointment, order1.Date, "End", order1.ToAddress));
                             }
                             int duration = connectorApiMaps.GetGetDuration($"{locationsAcceptOrder[0].lat},{locationsAcceptOrder[0].lng}", $"{onePointForAddressOrders[0].Lat.ToString().Replace(',', '.')},{onePointForAddressOrders[0].Lng.ToString().Replace(',', '.')}");
-                            if ((DateTime.Now.AddSeconds(duration).AddMinutes(-10) < DateTime.Parse($"{GetDFormat(onePointForAddressOrders[0].Date)} {onePointForAddressOrders[0].PTime}")
-                                 && DateTime.Parse($"{GetDFormat(onePointForAddressOrders[0].Date)} {onePointForAddressOrders[positionS + 1].PTime}") < DateTime.Now.AddSeconds(duration).AddMinutes(0)))
+                            if (DateTime.Now.AddSeconds(duration).AddMinutes(-10) < DateTime.Parse($"{GetDFormat(onePointForAddressOrders[0].Date)} {onePointForAddressOrders[0].PTime}"))
                             {
                                 for (int j = 1; j < onePointForAddressOrders.Count; j++)
                                 {
