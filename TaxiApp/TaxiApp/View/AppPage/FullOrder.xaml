@@ -44,7 +44,9 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                        <Button Text="Start" HeightRequest="40" WidthRequest="60" BackgroundColor="Black" TextColor="White" Margin="1" Clicked="Button_Clicked"/>
+                        <Button Text="Start" HeightRequest="40" WidthRequest="60" BackgroundColor="Black" TextColor="White" Margin="1" Clicked="Button_Clicked" IsVisible="{Binding IsVisableStart}" />
+                        <Button Text="Conntinue" HeightRequest="40" WidthRequest="60" BackgroundColor="Black" TextColor="White" Margin="1" Clicked="Button_Clicked_1" IsVisible="{Binding IsVisableContinue}" />
+                        <Button Text="End Order" HeightRequest="40" WidthRequest="60" BackgroundColor="Black" TextColor="White" Margin="1" Clicked="Button_Clicked_2" IsVisible="{Binding IsVisableEnd}" />
                     </StackLayout>
                 </Frame>
             </StackLayout>

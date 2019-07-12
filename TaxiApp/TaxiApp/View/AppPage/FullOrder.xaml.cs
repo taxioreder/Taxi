@@ -173,5 +173,19 @@ namespace TaxiApp.View.AppPage
             await gefenceManager.RecurentStatusOrder(fullOrderMV.OrderMobile.ID, "StartOrder");
             fullOrderMV.Init();
         }
+
+        private void Button_Clicked_1(object sender, EventArgs e)
+        {
+            fullOrderMV.IsRefr = true;
+            DependencyService.Get<Service.Geofence.IGeofence>().ContinueGeofence();
+            fullOrderMV.Init();
+        }
+
+        private void Button_Clicked_2(object sender, EventArgs e)
+        {
+            fullOrderMV.IsRefr = true;
+            DependencyService.Get<Service.Geofence.IGeofence>().EndGeofence();
+            fullOrderMV.Init();
+        }
     }
 }

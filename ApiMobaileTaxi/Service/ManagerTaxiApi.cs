@@ -75,7 +75,7 @@ namespace ApiMobaileTaxi.Service
                 List<BackgroundService.DriverManager.location> locationsAcceptOrder = new List<BackgroundService.DriverManager.location>();
                 locationsAcceptOrder.Add(locationOrderEnd);
                 locationsAcceptOrder.Add(locations);
-                await orderForDrivers.OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders, false);
+                await orderForDrivers.OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders);
             }
         }
 

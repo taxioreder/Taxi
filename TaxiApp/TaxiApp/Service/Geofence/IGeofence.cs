@@ -6,6 +6,7 @@ namespace TaxiApp.Service.Geofence
     {
         void StartGeofence(OrderMobile orderMobile);
         void StopGeofence();
-        void ContinueGeofence(string status);
+        void ContinueGeofence();
+        void EndGeofence();
     }
 }

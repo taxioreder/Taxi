@@ -20,7 +20,7 @@ namespace TaxiApp.Droid.CustomGeofense
                 LocationResult locationResult = LocationResult.ExtractResult(intent);
                 if (locationResult != null && action.Equals(ACTION_PROCESS_LOCATIOM))
                 {
-                     gefenceManager = new GefenceManager();
+                    gefenceManager = new GefenceManager();
                     var lastloc = locationResult.LastLocation;
                     int index = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.FindIndex(one => one == GefenceLocation.gefenceModel.OnePointForAddressOrder);
                     if(GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.Count-1 == index)

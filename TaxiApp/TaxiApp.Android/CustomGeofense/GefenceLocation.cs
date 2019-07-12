@@ -11,6 +11,7 @@ using Com.Karumi.Dexter.Listener;
 using Com.Karumi.Dexter.Listener.Single;
 using TaxiApp.Droid.CustomGeofense;
 using TaxiApp.Models;
+using TaxiApp.Service.Geofence;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(GefenceLocation))]
@@ -97,9 +98,27 @@ namespace TaxiApp.Droid.CustomGeofense
             }
         }
 
-        public void ContinueGeofence(string status)
+        public async void ContinueGeofence()
         {
-            
+            GefenceManager gefenceManager = new GefenceManager(); 
+            int index = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.FindIndex(one => one == GefenceLocation.gefenceModel.OnePointForAddressOrder);
+            if (GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.Count - 1 != index)
+            {
+                await gefenceManager.RecurentStatusOrder(GefenceLocation.gefenceModel.OrderMobile.ID, "CompletePoint");
+                GefenceLocation.gefenceModel.OnePointForAddressOrder = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders[index + 1];
+            }
+        }
+
+        public async void EndGeofence()
+        {
+            GefenceManager gefenceManager = new GefenceManager();
+            int index = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.FindIndex(one => one == GefenceLocation.gefenceModel.OnePointForAddressOrder);
+            if (GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.Count - 1 == index)
+            {
+                await gefenceManager.RecurentStatusOrder(GefenceLocation.gefenceModel.OrderMobile.ID, "NewOrderAndEndOrder");
+                gefenceModel.PendingIntent.Cancel();
+                gefenceModel = null;
+            }
         }
     }
 }
