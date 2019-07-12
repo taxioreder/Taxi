@@ -136,7 +136,7 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                                 onePointForAddressOrders.Add(new OnePointForAddressOrder(order1.ID, Convert.ToDouble(locationsOrder[i].latE.Replace('.', ',')), Convert.ToDouble(locationsOrder[i].lngE.Replace('.', ',')), order1.TimeOfAppointment, order1.Date, "End", order1.ToAddress));
                             }
                             int duration = connectorApiMaps.GetGetDuration($"{locationsAcceptOrder[0].lat},{locationsAcceptOrder[0].lng}", $"{onePointForAddressOrders[0].Lat.ToString().Replace(',', '.')},{onePointForAddressOrders[0].Lng.ToString().Replace(',', '.')}");
-                            if (DateTime.Now.AddSeconds(duration).AddMinutes(-10) < DateTime.Parse($"{GetDFormat(onePointForAddressOrders[0].Date)} {onePointForAddressOrders[0].PTime}"))
+                            if (DateTime.Now.AddSeconds(duration).AddMinutes(-20) < DateTime.Parse($"{GetDFormat(onePointForAddressOrders[0].Date)} {onePointForAddressOrders[0].PTime}"))
                             {
                                 for (int j = 1; j < onePointForAddressOrders.Count; j++)
                                 {
@@ -150,9 +150,8 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                                     else if (onePointForAddressOrders[j - 1].Type == "End")
                                     {
                                         var date = orders.Find(o => o.ID == onePointForAddressOrders[j - 1].IDorder);
-                                        string date1 = date.TimeOfAppointment != null ? date.TimeOfAppointment : DateTime.Parse($"{GetDFormat(date.Date)} {date.TimeOfPickup}").AddMinutes(90).ToShortTimeString();
+                                        string date1 = date.TimeOfAppointment != null ? date.TimeOfAppointment : DateTime.Parse($"{GetDFormat(date.Date)} {date.TimeOfPickup}").AddSeconds(duration1).AddMinutes(30).ToShortTimeString();
                                         dateTime = DateTime.Parse($"{GetDFormat(onePointForAddressOrders[j - 1].Date)} {date1}");
-                                        onePointForAddressOrders[j - 1].PTime = DateTime.Parse(date.TimeOfPickup).AddMinutes(90).ToShortTimeString();
                                     }
                                     if (onePointForAddressOrders[j].Type == "Start")
                                     {
@@ -163,17 +162,17 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                                         var date = orders.Find(o => o.ID == onePointForAddressOrders[j].IDorder);
                                         string date1 = date.TimeOfAppointment != null ? date.TimeOfAppointment : DateTime.Parse($"{GetDFormat(date.Date)} {date.TimeOfPickup}").AddMinutes(90).ToShortTimeString();
                                         dateTime1 = DateTime.Parse($"{GetDFormat(onePointForAddressOrders[j].Date)} {date1}");
-                                        onePointForAddressOrders[j].PTime = DateTime.Parse(date.TimeOfPickup).AddMinutes(90).ToShortTimeString();
+                                        onePointForAddressOrders[j].PTime = date1;
                                     }
                                     if (onePointForAddressOrders[j].Type == "Start"
-                                        && !(dateTime.AddSeconds(duration1) < dateTime1.AddMinutes(10)
-                                        && dateTime1.AddMinutes(-10) < dateTime.AddSeconds(duration1)))
+                                        && !(dateTime.AddSeconds(duration1) < dateTime1.AddMinutes(20)
+                                        && dateTime1.AddMinutes(-20) < dateTime.AddSeconds(duration1)))
                                     {
                                         isAddOrder = false;
                                         break;
                                     }
                                     else if (onePointForAddressOrders[j].Type == "End"
-                                        && !(dateTime.AddSeconds(duration1).AddMinutes(-90) < dateTime1 && dateTime1 < dateTime.AddSeconds(duration1).AddMinutes(95)))
+                                        && !(dateTime.AddSeconds(duration1) < dateTime1))
                                     {
                                         isAddOrder = false;
                                         break;
