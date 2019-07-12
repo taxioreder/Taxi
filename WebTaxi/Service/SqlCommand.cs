@@ -40,6 +40,11 @@ namespace WebTaxi.Service
             }
         }
 
+        public Driver GetDriver(string idDriver)
+        {
+            return context.Drivers.FirstOrDefault(d => d.ID.ToString() == idDriver);
+        }
+
         public async void ReCheckWorkInDb(int idDriver, bool checkedDriver)
         {
             Driver driver = await context.Drivers.FirstOrDefaultAsync(d => d.ID == idDriver);
@@ -246,6 +251,12 @@ namespace WebTaxi.Service
         public async void AddDriver(Driver driver)
         {
             await context.Drivers.AddAsync(driver);
+            await context.SaveChangesAsync();
+        }
+
+        public async void UpdateDriver(Driver driver)
+        {
+            context.Drivers.Update(driver);
             await context.SaveChangesAsync();
         }
 

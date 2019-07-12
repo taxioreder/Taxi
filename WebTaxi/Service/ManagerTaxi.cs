@@ -17,6 +17,11 @@ namespace WebTaxi.Service
             sqlCommand = new SqlCommand();
         }
 
+        public Driver GetDriver(string idDriver)
+        {
+            return sqlCommand.GetDriver(idDriver);
+        }
+
         public void ReCheckWork(int idDriver, bool checkedDriver)
         {
             sqlCommand.ReCheckWorkInDb(idDriver, checkedDriver);
@@ -187,6 +192,18 @@ namespace WebTaxi.Service
             driver.PhoneNumber = phoneNumbe;
             driver.ZipCod = zipCod;
             sqlCommand.AddDriver(driver);
+        }
+
+        public void EditDriver(string fullName, string emailAddress, string password, string phoneNumbe, string zipCod, string idDriver)
+        {
+            Driver driver = new Driver();
+            driver.ID = Convert.ToInt32(idDriver);
+            driver.FullName = fullName;
+            driver.EmailAddress = emailAddress;
+            driver.Password = password;
+            driver.PhoneNumber = phoneNumbe;
+            driver.ZipCod = zipCod;
+            sqlCommand.UpdateDriver(driver);
         }
 
         public void RemoveDrive(int id)

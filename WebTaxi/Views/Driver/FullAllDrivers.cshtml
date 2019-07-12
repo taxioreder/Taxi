@@ -12,7 +12,7 @@
             <span class="inpData">Phone: @ViewBag.Drivers[i].PhoneNumber</span><br /> <br />
             <span class="inpData">Address of the driver: @ViewBag.Drivers[i].ZipCod</span><br /> <br />
             <input type="checkbox" checked="@ViewBag.Drivers[i].IsWork" onclick="Check(this.checked, @ViewBag.Drivers[i].ID)" class="btnId">Now works<br>
-            <input class="btnId" value="Edit" type="button" />
+            <input class="btnId" value="Edit" type="button" onclick="window.location.href='Drivers/EditDriver?idDriver=@ViewBag.Drivers[i].ID';"/>
             <input class="btnId" value="Remove" type="button" onclick="Remove(@ViewBag.Drivers[i].ID)"  />
         </div>
         }
