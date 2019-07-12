@@ -8,7 +8,7 @@
     <ContentPage.Content>
         <StackLayout>
             <StackLayout Margin="0" IsVisible="{Binding IsOrderMobile}">
-                <Frame Padding="5" Margin="3" BorderColor="Black">
+                <Frame Padding="5" Margin="3" BorderColor="Black" x:Name="blockOrder">
                     <StackLayout>
                         <ListView ItemsSource="{Binding OrderMobile.Orders}" IsPullToRefreshEnabled="True" HasUnevenRows="True" SeparatorColor="#B1AFAF" RefreshCommand="{Binding RefreshCommand}"
                                   IsRefreshing="{Binding IsRefr}">
