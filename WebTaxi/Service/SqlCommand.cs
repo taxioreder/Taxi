@@ -75,7 +75,7 @@ namespace WebTaxi.Service
         {
             List<Order> orders = null;
             List<Order> ordersTmp = new List<Order>();
-            orders = context.Orders.Where(o => o.CurrentStatus == status).ToList();
+            orders = context.Orders.Include(d => d.Driver).Where(o => o.CurrentStatus == status).ToList();
             foreach (var order in orders)
             {
                 int orderIndex = ordersTmp.FindIndex(o => (o.FromZip == order.FromZip && o.ToZip == order.ToZip) || (o.FromZip == order.FromZip || o.ToZip == order.ToZip));

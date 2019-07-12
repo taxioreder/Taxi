@@ -26,31 +26,33 @@
                 <th>Phone</th>
                 <th>From Address</th>
                 <th>To Address</th>
+                <th>Assigned</th>
                 <th>Control</th>
             </tr>
             @for (int i = 0; i < ViewBag.Orders.Count; i++)
             {
-                <tr id="@ViewBag.Orders[i].ID">
+        <tr id="@ViewBag.Orders[i].ID">
 
-                    <td class="orderTd orderTdBorderStart"><span>@ViewBag.Orders[i].NameCustomer</span></td>
-                    <td class="orderTd orderTdBorderSrandart"><span class="stPData">$@ViewBag.Orders[i].Price</span></td>
-                    <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].Milisse Milles</span></td>
-                    <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].Date @ViewBag.Orders[i].TimeOfPickup ±5 Min</span></td>
-                    <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].Phone</span></td>
-                    <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].FromAddress</span></td>
-                    <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].ToAddress</span></td>
-                    <td class="orderTd orderTdBorderEnd">
-                        <a class="" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
-                        <select onchange="SelectAssining(this.options[this.selectedIndex].value)" class="" style="width:100px">
-                            <option value="">Assign</option>
-                            @for (int j = 0; j < ViewBag.Drivers.Count; j++)
-                            {
-                                <option value="@ViewBag.Orders[i].ID,@ViewBag.Drivers[j].ID">@ViewBag.Drivers[j].FullName</option>
-                            }
-                        </select>
-                        <a class="" style="width:60px" href="DeletedOrder?id=@ViewBag.Orders[i].ID">Deleted</a>
-                    </td>
-                </tr>
+            <td class="orderTd orderTdBorderStart"><span>@ViewBag.Orders[i].NameCustomer</span></td>
+            <td class="orderTd orderTdBorderSrandart"><span class="stPData">$@ViewBag.Orders[i].Price</span></td>
+            <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].Milisse Milles</span></td>
+            <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].Date @ViewBag.Orders[i].TimeOfPickup ±5 Min</span></td>
+            <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].Phone</span></td>
+            <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].FromAddress</span></td>
+            <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].ToAddress</span></td>
+            <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].Driver.FullName</span></td>
+            <td class="orderTd orderTdBorderEnd">
+                <a class="" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
+                <select onchange="SelectAssining(this.options[this.selectedIndex].value)" class="" style="width:100px">
+                    <option value="">Assign</option>
+                    @for (int j = 0; j < ViewBag.Drivers.Count; j++)
+                    {
+                        <option value="@ViewBag.Orders[i].ID,@ViewBag.Drivers[j].ID">@ViewBag.Drivers[j].FullName</option>
+                    }
+                </select>
+                <a class="" style="width:60px" href="DeletedOrder?id=@ViewBag.Orders[i].ID">Deleted</a>
+            </td>
+        </tr>
             }
         </table>
         @if (ViewBag.count != 1)
