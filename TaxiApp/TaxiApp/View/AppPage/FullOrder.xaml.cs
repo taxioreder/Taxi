@@ -26,7 +26,7 @@ namespace TaxiApp.View.AppPage
 
         private async void ReminderTrackInspaction(object s)
         {
-            if (fullOrderMV.OrderMobile != null)
+            if (fullOrderMV.OrderMobile != null && fullOrderMV.OrderMobile.OnePointForAddressOrders[0].Status == null)
             {
                 await blockOrder.RotateTo(3, 50);
                 Vibration.Vibrate(30);

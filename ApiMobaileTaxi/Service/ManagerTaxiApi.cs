@@ -36,7 +36,7 @@ namespace ApiMobaileTaxi.Service
             }
             else if (statusOrderMobil == "NewOrder")
             {
-                await WorkNewOrder(idOrderMobile, statusOrderMobil, token);
+                await WorkNewOrder(idOrderMobile, statusOrderMobil, token, false);
             }
             else if (statusOrderMobil == "CompletePoint")
             {
@@ -48,21 +48,29 @@ namespace ApiMobaileTaxi.Service
             }
             else if (statusOrderMobil == "NewOrderAndEndOrder")
             {
-                await WorkNewOrder(idOrderMobile, statusOrderMobil, token);
+                await WorkNewOrder(idOrderMobile, statusOrderMobil, token, false);
             }
         }
 
 
-        private async Task WorkNewOrder(int idOrderMobile, string statusOrderMobil, string token)
+        private async Task WorkNewOrder(int idOrderMobile, string statusOrderMobil, string token, bool isNew)
         {
             List<BackgroundService.DriverManager.location> locationsOrder = new List<BackgroundService.DriverManager.location>();
             ConnectorApiMaps connectorApiMaps = new ConnectorApiMaps();
-            List<Order> orders = sqlCoommandTaxiApi.GetOrders();
+            BackgroundService.DriverManager.location locationOrderEnd = await sqlCoommandTaxiApi.GetAddressToOrderDB(idOrderMobile);
+            List<Order> orders = sqlCoommandTaxiApi.GetOrders($"{locationOrderEnd.Date} {locationOrderEnd.ApiniTime}");
             foreach (var order1 in orders)
             {
                 BackgroundService.DriverManager.location locationOrder1 = connectorApiMaps.GetGetLonAndLanToAddress(order1.FromAddress);
+                BackgroundService.DriverManager.location location1 = connectorApiMaps.GetGetLonAndLanToAddress(order1.ToAddress.ToString());
                 if (locationOrder1 != null)
                 {
+                    locationOrder1.ID = order1.ID.ToString();
+                    locationOrder1.Date = order1.Date;
+                    locationOrder1.PickuoTime = order1.TimeOfPickup;
+                    locationOrder1.ApiniTime = order1.TimeOfAppointment;
+                    locationOrder1.latE = location1.lat;
+                    locationOrder1.lngE = location1.lng;
                     locationOrder1.ID = order1.ID.ToString();
                     locationsOrder.Add(locationOrder1);
                 }
@@ -70,13 +78,14 @@ namespace ApiMobaileTaxi.Service
             if (locationsOrder.Count > 0)
             {
                 BackgroundService.DriverManager.OrderForDrivers orderForDrivers = new BackgroundService.DriverManager.OrderForDrivers();
-                BackgroundService.DriverManager.location locationOrderEnd = await sqlCoommandTaxiApi.GetAddressToOrderDB(idOrderMobile);
                 BackgroundService.DriverManager.location locations = SerchMinDistance(locationOrderEnd, locationsOrder);
                 List<BackgroundService.DriverManager.location> locationsAcceptOrder = new List<BackgroundService.DriverManager.location>();
                 locationsAcceptOrder.Add(locationOrderEnd);
                 locationsAcceptOrder.Add(locations);
-                await orderForDrivers.OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders);
+                locationsOrder.Remove(locationsAcceptOrder[1]);
+                await orderForDrivers.OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders, sqlCoommandTaxiApi, isNew);
             }
+            await sqlCoommandTaxiApi.SetStatusMobileOrderEnd(idOrderMobile, token);
         }
 
         private void CheckAccept(object state)

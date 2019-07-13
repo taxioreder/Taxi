@@ -26,7 +26,7 @@ namespace TaxiApp.Models
             get
             {
                 bool isVisableContinue = false;
-                if (OnePointForAddressOrders[OnePointForAddressOrders.Count - 2].Status == "DriveFromPoint")
+                if (OnePointForAddressOrders[0].Status == "DriveFromPoint" || OnePointForAddressOrders[0].Status == "CompletePoint" && OnePointForAddressOrders[OnePointForAddressOrders.Count - 2].Status != "CompletePoint")
                 {
                     isVisableContinue = true;
                 }
