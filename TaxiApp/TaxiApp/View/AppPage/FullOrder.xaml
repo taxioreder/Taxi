@@ -78,7 +78,7 @@
                     </ListView>
                 </StackLayout>
             </StackLayout>
-            <StackLayout IsVisible="{Binding IsEmty}" VerticalOptions="Fill" HorizontalOptions="Fill">
+            <StackLayout IsVisible="{Binding IsEmty}" VerticalOptions="Fill" HorizontalOptions="Fill" SizeChanged="StackLayout_SizeChanged">
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="2"/>
                 </StackLayout.GestureRecognizers>

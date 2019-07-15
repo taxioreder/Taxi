@@ -151,5 +151,12 @@ namespace TaxiApp.View.AppPage
         {
             fullOrderMV.Init();
         }
+
+        private void StackLayout_SizeChanged(object sender, EventArgs e)
+        {
+            StackLayout stackLayout = (StackLayout)sender;
+            stackLayout.HeightRequest = App.Current.MainPage.Height * 0.98;
+            stackLayout.WidthRequest = App.Current.MainPage.Width * 0.98;
+        }
     }
 }
