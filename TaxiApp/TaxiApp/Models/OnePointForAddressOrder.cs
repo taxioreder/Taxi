@@ -33,5 +33,18 @@ namespace TaxiApp.Models
                 return color;
             }
         }
+
+        public bool IsVisableGoBtn
+        {
+            get
+            {
+                bool isVisableGoBtn = false;
+                if(Status == "DriveFromPoint")
+                {
+                    isVisableGoBtn = true;
+                }
+                return isVisableGoBtn;
+            }
+        }
     }
 }

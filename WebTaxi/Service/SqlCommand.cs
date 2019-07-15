@@ -169,6 +169,19 @@ namespace WebTaxi.Service
             order.NoName1 = noName1 != null ? noName1 : order.NoName1;
             order.NoName2 = noName2 != null ? noName2 : order.NoName2;
             order.Date = date != null ? date : order.Date;
+            if(timeOfPickup != null && !timeOfPickup.Contains("PM") && !timeOfPickup.Contains("AM"))
+            {
+                int tmpTime = Convert.ToInt32(timeOfPickup.Remove(2));
+                if (tmpTime > 12)
+                {
+                    tmpTime -= 12;
+                    timeOfPickup = $"{tmpTime}:{timeOfPickup.Remove(0, 3)} PM";
+                }
+                else
+                {
+                    timeOfPickup += " AM";
+                }
+            }
             order.TimeOfPickup = timeOfPickup != null ? timeOfPickup : order.TimeOfPickup;
             order.TimeOfAppointment = timeOfAppointment != null ? timeOfAppointment : order.TimeOfAppointment;
             order.Milisse = milisse != null ? milisse : order.Milisse;

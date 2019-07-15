@@ -5,6 +5,7 @@ using FluentScheduler;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ApiMobaileTaxi.BackgroundService.DriverManager
@@ -18,6 +19,7 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
         {
             sqlCoommandTaxiApi = new SqlCoommandTaxiApi();
             connectorApiMaps = new ConnectorApiMaps();
+            File.WriteAllText("1.txt", "Execute");
             Task.Run(() => SetOrderForDrivers());
         }
 
@@ -67,14 +69,14 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                     List<location> locationsAcceptOrder = SerchMinDistance(locationsDriver, locationsOrder);
                     locationsOrder.Remove(locationsAcceptOrder[1]);
                     locationsDriver.Remove(locationsAcceptOrder[0]);
-                    await OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders, sqlCoommandTaxiApi);
+                    OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders, sqlCoommandTaxiApi);
                 }
             }
         }
 
-        public async Task OrderOnTheWay(List<location> locationsOrder, List<location> locationsAcceptOrder, List<Order> orders, SqlCoommandTaxiApi sqlCoommandTaxiApi, bool isNew = true, OrderMobile orderMobile = null)
+        public async void OrderOnTheWay(List<location> locationsOrder, List<location> locationsAcceptOrder, List<Order> orders, SqlCoommandTaxiApi sqlCoommandTaxiApi, bool isNew = true, OrderMobile orderMobile = null)
         {
-            if(connectorApiMaps == null)
+            if (connectorApiMaps == null)
             {
                 connectorApiMaps = new ConnectorApiMaps();
             }
@@ -191,6 +193,7 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                             }
                             else
                             {
+
                                 return;
                             }
                         }
@@ -217,7 +220,7 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                         }
                     }
                 }
-                sqlCoommandTaxiApi.SetOrederMobile(orderMobile, locationsAcceptOrder[0].ID, isNew);
+                await sqlCoommandTaxiApi.SetOrederMobile(orderMobile, locationsAcceptOrder[0].ID, isNew);
                 
             }
         }

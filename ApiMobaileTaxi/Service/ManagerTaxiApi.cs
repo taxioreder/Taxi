@@ -83,7 +83,7 @@ namespace ApiMobaileTaxi.Service
                 locationsAcceptOrder.Add(locationOrderEnd);
                 locationsAcceptOrder.Add(locations);
                 locationsOrder.Remove(locationsAcceptOrder[1]);
-                await orderForDrivers.OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders, sqlCoommandTaxiApi, isNew);
+                orderForDrivers.OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders, sqlCoommandTaxiApi, isNew);
             }
             await sqlCoommandTaxiApi.SetStatusMobileOrderEnd(idOrderMobile, token);
         }

@@ -130,5 +130,26 @@ namespace TaxiApp.View.AppPage
             base.OnDisappearing();
             timer.Change(Timeout.Infinite, Timeout.Infinite);
         }
+
+        private async void Button_Clicked_3(object sender, EventArgs e)
+        {
+            Label label = ((Label)sender).FindByName<Label>("addressL");
+        }
+
+        private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            OnePointForAddressOrder onePointForAddressOrder = (OnePointForAddressOrder)e.Item;
+            if (onePointForAddressOrder.Status == "DriveFromPoint")
+            {
+                var options = new MapLaunchOptions { Name = "1", NavigationMode = Xamarin.Essentials.NavigationMode.Driving };
+                await Map.OpenAsync(onePointForAddressOrder.Lat, onePointForAddressOrder.Lng, options);
+            }
+        }
+
+        [Obsolete]
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            fullOrderMV.Init();
+        }
     }
 }

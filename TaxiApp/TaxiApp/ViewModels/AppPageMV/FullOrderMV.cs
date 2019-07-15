@@ -35,6 +35,13 @@ namespace TaxiApp.ViewModels.AppPageMV
             App.Current.MainPage = new NavigationPage(new Avtorization());
         }
 
+        private bool isEmty = false;
+        public bool IsEmty
+        {
+            get => isEmty;
+            set => SetProperty(ref isEmty, value);
+        }
+
         private OrderMobile orderMobile = null;
         public OrderMobile OrderMobile
         {
@@ -79,6 +86,7 @@ namespace TaxiApp.ViewModels.AppPageMV
                 {
                     OrderMobile = orderMobile1;
                     IsOrderMobile = OrderMobile != null;
+                    IsEmty = OrderMobile == null;
                 }
                 else if (state == 4)
                 {

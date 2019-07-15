@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DBAplication.Migrations
 {
-    public partial class Init03062506 : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -37,6 +37,21 @@ namespace DBAplication.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderMobiles",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IdDriver = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
+                    StatusDrive = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderMobiles", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Drivers",
                 columns: table => new
                 {
@@ -59,6 +74,33 @@ namespace DBAplication.Migrations
                         name: "FK_Drivers_Geolocations_geolocationsID",
                         column: x => x.geolocationsID,
                         principalTable: "Geolocations",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OnePointForAddressOrder",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IDorder = table.Column<int>(nullable: false),
+                    Lat = table.Column<double>(nullable: false),
+                    Lng = table.Column<double>(nullable: false),
+                    PTime = table.Column<string>(nullable: true),
+                    Date = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
+                    OrderMobileID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OnePointForAddressOrder", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_OnePointForAddressOrder_OrderMobiles_OrderMobileID",
+                        column: x => x.OrderMobileID,
+                        principalTable: "OrderMobiles",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -89,10 +131,12 @@ namespace DBAplication.Migrations
                     NoName4 = table.Column<string>(nullable: true),
                     NoName5 = table.Column<string>(nullable: true),
                     NoName6 = table.Column<string>(nullable: true),
+                    CountCustomer = table.Column<int>(nullable: false),
                     Comment = table.Column<string>(nullable: true),
                     isAccept = table.Column<bool>(nullable: false),
                     IsVisableAccept = table.Column<bool>(nullable: false),
-                    DriverID = table.Column<int>(nullable: true)
+                    DriverID = table.Column<int>(nullable: true),
+                    OrderMobileID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -103,6 +147,12 @@ namespace DBAplication.Migrations
                         principalTable: "Drivers",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Orders_OrderMobiles_OrderMobileID",
+                        column: x => x.OrderMobileID,
+                        principalTable: "OrderMobiles",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -111,9 +161,19 @@ namespace DBAplication.Migrations
                 column: "geolocationsID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OnePointForAddressOrder_OrderMobileID",
+                table: "OnePointForAddressOrder",
+                column: "OrderMobileID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_DriverID",
                 table: "Orders",
                 column: "DriverID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_OrderMobileID",
+                table: "Orders",
+                column: "OrderMobileID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -122,10 +182,16 @@ namespace DBAplication.Migrations
                 name: "Admins");
 
             migrationBuilder.DropTable(
+                name: "OnePointForAddressOrder");
+
+            migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Drivers");
+
+            migrationBuilder.DropTable(
+                name: "OrderMobiles");
 
             migrationBuilder.DropTable(
                 name: "Geolocations");

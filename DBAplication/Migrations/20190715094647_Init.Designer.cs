@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBAplication.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20190703022730_Update030719_!")]
-    partial class Update030719_
+    [Migration("20190715094647_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -92,6 +92,8 @@ namespace DBAplication.Migrations
 
                     b.Property<string>("Address");
 
+                    b.Property<string>("Date");
+
                     b.Property<int>("IDorder");
 
                     b.Property<double>("Lat");
@@ -100,9 +102,11 @@ namespace DBAplication.Migrations
 
                     b.Property<int?>("OrderMobileID");
 
-                    b.Property<string>("Type");
+                    b.Property<string>("PTime");
 
-                    b.Property<string>("TypeTime");
+                    b.Property<string>("Status");
+
+                    b.Property<string>("Type");
 
                     b.HasKey("ID");
 
@@ -185,6 +189,10 @@ namespace DBAplication.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("IdDriver");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("StatusDrive");
 
                     b.HasKey("ID");
 

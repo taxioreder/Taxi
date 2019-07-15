@@ -78,6 +78,7 @@ namespace ApiMobaileTaxi.Service
 
         public List<Driver> CheckOrderForDriver()
         {
+            File.WriteAllText("1.txt", "CheckOrderForDriver");
             context.Drivers.Load();
             List<Driver> drivers = null;
             List<Order> orders = context.Orders.ToList().Where(o => o.Driver != null && (o.CurrentStatus == "Assigned" || o.CurrentStatus == "Picked up")).ToList();
@@ -87,7 +88,7 @@ namespace ApiMobaileTaxi.Service
             }
             else
             {
-                drivers = context.Drivers.Where(d => orders.FirstOrDefault(o => o.Driver == d) == null && d.IsWork).ToList();
+                drivers = context.Drivers.ToList().Where(d => orders.FirstOrDefault(o => o.Driver.ID == d.ID) == null && d.IsWork).ToList();
             }
             return drivers;
         }
@@ -179,6 +180,9 @@ namespace ApiMobaileTaxi.Service
          
         public List<Order> GetOrders()
         {
+
+            File.WriteAllText("2.txt", DateTime.Now.ToString());
+            File.WriteAllText("1.txt", "GetOrders");
             return context.Orders.ToList().Where(o => o.CurrentStatus == "NewLoad" && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-3))).ToList();
         }
 
@@ -267,7 +271,7 @@ namespace ApiMobaileTaxi.Service
             await context.SaveChangesAsync();
         }
 
-        public void SetOrederMobile(OrderMobile orderMobile, string idDrigver, bool isNew)
+        public async Task SetOrederMobile(OrderMobile orderMobile, string idDrigver, bool isNew)
         {
             Driver driver = context.Drivers.FirstOrDefault(d => d.ID.ToString() == idDrigver);
             orderMobile.Status = isNew ? "New" : "NewNext";
@@ -278,7 +282,7 @@ namespace ApiMobaileTaxi.Service
                 order1.Driver = driver;
             }
             context.OrderMobiles.Add(orderMobile);
-            context.SaveChanges();
+                await context.SaveChangesAsync();
         }
 
         public OrderMobile GetOrderMobile(string token)
