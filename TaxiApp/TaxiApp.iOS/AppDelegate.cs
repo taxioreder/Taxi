@@ -2,6 +2,8 @@
 using Plugin.Geofence;
 using TaxiApp.NewElement.Geofence;
 using UIKit;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
 
 namespace TaxiApp.iOS
 {
@@ -21,8 +23,8 @@ namespace TaxiApp.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            UINavigationBar.Appearance.BarTintColor = Color.FromHex("#000000").ToUIColor();
             LoadApplication(new App());
-            CrossGeofence.Initialize<CrossGeofenceListener>();
             return base.FinishedLaunching(app, options);
         }
     }
