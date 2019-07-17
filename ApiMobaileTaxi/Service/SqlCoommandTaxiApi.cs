@@ -170,7 +170,7 @@ namespace ApiMobaileTaxi.Service
                 .Include(o => o.OnePointForAddressOrders)
                 .FirstOrDefaultAsync(o => o.ID == idMobileOrder);
             OnePointForAddressOrder onePointForAddressOrder = orderMobile.OnePointForAddressOrders[orderMobile.OnePointForAddressOrders.Count - 1];
-            return new ApiMobaileTaxi.BackgroundService.DriverManager.location(onePointForAddressOrder.Lat.ToString(), onePointForAddressOrder.Lng.ToString())
+            return new ApiMobaileTaxi.BackgroundService.DriverManager.location(onePointForAddressOrder.Lat, onePointForAddressOrder.Lng)
             {
                 ID = orderMobile.IdDriver,
                 ApiniTime = onePointForAddressOrder.PTime,
@@ -180,9 +180,6 @@ namespace ApiMobaileTaxi.Service
          
         public List<Order> GetOrders()
         {
-
-            File.WriteAllText("2.txt", DateTime.Now.ToString());
-            File.WriteAllText("1.txt", "GetOrders");
             return context.Orders.ToList().Where(o => o.CurrentStatus == "NewLoad" && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-3))).ToList();
         }
 

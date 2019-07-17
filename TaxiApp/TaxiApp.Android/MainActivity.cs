@@ -8,6 +8,9 @@ using Firebase;
 using Plugin.FirebasePushNotification;
 using Plugin.Permissions;
 using System;
+using Android.Content;
+using static Android.Media.Audiofx.Equalizer;
+using Android;
 
 namespace TaxiApp.Droid
 {
@@ -28,6 +31,7 @@ namespace TaxiApp.Droid
             FirebasePushNotificationManager.ProcessIntent(this, Intent);
             LoadApplication(new App());
             Instance = this;
+            TurnOffDozeMode(Instance);
         }
 
         public static MainActivity GetInstance()
@@ -35,6 +39,30 @@ namespace TaxiApp.Droid
             return Instance;
         }
 
+        [Obsolete]
+        public void TurnOffDozeMode(Context context)
+        {
+            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.M)
+            {
+                PowerManager pm = (PowerManager)context.GetSystemService(Context.PowerService);
+                bool isIgnoringBatteryOptimizations = pm.IsIgnoringBatteryOptimizations(PackageName);
+                if (!isIgnoringBatteryOptimizations)
+                {
+                    Intent intent = new Intent();
+                    String packageName = context.PackageName;
+                    if (pm.IsIgnoringBatteryOptimizations(packageName)) // if you want to desable doze mode for this package
+                    {
+                        //intent.SetAction(Android.Provider.Settings.ActionRequestIgnoreBatteryOptimizations);
+                    }
+                    else
+                    { // if you want to enable doze mode
+                        intent.SetAction(Android.Provider.Settings.ActionRequestIgnoreBatteryOptimizations);
+                        intent.SetData(Android.Net.Uri.Parse("package:" + packageName));
+                    }
+                    context.StartActivity(intent);
+                }
+            }
+        }
 
         //PowerManager powerManager = (PowerManager)GetSystemService(PowerService);
         //    if (Build.VERSION.SdkInt >= Build.VERSION_CODES.KitkatWatch)

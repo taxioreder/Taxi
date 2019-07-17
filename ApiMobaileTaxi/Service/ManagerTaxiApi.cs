@@ -101,10 +101,10 @@ namespace ApiMobaileTaxi.Service
         private BackgroundService.DriverManager.location SerchMinDistance(BackgroundService.DriverManager.location locationsEndAddress, List<BackgroundService.DriverManager.location> locationsOrder)
         {
             BackgroundService.DriverManager.location tmpOrder = locationsOrder[0];
-            double distance = DistanceTo(Convert.ToDouble(locationsEndAddress.lat.Replace('.', ',')), Convert.ToDouble(locationsEndAddress.lng.Replace('.', ',')), Convert.ToDouble(locationsOrder[0].lat.Replace('.', ',')), Convert.ToDouble(locationsOrder[0].lng.Replace('.', ',')));
+            double distance = DistanceTo(locationsEndAddress.lat, Convert.ToDouble(locationsEndAddress.lng), locationsOrder[0].lat, locationsOrder[0].lng);
             foreach (var locationOrder in locationsOrder)
             {
-                double tempDistance = DistanceTo(Convert.ToDouble(locationsEndAddress.lat.Replace('.', ',')), Convert.ToDouble(locationsEndAddress.lng.Replace('.', ',')), Convert.ToDouble(locationOrder.lat.Replace('.', ',')), Convert.ToDouble(locationOrder.lng.Replace('.', ',')));
+                double tempDistance = DistanceTo(locationsEndAddress.lat, locationsEndAddress.lng, locationOrder.lat, locationOrder.lng);
                 if (tempDistance < distance)
                 {
                     distance = tempDistance;

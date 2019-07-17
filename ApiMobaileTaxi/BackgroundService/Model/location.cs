@@ -8,12 +8,12 @@
         public int CountCusstomer { get; set; }
         public string Date { get; set; }
         public string Type { get; set; }
-        public string lat { get; set; }
-        public string lng { get; set; }
-        public string latE { get; set; }
-        public string lngE { get; set; }
+        public double lat { get; set; }
+        public double lng { get; set; }
+        public double latE { get; set; }
+        public double lngE { get; set; }
 
-        public location(string lat = null, string lng = null)
+        public location(double lat, double lng)
         {
             this.lng = lng;
             this.lat = lat;

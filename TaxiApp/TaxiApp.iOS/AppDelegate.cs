@@ -1,6 +1,5 @@
 ﻿using Foundation;
 using Plugin.Geofence;
-using TaxiApp.NewElement.Geofence;
 using UIKit;
 
 namespace TaxiApp.iOS
@@ -22,7 +21,6 @@ namespace TaxiApp.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
-            CrossGeofence.Initialize<CrossGeofenceListener>();
             return base.FinishedLaunching(app, options);
         }
     }

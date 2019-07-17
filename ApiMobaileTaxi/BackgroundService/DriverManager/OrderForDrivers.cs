@@ -19,7 +19,6 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
         {
             sqlCoommandTaxiApi = new SqlCoommandTaxiApi();
             connectorApiMaps = new ConnectorApiMaps();
-            File.WriteAllText("1.txt", "Execute");
             Task.Run(() => SetOrderForDrivers());
         }
 
@@ -85,13 +84,14 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             orderMobile.OnePointForAddressOrders = new List<OnePointForAddressOrder>();
             orderMobile.Status = "New";
             Order order = orders.Find(o => o.ID.ToString() == locationsAcceptOrder[1].ID);
-            orderMobile.OnePointForAddressOrders.Add(new OnePointForAddressOrder(order.ID, Convert.ToDouble(locationsAcceptOrder[1].lat.Replace('.', ',')), Convert.ToDouble(locationsAcceptOrder[1].lng.Replace('.', ',')), order.TimeOfPickup, order.Date, "Start", order.FromAddress));
-            orderMobile.OnePointForAddressOrders.Add(new OnePointForAddressOrder(order.ID, Convert.ToDouble(locationsAcceptOrder[1].latE.Replace('.', ',')), Convert.ToDouble(locationsAcceptOrder[1].lngE.Replace('.', ',')), order.TimeOfAppointment, order.Date, "End", order.ToAddress));
+            orderMobile.OnePointForAddressOrders.Add(new OnePointForAddressOrder(order.ID, locationsAcceptOrder[1].lat, locationsAcceptOrder[1].lng, order.TimeOfPickup, order.Date, "Start", order.FromAddress));
+            orderMobile.OnePointForAddressOrders.Add(new OnePointForAddressOrder(order.ID, locationsAcceptOrder[1].latE, locationsAcceptOrder[1].lngE, order.TimeOfAppointment, order.Date, "End", order.ToAddress));
             orderMobile.Orders = new List<Order>();
             orderMobile.IdDriver = locationsAcceptOrder[0].ID;
             orderMobile.Orders.Add(order);
             numberOfSeats -= orders.Find(o => o.ID.ToString() == locationsAcceptOrder[1].ID).CountCustomer;
-            List<Steps> steps = connectorApiMaps.GetGetDirections($"{locationsAcceptOrder[1].lat.ToString()},{locationsAcceptOrder[1].lng.ToString()}", $"{locationsAcceptOrder[1].latE.ToString()},{locationsAcceptOrder[1].lngE.ToString()}");
+            List<Steps> steps = connectorApiMaps.GetGetDirections($"{ConvertTOString(locationsAcceptOrder[1].lat)},{ConvertTOString(locationsAcceptOrder[1].lng)}", $"{ConvertTOString(locationsAcceptOrder[1].latE)},{ConvertTOString(locationsAcceptOrder[1].lngE)}");
+            File.WriteAllText("1.txt", "CheckOrderForDriver");
             if (orderMobile.Orders == null)
             {
                 orderMobile.Orders = new List<Order>();
@@ -111,8 +111,8 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                     bool isOnTheWayStart = false;
                     double lat = 0;
                     double lng = 0;
-                    double latF = Convert.ToDouble(locationsOrder[i].lat.Replace('.', ','));
-                    double lngF = Convert.ToDouble(locationsOrder[i].lng.Replace('.', ','));
+                    double latF = locationsOrder[i].lat;
+                    double lngF = locationsOrder[i].lng;
                     foreach (Steps step in steps)
                     {
                         if (locationsOrder[i].CountCusstomer > numberOfSeats)
@@ -121,36 +121,37 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                         }
                         List<OnePointForAddressOrder> onePointForAddressOrders = new List<OnePointForAddressOrder>();
                         onePointForAddressOrders.AddRange(orderMobile.OnePointForAddressOrders);
-                        double tmpLoc = Convert.ToDouble(step.end_location.lat.Replace('.', ',')) - Convert.ToDouble(step.start_location.lat.Replace('.', ','));
-                        lat = Convert.ToDouble(step.start_location.lat.Replace('.', ',')) + tmpLoc;
-                        tmpLoc = Convert.ToDouble(step.end_location.lng.Replace('.', ',')) - Convert.ToDouble(step.start_location.lng.Replace('.', ','));
-                        lng = Convert.ToDouble(step.start_location.lng.Replace('.', ',')) + tmpLoc;
+                        double tmpLoc = Convert.ToDouble(step.end_location.lat - step.start_location.lat);
+                        lat = step.start_location.lat + tmpLoc;
+                        tmpLoc = step.end_location.lng - step.start_location.lng;
+                        lng = step.start_location.lng + tmpLoc;
                         if ((latF - 0.013 < lat && lat + 0.013 > latF)
                         && (lngF - 0.013 < lng && lng + 0.013 > lngF) && !isOnTheWayStart)
                         {
+
                             location locationNewS = new location(locationsOrder[i].lat, locationsOrder[i].lng);
                             location locationNewE = new location(locationsOrder[i].latE, locationsOrder[i].lngE);
                             GetPositionLocation(onePointForAddressOrders, locationNewS, locationsAcceptOrder[0], ref positionS);
                             Order order1 = orders.Find(o => o.ID.ToString() == locationsOrder[i].ID);
-                            onePointForAddressOrders.Insert(positionS, new OnePointForAddressOrder(order1.ID, Convert.ToDouble(locationsOrder[i].lat.Replace('.', ',')), Convert.ToDouble(locationsOrder[i].lng.Replace('.', ',')), order1.TimeOfPickup, order1.Date, "Start", order1.FromAddress));
+                            onePointForAddressOrders.Insert(positionS, new OnePointForAddressOrder(order1.ID, locationsOrder[i].lat, locationsOrder[i].lng, order1.TimeOfPickup, order1.Date, "Start", order1.FromAddress));
                             if (GetEndOrderOnTheWay(steps.GetRange(steps.IndexOf(step), (steps.Count - 1) - steps.IndexOf(step)), locationsOrder[i]))
                             {
                                 GetPositionLocation(onePointForAddressOrders, locationNewE, locationsAcceptOrder[0], ref positionE);
-                                onePointForAddressOrders.Insert(positionE, new OnePointForAddressOrder(order1.ID, Convert.ToDouble(locationsOrder[i].latE.Replace('.', ',')), Convert.ToDouble(locationsOrder[i].lngE.Replace('.', ',')), order1.TimeOfAppointment, order1.Date, "End", order1.ToAddress));
+                                onePointForAddressOrders.Insert(positionE, new OnePointForAddressOrder(order1.ID, locationsOrder[i].latE, locationsOrder[i].lngE, order1.TimeOfAppointment, order1.Date, "End", order1.ToAddress));
                             }
                             else
                             {
-                                onePointForAddressOrders.Add(new OnePointForAddressOrder(order1.ID, Convert.ToDouble(locationsOrder[i].latE.Replace('.', ',')), Convert.ToDouble(locationsOrder[i].lngE.Replace('.', ',')), order1.TimeOfAppointment, order1.Date, "End", order1.ToAddress));
+                                onePointForAddressOrders.Add(new OnePointForAddressOrder(order1.ID, locationsOrder[i].latE, locationsOrder[i].lngE, order1.TimeOfAppointment, order1.Date, "End", order1.ToAddress));
                                 isOnTheWay = true;
                             }
-                            int duration = connectorApiMaps.GetGetDuration($"{locationsAcceptOrder[0].lat.Replace(',', '.')},{locationsAcceptOrder[0].lng.Replace(',', '.')}", $"{onePointForAddressOrders[0].Lat.ToString().Replace(',', '.')},{onePointForAddressOrders[0].Lng.ToString().Replace(',', '.')}");
+                            int duration = connectorApiMaps.GetGetDuration($"{ConvertTOString(locationsAcceptOrder[0].lat)},{ConvertTOString(locationsAcceptOrder[0].lng)}", $"{ConvertTOString(onePointForAddressOrders[0].Lat)},{ConvertTOString(onePointForAddressOrders[0].Lng)}");
                             if (DateTime.Now.AddSeconds(duration).AddMinutes(-20) < DateTime.Parse($"{GetDFormat(onePointForAddressOrders[0].Date)} {onePointForAddressOrders[0].PTime}"))
                             {
                                 for (int j = 1; j < onePointForAddressOrders.Count; j++)
                                 {
                                     DateTime dateTime = new DateTime();
                                     DateTime dateTime1 = new DateTime();
-                                    int duration1 = connectorApiMaps.GetGetDuration($"{onePointForAddressOrders[j - 1].Lat.ToString().Replace(',', '.')},{onePointForAddressOrders[j - 1].Lng.ToString().Replace(',', '.')}", $"{onePointForAddressOrders[j].Lat.ToString().Replace(',', '.')},{onePointForAddressOrders[j].Lng.ToString().Replace(',', '.')}");
+                                    int duration1 = connectorApiMaps.GetGetDuration($"{ConvertTOString(onePointForAddressOrders[j - 1].Lat)},{ConvertTOString(onePointForAddressOrders[j - 1].Lng)}", $"{ConvertTOString(onePointForAddressOrders[j].Lat)},{ConvertTOString(onePointForAddressOrders[j].Lng)}");
                                     if (onePointForAddressOrders[j - 1].Type == "Start")
                                     {
                                         dateTime = DateTime.Parse($"{GetDFormat(onePointForAddressOrders[j - 1].Date)} {onePointForAddressOrders[j - 1].PTime}");
@@ -203,16 +204,16 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                         Order order1 = orders.Find(o => o.ID.ToString() == locationsOrder[i].ID);
                         if (order1.CountCustomer <= numberOfSeats)
                         {
-                            orderMobile.OnePointForAddressOrders.Insert(positionS, new OnePointForAddressOrder(order1.ID, Convert.ToDouble(locationsOrder[i].lat.Replace('.', ',')), Convert.ToDouble(locationsOrder[i].lng.Replace('.', ',')), order1.TimeOfPickup, order1.Date, "Start", order1.FromAddress));
+                            orderMobile.OnePointForAddressOrders.Insert(positionS, new OnePointForAddressOrder(order1.ID, locationsOrder[i].lat, locationsOrder[i].lng, order1.TimeOfPickup, order1.Date, "Start", order1.FromAddress));
                             if(isOnTheWay)
                             {
 
-                                orderMobile.OnePointForAddressOrders.Add(new OnePointForAddressOrder(order1.ID, Convert.ToDouble(locationsOrder[i].latE.Replace('.', ',')), Convert.ToDouble(locationsOrder[i].lngE.Replace('.', ',')), order1.TimeOfAppointment, order1.Date, "End", order1.ToAddress));
+                                orderMobile.OnePointForAddressOrders.Add(new OnePointForAddressOrder(order1.ID, locationsOrder[i].latE, locationsOrder[i].lngE, order1.TimeOfAppointment, order1.Date, "End", order1.ToAddress));
                             }
                             else
                             {
 
-                                orderMobile.OnePointForAddressOrders.Insert(positionE, new OnePointForAddressOrder(order1.ID, Convert.ToDouble(locationsOrder[i].latE.Replace('.', ',')), Convert.ToDouble(locationsOrder[i].lngE.Replace('.', ',')), order1.TimeOfAppointment, order1.Date, "End", order1.ToAddress));
+                                orderMobile.OnePointForAddressOrders.Insert(positionE, new OnePointForAddressOrder(order1.ID, locationsOrder[i].latE, locationsOrder[i].lngE, order1.TimeOfAppointment, order1.Date, "End", order1.ToAddress));
                             }
                             orderMobile.Orders.Add(order1);
                             locationsOrder.Remove(locationsOrder.Find(l => l.ID == order1.ID.ToString()));
@@ -225,6 +226,11 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             }
         }
 
+        private string ConvertTOString(double value)
+        {
+            return Convert.ToString(value).Replace(',', '.');
+        }
+
         private bool GetEndOrderOnTheWay(List<Steps> steps, location location)
         {
             bool isEndOrderOnTheWay = false;
@@ -232,12 +238,12 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             double lng = 0;
             foreach (Steps step in steps)
             {
-                double tmpLoc = Convert.ToDouble(step.end_location.lat.Replace('.', ',')) - Convert.ToDouble(step.start_location.lat.Replace('.', ','));
-                lat = Convert.ToDouble(step.start_location.lat.Replace('.', ',')) + tmpLoc;
-                tmpLoc = Convert.ToDouble(step.end_location.lng.Replace('.', ',')) - Convert.ToDouble(step.start_location.lng.Replace('.', ','));
-                lng = Convert.ToDouble(step.start_location.lng.Replace('.', ',')) + tmpLoc;
-                if ((Convert.ToDouble(location.latE.Replace('.', ',')) - 0.013 < lat && lat + 0.013 > Convert.ToDouble(location.latE.Replace('.', ',')))
-                       && (Convert.ToDouble(location.lngE.Replace('.', ',')) - 0.013 < lng && lng + 0.013 > Convert.ToDouble(location.lngE.Replace('.', ','))))
+                double tmpLoc = step.end_location.lat - step.start_location.lat;
+                lat = step.start_location.lat + tmpLoc;
+                tmpLoc = step.end_location.lng - step.start_location.lng;
+                lng = step.start_location.lng + tmpLoc;
+                if ((location.latE - 0.013 < lat && lat + 0.013 > location.latE)
+                       && (location.lngE - 0.013 < lng && lng + 0.013 >location.lngE))
                 {
                     isEndOrderOnTheWay = true;
                     break;
@@ -249,11 +255,11 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
         private void GetPositionLocation(List<OnePointForAddressOrder> onePointForAddressOrders, location locationNewOrder, location locationDriver, ref int positon)
         {
             positon = 0;
-            int durationNewOrder = connectorApiMaps.GetGetDuration($"{locationDriver.lat.ToString().Replace(',', '.')},{locationDriver.lng.ToString().Replace(',', '.')}", $"{locationNewOrder.lat.ToString().Replace(',', '.')},{locationNewOrder.lng.ToString().Replace(',', '.')}");
+            int durationNewOrder = connectorApiMaps.GetGetDuration($"{ConvertTOString(locationDriver.lat)},{ConvertTOString(locationDriver.lng)}", $"{ConvertTOString(locationNewOrder.lat)},{ConvertTOString(locationNewOrder.lng)}");
             List<double> durations = new List<double>(); 
             foreach (OnePointForAddressOrder onePointForAddressOrder in onePointForAddressOrders)
             {
-                int duration = connectorApiMaps.GetGetDuration($"{locationDriver.lat.Replace(',', '.')},{locationDriver.lng.Replace(',', '.')}", $"{onePointForAddressOrder.Lat.ToString().Replace(',', '.')},{onePointForAddressOrder.Lng.ToString().Replace(',', '.')}");
+                int duration = connectorApiMaps.GetGetDuration($"{ConvertTOString(locationDriver.lat)},{ConvertTOString(locationDriver.lng)}", $"{ConvertTOString(onePointForAddressOrder.Lat)},{ConvertTOString(onePointForAddressOrder.Lng)}");
                 if (duration < durationNewOrder)
                 {
                     positon++;
@@ -317,24 +323,35 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             List<location> locations = new List<location>();
             location tmpOrder = locationsOrder[0];
             location tmpDriver = locationsDriver[0];
-            double distance = DistanceTo(Convert.ToDouble(locationsDriver[0].lat.Replace('.', ',')), Convert.ToDouble(locationsDriver[0].lng.Replace('.', ',')), Convert.ToDouble(locationsOrder[0].lat.Replace('.', ',')), Convert.ToDouble(locationsOrder[0].lng.Replace('.', ',')));
+            double distance = DistanceTo(locationsDriver[0].lat, locationsDriver[0].lng, locationsOrder[0].lat, locationsOrder[0].lng);
+
             foreach (var locationDriver in locationsDriver)
             {
                 foreach (var locationOrder in locationsOrder)
                 {
-                    double tempDistance = DistanceTo(Convert.ToDouble(locationDriver.lat.Replace('.', ',')), Convert.ToDouble(locationDriver.lng.Replace('.', ',')), Convert.ToDouble(locationOrder.lat.Replace('.', ',')), Convert.ToDouble(locationOrder.lng.Replace('.', ',')));
+                    double tempDistance = DistanceTo(locationDriver.lat, locationDriver.lng, locationOrder.lat, locationOrder.lng);
                     if (tempDistance < distance)
                     {
-                        int timeDuration = FullDuration(locationOrder, locationDriver);
-                        if (DateTime.Now.AddSeconds(timeDuration) < DateTime.Parse($"{GetDFormat(locationOrder.Date)} {locationOrder.PickuoTime}").AddMinutes(20))
+                        try
                         {
-                            distance = tempDistance;
-                            tmpOrder = locationOrder;
-                            tmpDriver = locationDriver;
+                            int timeDuration = FullDuration(locationOrder, locationDriver);
+                            if (DateTime.Now.AddSeconds(timeDuration) < DateTime.Parse($"{GetDFormat(locationOrder.Date)} {locationOrder.PickuoTime}").AddMinutes(20))
+                            {
+                                distance = tempDistance;
+                                tmpOrder = locationOrder;
+                                tmpDriver = locationDriver;
+                            }
+                        }
+                        catch(Exception e)
+                        {
+
+                            File.WriteAllText("2.txt", e.Message);
                         }
                     }
                 }
             }
+
+            File.WriteAllText("1.txt", "13");
             locations.Add(tmpDriver);
             locations.Add(tmpOrder);
 
