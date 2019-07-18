@@ -85,14 +85,14 @@ namespace TaxiApp.ViewModels.AppPageMV
                 else if (state == 3)
                 {
                     OrderMobile = orderMobile1;
-                    IsOrderMobile = OrderMobile != null;
-                    IsEmty = OrderMobile == null;
                 }
                 else if (state == 4)
                 {
                     //await PopupNavigation.PushAsync(new Errror("Technical work on the service", null));
                 }
             }
+            IsOrderMobile = OrderMobile != null;
+            IsEmty = OrderMobile == null;
             IsRefr = false;
         }
 
