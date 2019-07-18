@@ -1,7 +1,5 @@
 ﻿using Android.App;
 using Android.Content;
-using Android.Content.PM;
-using Android.Widget;
 using TaxiApp.Droid.CustomGeofense;
 
 namespace TaxiApp.Droid
