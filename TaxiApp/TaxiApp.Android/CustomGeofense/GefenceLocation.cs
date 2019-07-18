@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Android;
 using Android.App;
 using Android.Content;
 using Android.Gms.Location;
-using Android.OS;
 using Android.Support.V4.App;
 using Android.Support.V7.App;
 using Com.Karumi.Dexter;
@@ -26,10 +24,10 @@ namespace TaxiApp.Droid.CustomGeofense
 {
     public class GefenceLocation : AppCompatActivity, IPermissionListener, Service.Geofence.IGeofence
     {
-        LocationRequest locationRequest;
-        FusedLocationProviderClient FusedLocationProviderClient;
+        static LocationRequest locationRequest;
+        static FusedLocationProviderClient FusedLocationProviderClient;
         public static GefenceModel gefenceModel = null;
-        MainActivity MainActivity = null;
+        static MainActivity MainActivity = null;
 
         public bool IsListenGefence { get; set; }
 
@@ -48,7 +46,7 @@ namespace TaxiApp.Droid.CustomGeofense
             UpdateLocation();
         }
 
-        private void UpdateLocation()
+        public static void UpdateLocation()
         {
             LocationReqvest();
             FusedLocationProviderClient = LocationServices.GetFusedLocationProviderClient(MainActivity);
@@ -60,14 +58,14 @@ namespace TaxiApp.Droid.CustomGeofense
             FusedLocationProviderClient.RequestLocationUpdates(locationRequest, gefenceModel.PendingIntent);
         }
 
-        private PendingIntent GetPendingIntent()
+        private static PendingIntent GetPendingIntent()
         {
             Intent intent = new Intent(MainActivity, typeof(LocationLestener));
             intent.SetAction(LocationLestener.ACTION_PROCESS_LOCATIOM);
             return PendingIntent.GetBroadcast(MainActivity, 0, intent, PendingIntentFlags.UpdateCurrent);
         }
 
-        private void LocationReqvest()
+        private static void LocationReqvest()
         {
             locationRequest = new LocationRequest();
             locationRequest.SetPriority(LocationRequest.PriorityHighAccuracy);
@@ -171,18 +169,25 @@ namespace TaxiApp.Droid.CustomGeofense
 
         private static int GetData(string respJsonStr, ref OrderMobile orderMobile)
         {
-            respJsonStr = respJsonStr.Replace("\\", "");
-            respJsonStr = respJsonStr.Remove(0, 1);
-            respJsonStr = respJsonStr.Remove(respJsonStr.Length - 1);
-            var responseAppS = JObject.Parse(respJsonStr);
-            string status = responseAppS.Value<string>("Status");
-            if (status == "success")
+            try
             {
-                orderMobile = JsonConvert.DeserializeObject<OrderMobile>(responseAppS.
-                        SelectToken("ResponseStr").ToString());
-                return 3;
+                respJsonStr = respJsonStr.Replace("\\", "");
+                respJsonStr = respJsonStr.Remove(0, 1);
+                respJsonStr = respJsonStr.Remove(respJsonStr.Length - 1);
+                var responseAppS = JObject.Parse(respJsonStr);
+                string status = responseAppS.Value<string>("Status");
+                if (status == "success")
+                {
+                    orderMobile = JsonConvert.DeserializeObject<OrderMobile>(responseAppS.
+                            SelectToken("ResponseStr").ToString());
+                    return 3;
+                }
+                else
+                {
+                    return 2;
+                }
             }
-            else
+            catch
             {
                 return 2;
             }
