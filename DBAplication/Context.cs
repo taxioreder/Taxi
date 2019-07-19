@@ -13,8 +13,8 @@ namespace DBAplication
 
         public Context()
         {
-            //Database.Migrate();
-            Database.EnsureCreated();
+            Database.Migrate();
+            //Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -22,8 +22,8 @@ namespace DBAplication
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.EnableSensitiveDataLogging(true);
-                //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Taxi;Trusted_Connection=True;");
-                optionsBuilder.UseSqlServer("Data Source=127.0.0.1;Initial Catalog=WebTaxi;Integrated Security=False;User ID=123;Password=123;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Taxi;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Data Source=127.0.0.1;Initial Catalog=WebTaxi;Integrated Security=False;User ID=123;Password=123;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False");
             }
         }
     }

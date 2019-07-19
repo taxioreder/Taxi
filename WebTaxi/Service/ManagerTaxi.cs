@@ -247,5 +247,11 @@ namespace WebTaxi.Service
             //    managerNotify.SendNotyfyUnassign(idOrder, tokenShope, vehiclwInformations);
             //});
         }
+
+        public List<Order> GetOrdersSuitable(string idDriver)
+        {
+            OrderMobileWorke orderMobileWorke = new OrderMobileWorke(sqlCommand);
+            return orderMobileWorke.SuitableOrders(idDriver);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using WebTaxi.Service;
@@ -475,6 +476,74 @@ namespace WebTaxi.Controellers
 
             }
             return actionResult.ToString();
+        }
+
+
+        private OrderMobile OrderMobile = null; 
+        [Route("Dashbord/Orders/Assigne")]
+        [HttpGet]
+        public IActionResult OrderAssigne(string idDriver)
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key))
+                {
+                    OrderMobile = new OrderMobile();
+                    Driver driver = managerTaxi.GetDriver(idDriver);
+                    OrderMobile.IdDriver = driver.ID.ToString();
+                    ViewBag.FullName = driver.FullName;
+                    actionResult = View("AssignePage");
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    OrderMobile = null;
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception)
+            {
+                OrderMobile = null;
+            }
+            return actionResult;
+        }
+
+        [Route("Dashbord/Orders/Init")]
+        [HttpPost]
+        public string OrderInit()
+        {
+            string actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key) && OrderMobile != null)
+                {
+                    Li
+                }
+                else
+                {
+                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
+                    {
+                        Response.Cookies.Delete("KeyAvthoTaxi");
+                    }
+                    OrderMobile = null;
+                    actionResult = null;
+                }
+            }
+            catch (Exception)
+            {
+                OrderMobile = null;
+            }
+            return actionResult;
         }
     }
 }

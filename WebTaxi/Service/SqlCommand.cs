@@ -3,6 +3,7 @@ using DBAplication.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,6 +39,11 @@ namespace WebTaxi.Service
                 //await context.Admins.AddAsync(admin);
                 //await context.SaveChangesAsync();
             }
+        }
+
+        public List<Order> GetOrders()
+        {
+            return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-1))).ToList();
         }
 
         public Driver GetDriver(string idDriver)
@@ -153,7 +159,7 @@ namespace WebTaxi.Service
 
         public Order GetShipping(string id)
         {
-            return context.Orders.FirstOrDefault(o => o.ID == Convert.ToInt32(id));
+            return context.Orders.Include(o => o.Driver).FirstOrDefault(o => o.ID.ToString() == id);
         }
 
         public async void UpdateorderInDb(string idLoad, string nameCustomer, string phone, string fromAddress, string toAddress, string noName, string noName1, string noName2, string status,
@@ -302,6 +308,39 @@ namespace WebTaxi.Service
             order.Driver = null;
             order.CurrentStatus = "NewLoad";
             await context.SaveChangesAsync();
+        }
+
+        private string GetDFormat(string data)
+        {
+            DateTime date;
+            if (DateTime.TryParseExact(data, "MM.dd.yyyy", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "dd.MM.yyyy", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "yyyy.MM.dd", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "MM-dd-yyyy", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "dd-MM-yyyy", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "yyyy-MM-dd", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "MM/dd/yyyy", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "dd/MM/yyyy", null, DateTimeStyles.None, out date))
+            {
+            }
+            else if (DateTime.TryParseExact(data, "yyyy/MM/dd", null, DateTimeStyles.None, out date))
+            {
+            }
+            return date.ToShortDateString();
         }
     }
 }

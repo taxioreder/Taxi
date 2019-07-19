@@ -1,0 +1,89 @@
+﻿<div class="body">
+    <input type="text" id="idriver" style="display:none;" value="@ViewBag.FullName" />
+    <p><h3>Assigne for @ViewBag.FullName</h3></p>
+    <div class="orderMobile">
+        <div class="content">
+
+        </div>
+        <div class="content">
+
+        </div>
+    </div>
+    <div class="filling">
+        <table class="tegTable">
+            <tr>
+                <th>Name Customer</th>
+                <th>Price</th>
+                <th>Miless</th>
+                <th>Pickup time</th>
+                <th>Phone</th>
+                <th>From Address</th>
+                <th>To Address</th>
+                <th>Control</th>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+
+</script>
+<style>
+    * {
+        margin: 0px;
+    }
+
+    .body {
+        margin: 20px;
+    }
+
+    .orderMobile {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .content {
+        width: 45%;
+        margin: 5px;
+        height: 200px;
+        border-width :1px;
+        border-color: black;
+        border-style: solid;
+    }
+
+    .filling {
+        width: 100%;
+        height: 100px;
+        border-top: solid;
+        border-width: 1px;
+        border-color: rgba(51, 51, 51, 0.3);
+    }
+
+    .tegTable {
+        width:98%;
+        border-collapse: collapse;
+    }
+
+    .orderTd {
+        height: 30px;
+        vertical-align: central; 
+        text-align: center; 
+        height: 40px; 
+        padding: 2px;
+    }
+
+    .orderTdBorderEnd {
+        border-left: 1px solid rgba(172, 172, 172, 0.45);
+        border-top: 1px solid rgba(172, 172, 172, 0.45);
+        border-bottom: 1px solid rgba(172, 172, 172, 0.45);
+    }
+    
+    .orderTdBorderStart {
+        border-right: 1px solid rgba(172, 172, 172, 0.45);
+        border-top: 1px solid rgba(172, 172, 172, 0.45);
+        border-bottom: 1px solid rgba(172, 172, 172, 0.45);
+    }
+
+    .orderTdBorderSrandart {
+        border: 1px solid rgba(172, 172, 172, 0.45);
+    }
+</style>

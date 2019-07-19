@@ -91,7 +91,6 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             orderMobile.Orders.Add(order);
             numberOfSeats -= orders.Find(o => o.ID.ToString() == locationsAcceptOrder[1].ID).CountCustomer;
             List<Steps> steps = connectorApiMaps.GetGetDirections($"{ConvertTOString(locationsAcceptOrder[1].lat)},{ConvertTOString(locationsAcceptOrder[1].lng)}", $"{ConvertTOString(locationsAcceptOrder[1].latE)},{ConvertTOString(locationsAcceptOrder[1].lngE)}");
-            File.WriteAllText("1.txt", "CheckOrderForDriver");
             if (orderMobile.Orders == null)
             {
                 orderMobile.Orders = new List<Order>();
@@ -128,7 +127,6 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                         if ((latF - 0.013 < lat && lat + 0.013 > latF)
                         && (lngF - 0.013 < lng && lng + 0.013 > lngF) && !isOnTheWayStart)
                         {
-
                             location locationNewS = new location(locationsOrder[i].lat, locationsOrder[i].lng);
                             location locationNewE = new location(locationsOrder[i].latE, locationsOrder[i].lngE);
                             GetPositionLocation(onePointForAddressOrders, locationNewS, locationsAcceptOrder[0], ref positionS);
@@ -380,7 +378,6 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                 case 'M': //Miles
                     return dist;
             }
-
             return dist;
         }
     }

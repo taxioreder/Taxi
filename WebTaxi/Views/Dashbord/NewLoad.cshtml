@@ -7,6 +7,13 @@
         </label>
         <span id="loadExel" style="color:green; margin:10px; visibility:hidden;">Plese waite? Exel load....</span>
         <span id="errorExel" style="color:red; margin:10px; visibility:hidden;">File is not Excel or file is not valid</span>
+        <select onchange="SelectAssining(this.options[this.selectedIndex].value)" class="" style="width:100px">
+            <option value="">Assign</option>
+            @for (int j = 0; j < ViewBag.Drivers.Count; j++)
+            {
+                <option value="@ViewBag.Drivers[j].ID">@ViewBag.Drivers[j].FullName</option>
+            }
+        </select>
     </div>
     <nav>
         <input class="btnSt activeBtn" type="button" value="New load" onclick="window.location.href='@Url.Action("NewLoad", "Dashbord")';" />
@@ -41,13 +48,6 @@
             <td class="orderTd orderTdBorderSrandart"><span class="stPData">@ViewBag.Orders[i].ToAddress</span></td>
             <td class="orderTd orderTdBorderEnd">
                 <a class="" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
-                @*<select onchange="SelectAssining(this.options[this.selectedIndex].value)" class="" style="width:100px">
-                    <option value="">Assign</option>
-                    @for (int j = 0; j < ViewBag.Drivers.Count; j++)
-                    {
-                        <option value="@ViewBag.Orders[i].ID,@ViewBag.Drivers[j].ID">@ViewBag.Drivers[j].FullName</option>
-                    }
-                </select>*@
                 <a class="" style="width:60px" href="DeletedOrder?id=@ViewBag.Orders[i].ID">Deleted</a>
             </td>
         </tr>
@@ -111,7 +111,11 @@
     }
 
     function SelectAssining(idOrderAndIdDriver) {
-        let statusResponse;
+        if (idOrderAndIdDriver != "") {
+            let idDriver = idOrderAndIdDriver;
+            document.location.replace("@ViewBag.BaseUrl/Dashbord/Orders/Assigne?idDriver="+idDriver);
+        }
+        @*let statusResponse;
         if (idOrderAndIdDriver != "") {
             let idOrder = idOrderAndIdDriver.split(',')[0];
             let idDriver = idOrderAndIdDriver.split(',')[1];
@@ -127,7 +131,7 @@
 
         if (statusResponse == "True") {
             window.location.reload();
-        }
+        }*@
     }
 </script>
 <style>
