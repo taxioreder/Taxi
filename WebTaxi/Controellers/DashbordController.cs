@@ -1,6 +1,7 @@
 ﻿using DBAplication.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -479,7 +480,7 @@ namespace WebTaxi.Controellers
         }
 
 
-        private OrderMobile OrderMobile = null; 
+        private static OrderMobile OrderMobile = null; 
         [Route("Dashbord/Orders/Assigne")]
         [HttpGet]
         public IActionResult OrderAssigne(string idDriver)
@@ -495,7 +496,7 @@ namespace WebTaxi.Controellers
                     OrderMobile = new OrderMobile();
                     Driver driver = managerTaxi.GetDriver(idDriver);
                     OrderMobile.IdDriver = driver.ID.ToString();
-                    ViewBag.FullName = driver.FullName;
+                    ViewBag.Driver = driver;
                     actionResult = View("AssignePage");
                 }
                 else
@@ -517,7 +518,7 @@ namespace WebTaxi.Controellers
 
         [Route("Dashbord/Orders/Init")]
         [HttpPost]
-        public string OrderInit()
+        public string OrderInit(string idDriver)
         {
             string actionResult = null;
             try
@@ -527,16 +528,12 @@ namespace WebTaxi.Controellers
                 Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
                 if (managerTaxi.CheckKey(key) && OrderMobile != null)
                 {
-                    Li
+                   List<Order> orders = managerTaxi.GetOrdersSuitable(idDriver);
+                   actionResult = JsonConvert.SerializeObject(orders);
                 }
                 else
                 {
-                    if (Request.Cookies.ContainsKey("KeyAvthoTaxi"))
-                    {
-                        Response.Cookies.Delete("KeyAvthoTaxi");
-                    }
-                    OrderMobile = null;
-                    actionResult = null;
+                    actionResult = JsonConvert.SerializeObject(new List<Order>());
                 }
             }
             catch (Exception)

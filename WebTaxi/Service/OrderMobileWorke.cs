@@ -18,7 +18,7 @@ namespace WebTaxi.Service
 
         public List<Order> SuitableOrders(string idDriver)
         {
-            List<Model.Location> locationsOrder = null;
+            List<Model.Location> locationsOrder = new List<Model.Location>();
             Model.Location locationsDriver = null;
             Driver driver = sqlCommand.GetDriver(idDriver);
             List<Order> orders = sqlCommand.GetOrders();
@@ -33,7 +33,6 @@ namespace WebTaxi.Service
                 Model.Location locationOrder = connectorApiMaps.GetGetLonAndLanToAddress(order.FromAddress.ToString());
                 if (locationOrder != null)
                 {
-                    locationsOrder = new List<Model.Location>();
                     locationOrder.ID = order.ID.ToString();
                     locationOrder.Date = order.Date;
                     locationOrder.PickuoTime = order.TimeOfPickup;
@@ -57,7 +56,7 @@ namespace WebTaxi.Service
                 if(DistanceTo(locationDriver.lat, locationDriver.lng, locationsOrder[0].lat, locationsOrder[0].lng) <= 2)
                 {
                     int duration = connectorApiMaps.GetGetDuration($"{ConvertTOString(locationDriver.lat)},{ConvertTOString(locationDriver.lng)}", $"{ConvertTOString(locationOrder.lat)},{ConvertTOString(locationOrder.lng)}");
-                    if(DateTime.Now.AddSeconds(duration) < DateTime.Parse($"{GetDFormat(locationOrder.PickuoTime)}"))
+                    if(DateTime.Now.AddSeconds(duration) < DateTime.Parse($"{GetDFormat(locationOrder.Date)} {locationOrder.PickuoTime}"))
                     {
                         orders1.Add(orders.Find(o => o.ID.ToString() == locationOrder.ID));
                     }

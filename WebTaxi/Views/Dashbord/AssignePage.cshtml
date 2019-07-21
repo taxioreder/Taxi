@@ -1,5 +1,5 @@
 ﻿<div class="body">
-    <input type="text" id="idriver" style="display:none;" value="@ViewBag.FullName" />
+    <input type="text" id="idriver" style="display:none;" value="@ViewBag.Driver.FullName" />
     <p><h3>Assigne for @ViewBag.FullName</h3></p>
     <div class="orderMobile">
         <div class="content">
@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="filling">
-        <table class="tegTable">
+        <table class="tegTable" id="table">
             <tr>
                 <th>Name Customer</th>
                 <th>Price</th>
@@ -25,7 +25,89 @@
     </div>
 </div>
 <script>
+    function InitOrder() {
+        let order;
+        let xhr = new XMLHttpRequest();
+        let body = "idDriver=@ViewBag.Driver.ID";
+        xhr.open('POST', '@ViewBag.BaseUrl/Dashbord/Orders/Init', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.send(body);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState != 4) return;
+            if (xhr.status == 200) {
+                order = JSON.parse(xhr.responseText);
+                for (let i = 0; i < order.length; i++)
+                {
+                    let tr = document.createElement("tr");
+                    tr.id = order[i].ID;
+                    let td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderStart";
+                    let span = document.createElement("span");
+                    span.textContent = order[i].NameCustomer;
+                    td.appendChild(span);
+                    tr.appendChild(td);
 
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderSrandart";
+                    span = document.createElement("span");
+                    span.textContent = order[i].Price;
+                    td.appendChild(span);
+                    tr.appendChild(td);
+
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderSrandart";
+                    span = document.createElement("span");
+                    span.textContent = order[i].Milisse;
+                    td.appendChild(span);
+                    tr.appendChild(td);
+
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderSrandart";
+                    span = document.createElement("span");
+                    span.textContent = order[i].Date + " " + order[i].TimeOfPickup;
+                    td.appendChild(span);
+                    tr.appendChild(td);
+
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderSrandart";
+                    span = document.createElement("span");
+                    span.textContent = order[i].Phone;
+                    td.appendChild(span);
+                    tr.appendChild(td);
+
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderSrandart";
+                    span = document.createElement("span");
+                    span.textContent = order[i].FromAddress;
+                    td.appendChild(span);
+                    tr.appendChild(td);
+
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderSrandart";
+                    span = document.createElement("span");
+                    span.textContent = order[i].ToAddress;
+                    td.appendChild(span);
+                    tr.appendChild(td);
+
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderEnd";
+                    let btn = document.createElement("button");
+                    btn.textContent = "add";
+                    btn.onclick = AddOrder;
+                    td.appendChild(btn);
+                    tr.appendChild(td);
+
+                    table.appendChild(tr);
+                }
+            } 
+        }
+    }
+
+    function AddOrder() {
+
+    }
+
+    InitOrder();
 </script>
 <style>
     * {
@@ -86,4 +168,6 @@
     .orderTdBorderSrandart {
         border: 1px solid rgba(172, 172, 172, 0.45);
     }
+
+    tr:nth-child(odd) { background-color: rgba(181, 181, 181, 0.28); }
 </style>
