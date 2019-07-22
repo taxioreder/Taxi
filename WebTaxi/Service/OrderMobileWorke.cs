@@ -65,6 +65,55 @@ namespace WebTaxi.Service
             return orders1;
         }
 
+        private void InsertOrderAndPointAddres(OrderMobile orderMobile, Order order, List<Model.Location> locationsOrder, Model.Location locationDriver)
+        {
+            int positionS = 0;
+            int positionE = 0;
+            int numberOfSeats = 0;
+            orderMobile.Status = "New";
+            if (orderMobile.OnePointForAddressOrders == null || orderMobile.OnePointForAddressOrders.Count == 0)
+            {
+                orderMobile.OnePointForAddressOrders = new List<OnePointForAddressOrder>();
+                Model.Location location = locationsOrder.Find(l => l.ID == order.ID.ToString());
+                orderMobile.OnePointForAddressOrders.Add(new OnePointForAddressOrder(order.ID, location.lat, location.lng, order.TimeOfPickup, order.Date, "Start", order.FromAddress));
+                orderMobile.OnePointForAddressOrders.Add(new OnePointForAddressOrder(order.ID, location.latE, location.lngE, order.TimeOfAppointment, order.Date, "End", order.ToAddress));
+            }
+            else
+            {
+                Model.Location location = locationsOrder.Find(l => l.ID == order.ID.ToString());
+                Model.Location location1 = new Model.Location(location.latE, location.lngE); 
+                GetPositionLocation(orderMobile.OnePointForAddressOrders, location, locationDriver, ref positionS);
+                GetPositionLocation(orderMobile.OnePointForAddressOrders, location1, locationDriver, ref positionE);
+                orderMobile.OnePointForAddressOrders.Insert(positionS, new OnePointForAddressOrder(order.ID, location.lat, location.lng, order.TimeOfPickup, order.Date, "Start", order.FromAddress));
+                orderMobile.OnePointForAddressOrders.Insert(positionE, new OnePointForAddressOrder(order.ID, location.latE, location.lngE, order.TimeOfAppointment, order.Date, "End", order.ToAddress));
+            }
+            if (orderMobile.Orders != null)
+            {
+                orderMobile.Orders = new List<Order>();
+            }
+            orderMobile.Orders.Add(order);
+        }
+
+        private void OrderOnTheWay(List<Model.Location> locationsOrder, Model.Location locationDriver, OrderMobile orderMobile)
+        {
+            
+        }
+
+        private void GetPositionLocation(List<OnePointForAddressOrder> onePointForAddressOrders, Model.Location locationNewOrder, Model.Location locationDriver, ref int positon)
+        {
+            positon = 0;
+            int durationNewOrder = connectorApiMaps.GetGetDuration($"{ConvertTOString(locationDriver.lat)},{ConvertTOString(locationDriver.lng)}", $"{ConvertTOString(locationNewOrder.lat)},{ConvertTOString(locationNewOrder.lng)}");
+            List<double> durations = new List<double>();
+            foreach (OnePointForAddressOrder onePointForAddressOrder in onePointForAddressOrders)
+            {
+                int duration = connectorApiMaps.GetGetDuration($"{ConvertTOString(locationDriver.lat)},{ConvertTOString(locationDriver.lng)}", $"{ConvertTOString(onePointForAddressOrder.Lat)},{ConvertTOString(onePointForAddressOrder.Lng)}");
+                if (duration < durationNewOrder)
+                {
+                    positon++;
+                }
+            }
+        }
+
         private double DistanceTo(double lat1, double lon1, double lat2, double lon2, char unit = 'M')
         {
             double rlat1 = Math.PI * lat1 / 180;

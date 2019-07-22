@@ -92,18 +92,19 @@
                     td = document.createElement("td");
                     td.className = "orderTd orderTdBorderEnd";
                     let btn = document.createElement("button");
-                    btn.textContent = "add";
+                    btn.textContent = "Add";
+                    btn.value = "@ViewBag.Driver.ID";
                     btn.onclick = AddOrder;
                     td.appendChild(btn);
                     tr.appendChild(td);
 
                     table.appendChild(tr);
                 }
-            } 
+            }
         }
     }
 
-    function AddOrder() {
+    function AddOrder(elBtn) {
 
     }
 

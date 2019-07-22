@@ -78,6 +78,7 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             if (connectorApiMaps == null)
             {
                 connectorApiMaps = new ConnectorApiMaps();
+                this.sqlCoommandTaxiApi = sqlCoommandTaxiApi;
             }
             int numberOfSeats = 4;
             orderMobile = new OrderMobile();
