@@ -25,6 +25,8 @@
         public string NoName6 { get; set; }
         public int CountCustomer { get; set; }
         public string Comment { get; set; }
+        public string FeedBack { get; set; } = "OK";
+        public bool isValid { get; set; } = true;
         public bool isAccept { get; set; }
         public bool IsVisableAccept { get; set; }
         public Driver Driver { get; set; }

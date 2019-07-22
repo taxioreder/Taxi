@@ -41,9 +41,22 @@ namespace WebTaxi.Service
             }
         }
 
+        public async Task SetFedBack(int idOrder, string feedBack, bool isValid)
+        {
+            Order order = context.Orders.First(o => o.ID == idOrder);
+            order.isValid = isValid;
+            order.FeedBack = feedBack;
+            await context.SaveChangesAsync();
+        }
+
         public List<Order> GetOrders()
         {
             return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-1))).ToList();
+        }
+
+        public List<Order> GetFullOrders()
+        {
+            return context.Orders.ToList();
         }
 
         public Driver GetDriver(string idDriver)
@@ -136,24 +149,16 @@ namespace WebTaxi.Service
 
         public void SaveOrder(Order order)
         {
-            List<Order> orders = context.Orders.ToList();
-            Order orderDb = orders.FirstOrDefault(o => o.Comment == order.Comment && o.Date == order.Date && o.FromAddress == order.FromAddress && o.Milisse == order.Milisse && o.NameCustomer == order.NameCustomer
+            Order orderDb = context.Orders.FirstOrDefault(o => o.Comment == order.Comment && o.Date == order.Date && o.FromAddress == order.FromAddress && o.Milisse == order.Milisse && o.NameCustomer == order.NameCustomer
          && o.NoName == order.NoName && o.NoName1 == order.NoName1 && o.NoName2 == order.NoName2 && o.NoName3 == order.NoName3 && o.NoName4 == order.NoName4 && o.NoName5 == order.NoName5 && o.NoName6 == order.NoName6
          && o.Phone == order.Phone && o.Price == order.Price && o.TimeOfAppointment == order.TimeOfAppointment && o.TimeOfPickup == order.TimeOfPickup && o.ToAddress == order.ToAddress);
             if (orderDb != null)
             {
                 return;
             }
-            int orderIndex = orders.FindIndex(o => (o.FromZip == order.FromZip && o.ToZip == order.ToZip) || (o.FromZip == order.FromZip || o.ToZip == order.ToZip));
-            //if(orderIndex == -1)
-            //{
-                context.Orders.Add(order);
-            //}
-            //else
-            //{
-            //    orders.Insert(orderIndex + 1, order);
-            //    context.UpdateRange(orders);
-            //}
+            order.FeedBack = "";
+            order.isValid = true;
+            context.Orders.Add(order);
             context.SaveChanges();
         }
 
@@ -175,23 +180,11 @@ namespace WebTaxi.Service
             order.NoName1 = noName1 != null ? noName1 : order.NoName1;
             order.NoName2 = noName2 != null ? noName2 : order.NoName2;
             order.Date = date != null ? date : order.Date;
-            //if(timeOfPickup != null && !timeOfPickup.Contains("PM") && !timeOfPickup.Contains("AM"))
-            //{
-            //    int tmpTime = Convert.ToInt32(timeOfPickup.Remove(2));
-            //    if (tmpTime > 12)
-            //    {
-            //        tmpTime -= 12;
-            //        timeOfPickup = $"{tmpTime}:{timeOfPickup.Remove(0, 3)} PM";
-            //    }
-            //    else
-            //    {
-            //        timeOfPickup += " AM";
-            //    }
-            //}
             order.TimeOfPickup = timeOfPickup != null ? timeOfPickup : order.TimeOfPickup;
             order.TimeOfAppointment = timeOfAppointment != null ? timeOfAppointment : order.TimeOfAppointment;
             order.Milisse = milisse != null ? milisse : order.Milisse;
             order.Price = price != null ? price : order.Price;
+            order.isValid = true;
             order.NoName3 = noName3 != null ? noName3 : order.NoName3;
             order.NoName4 = noNama4 != null ? noNama4 : order.NoName4;
             order.NoName5 = noName5 != null ? noName5 : order.NoName5;
