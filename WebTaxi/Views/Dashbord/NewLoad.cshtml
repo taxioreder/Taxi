@@ -33,23 +33,45 @@
                 <th>Phone</th>
                 <th>From Address</th>
                 <th>To Address</th>
+                <th>Feed Back System</th>
                 <th>Control</th>
             </tr>
             @for (int i = 0; i < ViewBag.Orders.Count; i++)
             {
-        <tr id="@ViewBag.Orders[i].ID">
-            <td class="orderTd orderTdBorderStart"><span>@ViewBag.Orders[i].NameCustomer</span></td>
-            <td class="orderTd orderTdBorderSrandart"><span>$@ViewBag.Orders[i].Price</span></td>
-            <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].Milisse Milles</span></td>
-            <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].Date @ViewBag.Orders[i].TimeOfPickup ±5 Min</span></td>
-            <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].Phone</span></td>
-            <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].FromAddress</span></td>
-            <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].ToAddress</span></td>
-            <td class="orderTd orderTdBorderEnd">
-                <a class="" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
-                <a class="" style="width:60px" href="DeletedOrder?id=@ViewBag.Orders[i].ID">Deleted</a>
-            </td>
-        </tr>
+                if (@ViewBag.Orders[i].ID.isValid)
+                {
+                    <tr id="@ViewBag.Orders[i].ID">
+                        <td class="orderTd orderTdBorderStart"><span>@ViewBag.Orders[i].NameCustomer</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>$@ViewBag.Orders[i].Price</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].Milisse Milles</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].Date @ViewBag.Orders[i].TimeOfPickup ±5 Min</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].Phone</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].FromAddress</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].ToAddress</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].FeedBack</span></td>
+                        <td class="orderTd orderTdBorderEnd">
+                            <a class="" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
+                            <a class="" style="width:60px" href="DeletedOrder?id=@ViewBag.Orders[i].ID">Deleted</a>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr id="@ViewBag.Orders[i].ID" class="notValidOrder">
+                        <td class="orderTd orderTdBorderStart"><span>@ViewBag.Orders[i].NameCustomer</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>$@ViewBag.Orders[i].Price</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].Milisse Milles</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].Date @ViewBag.Orders[i].TimeOfPickup ±5 Min</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].Phone</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].FromAddress</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].ToAddress</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].FeedBack</span></td>
+                        <td class="orderTd orderTdBorderEnd">
+                            <a class="" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
+                            <a class="" style="width:60px" href="DeletedOrder?id=@ViewBag.Orders[i].ID">Deleted</a>
+                        </td>
+                    </tr>
+                }
             }
         </table>
             @if (ViewBag.count != 1)
@@ -138,6 +160,10 @@
         margin: 0px;
     }
     
+    .notValidOrder {
+        background-color:rgba(247, 5, 5, 0.29)
+    }
+
     tr:nth-child(odd) { background-color: rgba(181, 181, 181, 0.28); }
 
     .orderTd {
