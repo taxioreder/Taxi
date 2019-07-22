@@ -92,6 +92,11 @@ namespace WebTaxi.Service
                 orderMobile.Orders = new List<Order>();
             }
             orderMobile.Orders.Add(order);
+            foreach(Order order1 in orderMobile.Orders)
+            {
+                numberOfSeats -= order1.CountCustomer;
+            }
+            locationsOrder.Remove(locationsOrder.Find(l => l.ID == order.ID.ToString()));
         }
 
         private void OrderOnTheWay(List<Model.Location> locationsOrder, Model.Location locationDriver, OrderMobile orderMobile)
