@@ -131,7 +131,7 @@ namespace DBAplication.Migrations
 
                     b.Property<int?>("DriverID");
 
-                    b.Property<string>("FeedBack");
+                    b.Property<string>("FB");
 
                     b.Property<string>("FromAddress");
 

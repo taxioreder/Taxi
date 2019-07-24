@@ -542,5 +542,59 @@ namespace WebTaxi.Controellers
             }
             return actionResult;
         }
+
+        [Route("Dashbord/Orders/InitInsert")]
+        [HttpPost]
+        public string OrderInitAndInsert(string idDriver, string idOrder)
+        {
+            string actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key) && OrderMobile != null)
+                {
+                    Order order = managerTaxi.GetOrder(idOrder);
+                    List<Order> orders = managerTaxi.GetOrdersSuitableAndInsert(idDriver, OrderMobile, order);
+                    actionResult = JsonConvert.SerializeObject(orders);
+                }
+                else
+                {
+                    actionResult = JsonConvert.SerializeObject(new List<Order>());
+                }
+            }
+            catch (Exception)
+            {
+                OrderMobile = null;
+            }
+            return actionResult;
+        }
+
+        [Route("Dashbord/Orders/GetOrderMobile")]
+        [HttpPost]
+        public string GetOrderMobile(string idDriver, string idOrder)
+        {
+            string actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key) && OrderMobile != null)
+                {
+                    actionResult = JsonConvert.SerializeObject(OrderMobile);
+                }
+                else
+                {
+                    actionResult = JsonConvert.SerializeObject(new List<Order>());
+                }
+            }
+            catch (Exception)
+            {
+                OrderMobile = null;
+            }
+            return actionResult;
+        }
     }
 }

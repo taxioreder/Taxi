@@ -100,14 +100,14 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
             {
                 for (int i = 0; i < locationsOrder.Count; i++)
                 {
-                    bool isAddOrder = true;
-                    bool isOnTheWay = false;
-                    int positionS = 0;
-                    int positionE = 0;
                     if (locationsOrder[i].CountCusstomer > numberOfSeats)
                     {
                         continue;
                     }
+                    bool isAddOrder = true;
+                    bool isOnTheWay = false;
+                    int positionS = 0;
+                    int positionE = 0;
                     bool isOnTheWayStart = false;
                     double lat = 0;
                     double lng = 0;

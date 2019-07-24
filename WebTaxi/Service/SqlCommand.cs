@@ -16,7 +16,7 @@ namespace WebTaxi.Service
         public SqlCommand()
         {
             context = new Context();
-            InitUserOne();
+            //InitUserOne();
         }
 
         private async void InitUserOne()
@@ -45,7 +45,7 @@ namespace WebTaxi.Service
         {
             Order order = context.Orders.First(o => o.ID == idOrder);
             order.isValid = isValid;
-            order.FeedBack = feedBack;
+            order.FB = feedBack;
             await context.SaveChangesAsync();
         }
 
@@ -156,7 +156,7 @@ namespace WebTaxi.Service
             {
                 return;
             }
-            order.FeedBack = "";
+            order.FB = "";
             order.isValid = true;
             context.Orders.Add(order);
             context.SaveChanges();

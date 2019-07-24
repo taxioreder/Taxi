@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBAplication.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20190722035206_update220719")]
-    partial class update220719
+    [Migration("20190724010742_Update240719")]
+    partial class Update240719
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -133,7 +133,7 @@ namespace DBAplication.Migrations
 
                     b.Property<int?>("DriverID");
 
-                    b.Property<string>("FeedBack");
+                    b.Property<string>("FB");
 
                     b.Property<string>("FromAddress");
 

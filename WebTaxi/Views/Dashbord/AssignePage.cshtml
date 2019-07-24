@@ -11,16 +11,16 @@
     </div>
     <div class="filling">
         <table class="tegTable" id="table">
-            <tr>
-                <th>Name Customer</th>
-                <th>Price</th>
-                <th>Miless</th>
-                <th>Pickup time</th>
-                <th>Phone</th>
-                <th>From Address</th>
-                <th>To Address</th>
-                <th>Control</th>
-            </tr>
+                <tr>
+                    <th>Name Customer</th>
+                    <th>Price</th>
+                    <th>Miless</th>
+                    <th>Pickup time</th>
+                    <th>Phone</th>
+                    <th>From Address</th>
+                    <th>To Address</th>
+                    <th>Control</th>
+                </tr>
         </table>
     </div>
 </div>
@@ -105,7 +105,102 @@
     }
 
     function AddOrder(elBtn) {
+        let order;
+        let tr = document.getElementById("table").getElementsByTagName("tr");
+        while(tr.length > 1){
+            tr[1].parentNode.removeChild(tr[1]);
+        }   
+        let idOrder = elBtn.currentTarget.value;
+        let xhr = new XMLHttpRequest();
+        let body = "idDriver=@ViewBag.Driver.ID&idOrder="+idOrder;
+        xhr.open('POST', '@ViewBag.BaseUrl/Dashbord/Orders/InitInsert', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.send(body);
+         xhr.onreadystatechange = function () {
+            if (xhr.readyState != 4) return;
+            if (xhr.status == 200) {
+                order = JSON.parse(xhr.responseText);
+                SetOrderMobile()
+                for (let i = 0; i < order.length; i++)
+                {
+                    let tr = document.createElement("tr");
+                    tr.id = order[i].ID;
+                    let td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderStart";
+                    let span = document.createElement("span");
+                    span.textContent = order[i].NameCustomer;
+                    td.appendChild(span);
+                    tr.appendChild(td);
 
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderSrandart";
+                    span = document.createElement("span");
+                    span.textContent = order[i].Price;
+                    td.appendChild(span);
+                    tr.appendChild(td);
+
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderSrandart";
+                    span = document.createElement("span");
+                    span.textContent = order[i].Milisse;
+                    td.appendChild(span);
+                    tr.appendChild(td);
+
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderSrandart";
+                    span = document.createElement("span");
+                    span.textContent = order[i].Date + " " + order[i].TimeOfPickup;
+                    td.appendChild(span);
+                    tr.appendChild(td);
+
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderSrandart";
+                    span = document.createElement("span");
+                    span.textContent = order[i].Phone;
+                    td.appendChild(span);
+                    tr.appendChild(td);
+
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderSrandart";
+                    span = document.createElement("span");
+                    span.textContent = order[i].FromAddress;
+                    td.appendChild(span);
+                    tr.appendChild(td);
+
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderSrandart";
+                    span = document.createElement("span");
+                    span.textContent = order[i].ToAddress;
+                    td.appendChild(span);
+                    tr.appendChild(td);
+
+                    td = document.createElement("td");
+                    td.className = "orderTd orderTdBorderEnd";
+                    let btn = document.createElement("button");
+                    btn.textContent = "Add";
+                    btn.value = "@ViewBag.Driver.ID";
+                    btn.onclick = AddOrder;
+                    td.appendChild(btn);
+                    tr.appendChild(td);
+
+                    table.appendChild(tr);
+                }
+            }
+        }
+    }
+
+    function SetOrderMobile() {
+        let orderMobile;
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '@ViewBag.BaseUrl/Dashbord/Orders/GetOrderMobile', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.send();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState != 4) return;
+            if (xhr.status == 200) {
+                orderMobile = JSON.parse(xhr.responseText);
+            }
+        }
     }
 
     InitOrder();

@@ -96,13 +96,16 @@ namespace TaxiApp.View.AppPage
         [Obsolete]
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            fullOrderMV.IsRefr = true;
-            GefenceManager gefenceManager = new GefenceManager();
-            DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.OrderMobile);
-            var options = new MapLaunchOptions { Name = "1", NavigationMode = Xamarin.Essentials.NavigationMode.Driving };
-            await Map.OpenAsync(fullOrderMV.OrderMobile.OnePointForAddressOrders[0].Lat, fullOrderMV.OrderMobile.OnePointForAddressOrders[0].Lng, options);
-            await gefenceManager.RecurentStatusOrder(fullOrderMV.OrderMobile.ID, "StartOrder");
-            fullOrderMV.Init();
+            if (fullOrderMV.OrderMobile != null)
+            {
+                fullOrderMV.IsRefr = true;
+                GefenceManager gefenceManager = new GefenceManager();
+                DependencyService.Get<Service.Geofence.IGeofence>().StartGeofence(fullOrderMV.OrderMobile);
+                var options = new MapLaunchOptions { Name = "1", NavigationMode = Xamarin.Essentials.NavigationMode.Driving };
+                await Map.OpenAsync(fullOrderMV.OrderMobile.OnePointForAddressOrders[0].Lat, fullOrderMV.OrderMobile.OnePointForAddressOrders[0].Lng, options);
+                await gefenceManager.RecurentStatusOrder(fullOrderMV.OrderMobile.ID, "StartOrder");
+                fullOrderMV.Init();
+            }
         }
 
         private void Button_Clicked_1(object sender, EventArgs e)

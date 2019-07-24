@@ -24,7 +24,8 @@ namespace TaxiApp.ViewModels.AppPageMV
             this.managerTaxi = managerTaxi;
             RefreshCommand = new DelegateCommand(Init);
             App.initDasbordDelegate = Init;
-            IsOrderMobile = true;
+            IsOrderMobile = false;
+            IsEmty = true;
             Init();
         }
 

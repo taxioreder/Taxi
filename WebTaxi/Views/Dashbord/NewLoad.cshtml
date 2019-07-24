@@ -38,7 +38,7 @@
             </tr>
             @for (int i = 0; i < ViewBag.Orders.Count; i++)
             {
-                if (@ViewBag.Orders[i].ID.isValid)
+                if (@ViewBag.Orders[i].isValid)
                 {
                     <tr id="@ViewBag.Orders[i].ID">
                         <td class="orderTd orderTdBorderStart"><span>@ViewBag.Orders[i].NameCustomer</span></td>
@@ -48,7 +48,7 @@
                         <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].Phone</span></td>
                         <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].FromAddress</span></td>
                         <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].ToAddress</span></td>
-                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].FeedBack</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].FB</span></td>
                         <td class="orderTd orderTdBorderEnd">
                             <a class="" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
                             <a class="" style="width:60px" href="DeletedOrder?id=@ViewBag.Orders[i].ID">Deleted</a>
@@ -65,7 +65,7 @@
                         <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].Phone</span></td>
                         <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].FromAddress</span></td>
                         <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].ToAddress</span></td>
-                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].FeedBack</span></td>
+                        <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].FB</span></td>
                         <td class="orderTd orderTdBorderEnd">
                             <a class="" style="width:50px" href="/Dashbord/Order/Edit?id=@ViewBag.Orders[i].ID">Edit</a>
                             <a class="" style="width:60px" href="DeletedOrder?id=@ViewBag.Orders[i].ID">Deleted</a>
