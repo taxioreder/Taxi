@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Net;
 using TaxiApp.Droid.CustomGeofense;
 
 namespace TaxiApp.Droid
@@ -10,7 +11,8 @@ namespace TaxiApp.Droid
     {
         public override void OnReceive(Context context, Intent intent)
         {
-            if (GefenceLocation.gefenceModel == null)
+            var cm = (ConnectivityManager)context.GetSystemService(this.Class);
+            if (GefenceLocation.gefenceModel == null && cm.ActiveNetworkInfo.IsConnected)
             {
                 if(GefenceLocation.ResetGeofnceModel())
                 {

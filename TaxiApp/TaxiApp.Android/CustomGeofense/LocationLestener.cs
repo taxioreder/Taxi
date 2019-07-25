@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Gms.Location;
+using Android.Net;
 using TaxiApp.Service.Geofence;
 
 namespace TaxiApp.Droid.CustomGeofense
@@ -14,14 +15,18 @@ namespace TaxiApp.Droid.CustomGeofense
 
         public override async void OnReceive(Context context, Intent intent)
         {
-            if (intent != null)
+            var cm = (ConnectivityManager)context.GetSystemService(this.Class);
+            if (intent != null && cm.ActiveNetworkInfo.IsConnected)
             {
-                if (GefenceLocation.gefenceModel == null && !GefenceLocation.ResetGeofnceModel())
+                if (GefenceLocation.gefenceModel == null)
                 {
-                    ComponentName receiver = new ComponentName(context, this.Class);
-                    PackageManager pm = context.PackageManager;
-                    pm.SetComponentEnabledSetting(receiver, ComponentEnabledState.Disabled, ComponentEnableOption.DontKillApp);
-                    return;
+                    if (!GefenceLocation.ResetGeofnceModel())
+                    {
+                        ComponentName receiver = new ComponentName(context, this.Class);
+                        PackageManager pm = context.PackageManager;
+                        pm.SetComponentEnabledSetting(receiver, ComponentEnabledState.Disabled, ComponentEnableOption.DontKillApp);
+                        return;
+                    }
                 }
                 GefenceManager gefenceManager = null;
                 string action = intent.Action;

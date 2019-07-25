@@ -4,6 +4,7 @@ using Android;
 using Android.App;
 using Android.Content;
 using Android.Gms.Location;
+using Android.Net;
 using Android.Support.V4.App;
 using Android.Support.V7.App;
 using Com.Karumi.Dexter;
@@ -106,20 +107,28 @@ namespace TaxiApp.Droid.CustomGeofense
 
         public async void ContinueGeofence()
         {
-            if (gefenceModel == null && !GefenceLocation.ResetGeofnceModel())
+            var cm = (ConnectivityManager)GetSystemService(Application.Class);
+            GefenceManager gefenceManager = new GefenceManager();
+            if (cm.ActiveNetworkInfo.IsConnected)
             {
-                return;
-            }
-            else
-            {
-                UpdateLocation();
-            }
-            GefenceManager gefenceManager = new GefenceManager(); 
-            int index = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.FindIndex(one => one == GefenceLocation.gefenceModel.OnePointForAddressOrder);
-            if (GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.Count - 1 != index)
-            {
-                await gefenceManager.RecurentStatusOrder(GefenceLocation.gefenceModel.OrderMobile.ID, "CompletePoint");
-                GefenceLocation.gefenceModel.OnePointForAddressOrder = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders[index + 1];
+
+                if (gefenceModel == null)
+                {
+                    if (GefenceLocation.ResetGeofnceModel())
+                    {
+                        UpdateLocation();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                int index = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.FindIndex(one => one == GefenceLocation.gefenceModel.OnePointForAddressOrder);
+                if (GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.Count - 1 != index)
+                {
+                    await gefenceManager.RecurentStatusOrder(GefenceLocation.gefenceModel.OrderMobile.ID, "CompletePoint");
+                    GefenceLocation.gefenceModel.OnePointForAddressOrder = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders[index + 1];
+                }
             }
         }
 
@@ -133,7 +142,7 @@ namespace TaxiApp.Droid.CustomGeofense
             {
                 RestClient client = new RestClient(Config.BaseReqvesteUrl);
                 RestRequest request = new RestRequest("Api.Mobile/OrderMobile", Method.POST);
-                client.Timeout = 20000;
+                client.Timeout = 60000;
                 request.AddHeader("Accept", "application/json");
                 request.AddParameter("token", token);
                 response = client.Execute(request);
