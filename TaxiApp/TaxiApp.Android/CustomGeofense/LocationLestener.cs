@@ -15,8 +15,8 @@ namespace TaxiApp.Droid.CustomGeofense
 
         public override async void OnReceive(Context context, Intent intent)
         {
-            var cm = (ConnectivityManager)context.GetSystemService(this.Class);
-            if (intent != null && cm.ActiveNetworkInfo.IsConnected)
+            var cm = (ConnectivityManager)context.GetSystemService(Context.ConnectivityService);
+            if (intent != null && (cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected))
             {
                 if (GefenceLocation.gefenceModel == null)
                 {

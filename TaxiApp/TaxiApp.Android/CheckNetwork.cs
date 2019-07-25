@@ -7,7 +7,7 @@ namespace TaxiApp.Droid
 {
 
     [BroadcastReceiver(Exported = false, DirectBootAware = true)]
-    [IntentFilter(new[] { "android.intent.action.CONNECTIVITY_CHANGE" })]
+    [IntentFilter(new[] { Android.Net.ConnectivityManager.ConnectivityAction, Android.Content.Intent.ActionBootCompleted })]
     public class CheckNetwork : BroadcastReceiver
     {
         public override void OnReceive(Context context, Intent intent)
@@ -26,7 +26,7 @@ namespace TaxiApp.Droid
 
         public bool IsOnline(Context context)
         {
-            var cm = (ConnectivityManager)context.GetSystemService(this.Class);
+            var cm = (ConnectivityManager)context.GetSystemService(Context.ConnectivityService);
             return cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected;
         }
     }

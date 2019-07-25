@@ -28,14 +28,8 @@ namespace TaxiApp.Droid.CustomGeofense
         static LocationRequest locationRequest;
         static FusedLocationProviderClient FusedLocationProviderClient;
         public static GefenceModel gefenceModel = null;
-        static MainActivity MainActivity = null;
 
         public bool IsListenGefence { get; set; }
-
-        public GefenceLocation()
-        {
-            MainActivity = MainActivity.GetInstance();
-        }
 
         public void OnPermissionDenied(PermissionDeniedResponse p0)
         {
@@ -50,7 +44,7 @@ namespace TaxiApp.Droid.CustomGeofense
         public static void UpdateLocation()
         {
             LocationReqvest();
-            FusedLocationProviderClient = LocationServices.GetFusedLocationProviderClient(MainActivity);
+            FusedLocationProviderClient = LocationServices.GetFusedLocationProviderClient(MainActivity.GetInstance());
             if (ActivityCompat.CheckSelfPermission(MainActivity.GetInstance(), Manifest.Permission.AccessFineLocation) != Android.Content.PM.Permission.Granted)
             {
                 return;
@@ -61,9 +55,9 @@ namespace TaxiApp.Droid.CustomGeofense
 
         private static PendingIntent GetPendingIntent()
         {
-            Intent intent = new Intent(MainActivity, typeof(LocationLestener));
+            Intent intent = new Intent(MainActivity.GetInstance(), typeof(LocationLestener));
             intent.SetAction(LocationLestener.ACTION_PROCESS_LOCATIOM);
-            return PendingIntent.GetBroadcast(MainActivity, 0, intent, PendingIntentFlags.UpdateCurrent);
+            return PendingIntent.GetBroadcast(MainActivity.GetInstance(), 0, intent, PendingIntentFlags.UpdateCurrent);
         }
 
         private static void LocationReqvest()
@@ -90,7 +84,7 @@ namespace TaxiApp.Droid.CustomGeofense
             gefenceModel.OrderMobile = orderMobile;
             gefenceModel.OnePointForAddressOrder = orderMobile.OnePointForAddressOrders[0];
             gefenceModel.IsNewOrder = false;
-            Dexter.WithActivity(MainActivity)
+            Dexter.WithActivity(MainActivity.GetInstance())
                 .WithPermission(Manifest.Permission.AccessFineLocation)
                 .WithListener(this)
                 .Check();
@@ -107,9 +101,9 @@ namespace TaxiApp.Droid.CustomGeofense
 
         public async void ContinueGeofence()
         {
-            var cm = (ConnectivityManager)GetSystemService(Application.Class);
+            var cm = (ConnectivityManager)MainActivity.GetInstance().BaseContext.GetSystemService(Context.ConnectivityService);
             GefenceManager gefenceManager = new GefenceManager();
-            if (cm.ActiveNetworkInfo.IsConnected)
+            if (cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected)
             {
 
                 if (gefenceModel == null)
@@ -204,20 +198,31 @@ namespace TaxiApp.Droid.CustomGeofense
 
         public async void EndGeofence()
         {
-            if (gefenceModel == null && !GefenceLocation.ResetGeofnceModel())
-            {
-                return;
-            }
+            var cm = (ConnectivityManager)MainActivity.GetInstance().BaseContext.GetSystemService(Context.ConnectivityService);
             GefenceManager gefenceManager = new GefenceManager();
-            int index = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.FindIndex(one => one == GefenceLocation.gefenceModel.OnePointForAddressOrder);
-            if (GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.Count - 1 == index)
+            if (cm.ActiveNetworkInfo == null ? false : cm.ActiveNetworkInfo.IsConnected)
             {
-                await gefenceManager.RecurentStatusOrder(GefenceLocation.gefenceModel.OrderMobile.ID, "NewOrderAndEndOrder");
-                if(gefenceModel.PendingIntent != null)
+                if (gefenceModel == null)
                 {
-                    gefenceModel.PendingIntent.Cancel();
+                    if (GefenceLocation.ResetGeofnceModel())
+                    {
+                        UpdateLocation();
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-                gefenceModel = null;
+                int index = GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.FindIndex(one => one == GefenceLocation.gefenceModel.OnePointForAddressOrder);
+                if (GefenceLocation.gefenceModel.OrderMobile.OnePointForAddressOrders.Count - 1 == index)
+                {
+                    await gefenceManager.RecurentStatusOrder(GefenceLocation.gefenceModel.OrderMobile.ID, "NewOrderAndEndOrder");
+                    if (gefenceModel.PendingIntent != null)
+                    {
+                        gefenceModel.PendingIntent.Cancel();
+                    }
+                    gefenceModel = null;
+                }
             }
         }
     }

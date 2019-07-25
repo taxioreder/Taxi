@@ -39,6 +39,8 @@ namespace TaxiApp.Droid
             return Instance;
         }
 
+        //private void Regista
+
         [Obsolete]
         public void TurnOffDozeMode(Context context)
         {
