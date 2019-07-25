@@ -2,10 +2,10 @@
     <input type="text" id="idriver" style="display:none;" value="@ViewBag.Driver.FullName" />
     <p><h3>Assigne for @ViewBag.FullName</h3></p>
     <div class="orderMobile">
-        <div class="content">
+        <div id="orders" class="content">
 
         </div>
-        <div class="content">
+        <div id="points" class="content">
 
         </div>
     </div>
@@ -93,7 +93,7 @@
                     td.className = "orderTd orderTdBorderEnd";
                     let btn = document.createElement("button");
                     btn.textContent = "Add";
-                    btn.value = "@ViewBag.Driver.ID";
+                    btn.value = order[i].ID;
                     btn.onclick = AddOrder;
                     td.appendChild(btn);
                     tr.appendChild(td);
@@ -109,7 +109,7 @@
         let tr = document.getElementById("table").getElementsByTagName("tr");
         while(tr.length > 1){
             tr[1].parentNode.removeChild(tr[1]);
-        }   
+        }
         let idOrder = elBtn.currentTarget.value;
         let xhr = new XMLHttpRequest();
         let body = "idDriver=@ViewBag.Driver.ID&idOrder="+idOrder;
@@ -178,7 +178,7 @@
                     td.className = "orderTd orderTdBorderEnd";
                     let btn = document.createElement("button");
                     btn.textContent = "Add";
-                    btn.value = "@ViewBag.Driver.ID";
+                    btn.value = order[i].ID;
                     btn.onclick = AddOrder;
                     td.appendChild(btn);
                     tr.appendChild(td);
@@ -199,7 +199,52 @@
             if (xhr.readyState != 4) return;
             if (xhr.status == 200) {
                 orderMobile = JSON.parse(xhr.responseText);
+                SetBlockPoint(orderMobile.OnePointForAddressOrders);
+                SetBlockOrder(orderMobile.Orders);
             }
+        }
+    }
+
+    function SetBlockPoint(point) {
+        let block = document.getElementById("points");
+        while (block.children.length > 0) {
+            block.children[0].parentNode.removeChild(block.children[0]);
+        }
+        for (let i = 0; i < point.length; i++) {
+            let newElP = document.createElement("P");
+            let line = document.createElement("hr");
+            let newElH4 = document.createElement("h4");
+            newElH4.textContent = point[i].Address + " " +point[i].PTime;
+            newElP.appendChild(newElH4);
+            newElP.style.margin = "10px";
+            block.appendChild(newElP);
+            block.appendChild(line);
+        }
+    }
+
+    function SetBlockOrder(order) {
+         let block = document.getElementById("orders");
+        while (block.children.length > 0) {
+            block.children[0].parentNode.removeChild(block.children[0]);
+        }
+        for (let i = 0; i < order.length; i++) {
+            let newElDiv = document.createElement("div");
+            let newElP = document.createElement("P");
+            let newElPFromA = document.createElement("P");
+            let newElPToA = document.createElement("P");
+            let line = document.createElement("hr");
+            let newElH4 = document.createElement("h4");
+            newElH4.textContent = order[i].NameCustomer + " " + order[i].Date;
+            newElPFromA.textContent = order[i].FromAddress + " " + order[i].TimeOfPickup;
+            newElPToA.textContent = order[i].ToAddress + " " + order[i].TimeOfAppointment;
+            newElP.appendChild(newElH4);
+            newElDiv.appendChild(newElP);
+            newElDiv.appendChild(newElPFromA);
+            newElDiv.appendChild(newElPToA);
+            newElDiv.style.margin = "10px";
+
+            block.appendChild(newElDiv);
+            block.appendChild(line);
         }
     }
 
@@ -226,6 +271,7 @@
         border-width :1px;
         border-color: black;
         border-style: solid;
+        overflow: scroll;
     }
 
     .filling {

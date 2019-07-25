@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using WebTaxi.Service.Model;
 
 namespace WebTaxi.Service
@@ -95,8 +96,8 @@ namespace WebTaxi.Service
                 Model.Location location = locationsOrder.Find(l => l.ID == order.ID.ToString());
                 Model.Location location1 = new Model.Location(location.latE, location.lngE); 
                 GetPositionLocation(orderMobile.OnePointForAddressOrders, location, locationDriver, ref positionS);
-                GetPositionLocation(orderMobile.OnePointForAddressOrders, location1, locationDriver, ref positionE);
                 orderMobile.OnePointForAddressOrders.Insert(positionS, new OnePointForAddressOrder(order.ID, location.lat, location.lng, order.TimeOfPickup, order.Date, "Start", order.FromAddress));
+                GetPositionLocation(orderMobile.OnePointForAddressOrders, location1, locationDriver, ref positionE);
                 orderMobile.OnePointForAddressOrders.Insert(positionE, new OnePointForAddressOrder(order.ID, location.latE, location.lngE, order.TimeOfAppointment, order.Date, "End", order.ToAddress));
             }
             if (orderMobile.Orders == null)
@@ -107,8 +108,11 @@ namespace WebTaxi.Service
             foreach(Order order1 in orderMobile.Orders)
             {
                 numberOfSeats -= order1.CountCustomer;
+                if(locationsOrder.FirstOrDefault(l => l.ID == order1.ID.ToString()) != null)
+                {
+                    locationsOrder.Remove(locationsOrder.Find(l => l.ID == order1.ID.ToString()));
+                }
             }
-            locationsOrder.Remove(locationsOrder.Find(l => l.ID == order.ID.ToString()));
             if(locationsOrder != null && locationsOrder.Count != 0 && numberOfSeats > 0)
             {
                 return OrderOnTheWay(locationsOrder, locationDriver, orderMobile, orders, numberOfSeats);
@@ -171,7 +175,7 @@ namespace WebTaxi.Service
                             DateTime dateTime = new DateTime();
                             DateTime dateTime1 = new DateTime();
                             int duration1 = connectorApiMaps.GetGetDuration($"{ConvertTOString(onePointForAddressOrders[j - 1].Lat)},{ConvertTOString(onePointForAddressOrders[j - 1].Lng)}", $"{ConvertTOString(onePointForAddressOrders[j].Lat)},{ConvertTOString(onePointForAddressOrders[j].Lng)}");
-                            if(duration1 < 60)
+                            if(duration1 < 60 * 10)
                             {
                                 continue;
                             }
@@ -197,8 +201,8 @@ namespace WebTaxi.Service
                                 onePointForAddressOrders[j].PTime = date1;
                             }
                             if (onePointForAddressOrders[j].Type == "Start"
-                                && !(dateTime.AddSeconds(duration1) < dateTime1.AddMinutes(20)
-                                && dateTime1.AddMinutes(-20) < dateTime.AddSeconds(duration1)))
+                                && !(dateTime.AddSeconds(duration1) < dateTime1.AddMinutes(10)
+                                && dateTime1.AddMinutes(-10) < dateTime.AddSeconds(duration1)))
                             {
                                 isAddOrder = false;
                                 break;
@@ -223,6 +227,7 @@ namespace WebTaxi.Service
                     {
                         orders1.Add(order1);
                         numberOfSeats -= order1.CountCustomer;
+                        orders.Remove(order1);
                     }
                 }
             }

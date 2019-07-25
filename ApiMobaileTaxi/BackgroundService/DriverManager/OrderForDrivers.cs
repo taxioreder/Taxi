@@ -151,6 +151,10 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                                     DateTime dateTime = new DateTime();
                                     DateTime dateTime1 = new DateTime();
                                     int duration1 = connectorApiMaps.GetGetDuration($"{ConvertTOString(onePointForAddressOrders[j - 1].Lat)},{ConvertTOString(onePointForAddressOrders[j - 1].Lng)}", $"{ConvertTOString(onePointForAddressOrders[j].Lat)},{ConvertTOString(onePointForAddressOrders[j].Lng)}");
+                                    if (duration1 < 60 * 10)
+                                    {
+                                        continue;
+                                    }
                                     if (onePointForAddressOrders[j - 1].Type == "Start")
                                     {
                                         dateTime = DateTime.Parse($"{GetDFormat(onePointForAddressOrders[j - 1].Date)} {onePointForAddressOrders[j - 1].PTime}");
@@ -329,7 +333,7 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                 foreach (var locationOrder in locationsOrder)
                 {
                     double tempDistance = DistanceTo(locationDriver.lat, locationDriver.lng, locationOrder.lat, locationOrder.lng);
-                    if (tempDistance < distance)
+                    if (tempDistance < distance && tempDistance <= 2)
                     {
                         try
                         {
