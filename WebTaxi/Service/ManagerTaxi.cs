@@ -259,5 +259,10 @@ namespace WebTaxi.Service
             OrderMobileWorke orderMobileWorke = new OrderMobileWorke(sqlCommand);
             return orderMobileWorke.SuitableOrders(idDriver, orderMobile, order1);
         }
+
+        public void SetMobileOrder(OrderMobile orderMobile)
+        {
+            sqlCommand.AssigneOrderMobile(orderMobile);
+        }
     }
 }

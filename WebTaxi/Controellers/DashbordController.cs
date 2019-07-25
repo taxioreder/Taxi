@@ -596,5 +596,33 @@ namespace WebTaxi.Controellers
             }
             return actionResult;
         }
+
+        [Route("Dashbord/Orders/SaveOrderMobile")]
+        [HttpGet]
+        public IActionResult SaveOrderMobile()
+        {
+            IActionResult actionResult = null;
+            try
+            {
+                string key = null;
+                ViewBag.BaseUrl = Config.BaseReqvesteUrl;
+                Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
+                if (managerTaxi.CheckKey(key) && OrderMobile != null)
+                {
+                    managerTaxi.SetMobileOrder(OrderMobile);
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                    OrderMobile = null;
+                }
+                else
+                {
+                    actionResult = Redirect(Config.BaseReqvesteUrl);
+                }
+            }
+            catch (Exception)
+            {
+                OrderMobile = null;
+            }
+            return actionResult;
+        }
     }
 }

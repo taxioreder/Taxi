@@ -279,7 +279,7 @@ namespace ApiMobaileTaxi.Service
                 order1.Driver = driver;
             }
             context.OrderMobiles.Add(orderMobile);
-                await context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public OrderMobile GetOrderMobile(string token)

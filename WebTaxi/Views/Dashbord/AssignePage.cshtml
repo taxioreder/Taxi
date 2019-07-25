@@ -1,6 +1,7 @@
 ﻿<div class="body">
     <input type="text" id="idriver" style="display:none;" value="@ViewBag.Driver.FullName" />
-    <p><h3>Assigne for @ViewBag.FullName</h3></p>
+    <span style="font-size:20px;margin:5px;">Assigne for @ViewBag.Driver.FullName</span>
+    <a class="btnSave" href="SaveOrderMobile">Save</a>
     <div class="orderMobile">
         <div id="orders" class="content">
 
@@ -11,16 +12,16 @@
     </div>
     <div class="filling">
         <table class="tegTable" id="table">
-                <tr>
-                    <th>Name Customer</th>
-                    <th>Price</th>
-                    <th>Miless</th>
-                    <th>Pickup time</th>
-                    <th>Phone</th>
-                    <th>From Address</th>
-                    <th>To Address</th>
-                    <th>Control</th>
-                </tr>
+            <tr>
+                <th>Name Customer</th>
+                <th>Price</th>
+                <th>Miless</th>
+                <th>Pickup time</th>
+                <th>Phone</th>
+                <th>From Address</th>
+                <th>To Address</th>
+                <th>Control</th>
+            </tr>
         </table>
     </div>
 </div>
@@ -255,6 +256,24 @@
         margin: 0px;
     }
 
+    .btnSave {
+        color: rgba(45,45,45,0.88);
+        background: none;
+        display: inline-block;
+        padding: 7px;
+        font-size: 16px;
+        font-weight: 400;
+        text-align: center;
+        border: 1px solid;
+        border-radius: 4px;
+        width: 130px;
+    }
+
+    btnSave:hover {
+        background-color: rgba(45,45,45,0.98);
+        transition: 0.5s;
+    }
+
     .body {
         margin: 20px;
     }
@@ -268,7 +287,7 @@
         width: 45%;
         margin: 5px;
         height: 200px;
-        border-width :1px;
+        border-width: 1px;
         border-color: black;
         border-style: solid;
         overflow: scroll;
@@ -283,15 +302,15 @@
     }
 
     .tegTable {
-        width:98%;
+        width: 98%;
         border-collapse: collapse;
     }
 
     .orderTd {
         height: 30px;
-        vertical-align: central; 
-        text-align: center; 
-        height: 40px; 
+        vertical-align: central;
+        text-align: center;
+        height: 40px;
         padding: 2px;
     }
 
@@ -300,7 +319,7 @@
         border-top: 1px solid rgba(172, 172, 172, 0.45);
         border-bottom: 1px solid rgba(172, 172, 172, 0.45);
     }
-    
+
     .orderTdBorderStart {
         border-right: 1px solid rgba(172, 172, 172, 0.45);
         border-top: 1px solid rgba(172, 172, 172, 0.45);
@@ -311,5 +330,7 @@
         border: 1px solid rgba(172, 172, 172, 0.45);
     }
 
-    tr:nth-child(odd) { background-color: rgba(181, 181, 181, 0.28); }
+    tr:nth-child(odd) {
+        background-color: rgba(181, 181, 181, 0.28);
+    }
 </style>

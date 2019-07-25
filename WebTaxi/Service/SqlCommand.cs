@@ -49,6 +49,20 @@ namespace WebTaxi.Service
             await context.SaveChangesAsync();
         }
 
+        public async void AssigneOrderMobile(OrderMobile orderMobile)
+        {
+            Driver driver = context.Drivers.FirstOrDefault(d => d.ID.ToString() == orderMobile.IdDriver);
+            orderMobile.Status = "New";
+            foreach (Order order in orderMobile.Orders)
+            {
+                Order order1 = context.Orders.FirstOrDefault(o => o.ID == order.ID);
+                order.CurrentStatus = "Assigned";
+                order1.Driver = driver;
+            }
+            context.OrderMobiles.Add(orderMobile);
+            await context.SaveChangesAsync();
+        }
+
         public List<Order> GetOrders()
         {
             return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-1))).ToList();
