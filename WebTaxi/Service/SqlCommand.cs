@@ -49,15 +49,18 @@ namespace WebTaxi.Service
             await context.SaveChangesAsync();
         }
 
-        public async void AssigneOrderMobile(OrderMobile orderMobile)
+        public async Task AssigneOrderMobile(OrderMobile orderMobile)
         {
             Driver driver = context.Drivers.FirstOrDefault(d => d.ID.ToString() == orderMobile.IdDriver);
+            List<Order> orders = orderMobile.Orders;
             orderMobile.Status = "New";
-            foreach (Order order in orderMobile.Orders)
+            orderMobile.Orders = new List<Order>();
+            foreach (Order order in orders)
             {
                 Order order1 = context.Orders.FirstOrDefault(o => o.ID == order.ID);
-                order.CurrentStatus = "Assigned";
+                order1.CurrentStatus = "Assigned";
                 order1.Driver = driver;
+                orderMobile.Orders.Add(order1);
             }
             context.OrderMobiles.Add(orderMobile);
             await context.SaveChangesAsync();

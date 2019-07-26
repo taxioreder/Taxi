@@ -12,10 +12,10 @@ namespace WebTaxi.Service
         public SqlCommand sqlCommand = null;
         private ConnectorApiMaps connectorApiMaps = null;
 
-        public OrderMobileWorke(SqlCommand sqlCommand)
+        public OrderMobileWorke()
         {
-            this.sqlCommand = sqlCommand;
-            connectorApiMaps= new ConnectorApiMaps();
+            sqlCommand = new SqlCommand();
+            connectorApiMaps = new ConnectorApiMaps();
         }
 
         public List<Order> SuitableOrders(string idDriver, OrderMobile orderMobile = null, Order order1 = null)

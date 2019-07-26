@@ -250,19 +250,19 @@ namespace WebTaxi.Service
 
         public List<Order> GetOrdersSuitable(string idDriver)
         {
-            OrderMobileWorke orderMobileWorke = new OrderMobileWorke(sqlCommand);
+            OrderMobileWorke orderMobileWorke = new OrderMobileWorke();
             return orderMobileWorke.SuitableOrders(idDriver);
         }
 
         public List<Order> GetOrdersSuitableAndInsert(string idDriver, OrderMobile orderMobile, Order order1)
         {
-            OrderMobileWorke orderMobileWorke = new OrderMobileWorke(sqlCommand);
+            OrderMobileWorke orderMobileWorke = new OrderMobileWorke();
             return orderMobileWorke.SuitableOrders(idDriver, orderMobile, order1);
         }
 
-        public void SetMobileOrder(OrderMobile orderMobile)
+        public async void SetMobileOrder(OrderMobile orderMobile)
         {
-            sqlCommand.AssigneOrderMobile(orderMobile);
+           await sqlCommand.AssigneOrderMobile(orderMobile);
         }
     }
 }

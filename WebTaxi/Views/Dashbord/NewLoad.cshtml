@@ -40,7 +40,7 @@
             {
                 if (@ViewBag.Orders[i].isValid)
                 {
-                    <tr id="@ViewBag.Orders[i].ID">
+                    <tr id="@ViewBag.Orders[i].ID" class="valid">
                         <td class="orderTd orderTdBorderStart"><span>@ViewBag.Orders[i].NameCustomer</span></td>
                         <td class="orderTd orderTdBorderSrandart"><span>$@ViewBag.Orders[i].Price</span></td>
                         <td class="orderTd orderTdBorderSrandart"><span>@ViewBag.Orders[i].Milisse Milles</span></td>
@@ -164,7 +164,7 @@
         background-color:rgba(247, 5, 5, 0.29)
     }
 
-    tr:nth-child(odd) { background-color: rgba(181, 181, 181, 0.28); }
+    .valid:nth-child(odd) { background-color: rgba(181, 181, 181, 0.28); }
 
     .orderTd {
         height: 30px;

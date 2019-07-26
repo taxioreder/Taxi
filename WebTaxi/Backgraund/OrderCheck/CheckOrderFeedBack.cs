@@ -35,7 +35,7 @@ namespace WebTaxi.Backgraund.OrderCheck
                 {
                     await sqlCommand.SetFedBack(order.ID, "Date is not filled!", false);
                 }
-                else if (IsFormat(order.Date))
+                else if (!IsFormat(order.Date))
                 {
                     await sqlCommand.SetFedBack(order.ID, "Date is not valid!", false);
                 }
@@ -59,7 +59,7 @@ namespace WebTaxi.Backgraund.OrderCheck
                 {
                     await sqlCommand.SetFedBack(order.ID, "From Address is not filled!", false);
                 }
-                else if (connectorApiMaps.IsValidAddress(order.FromAddress))
+                else if (!connectorApiMaps.IsValidAddress(order.FromAddress))
                 {
                     await sqlCommand.SetFedBack(order.ID, "From Address is not valid!", false);
                 }
@@ -67,7 +67,7 @@ namespace WebTaxi.Backgraund.OrderCheck
                 {
                     await sqlCommand.SetFedBack(order.ID, "To Address is not filled!", false);
                 }
-                else if (connectorApiMaps.IsValidAddress(order.ToAddress))
+                else if (!connectorApiMaps.IsValidAddress(order.ToAddress))
                 {
                     await sqlCommand.SetFedBack(order.ID, "To Address is not valid!", false);
                 }
