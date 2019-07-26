@@ -4,10 +4,14 @@
     <a class="btnSave" href="SaveOrderMobile">Save</a>
     <div class="orderMobile">
         <div id="orders" class="content">
+            <div class="loader">
 
+            </div>
         </div>
         <div id="points" class="content">
+            <div class="loader">
 
+            </div>
         </div>
     </div>
     <div class="filling">
@@ -23,10 +27,14 @@
                 <th>Control</th>
             </tr>
         </table>
+        <div class="loader">
+
+        </div>
     </div>
 </div>
 <script>
     function InitOrder() {
+        SrartLoad();
         let order;
         let xhr = new XMLHttpRequest();
         let body = "idDriver=@ViewBag.Driver.ID";
@@ -102,10 +110,12 @@
                     table.appendChild(tr);
                 }
             }
+            Endload();
         }
     }
 
     function AddOrder(elBtn) {
+        SrartLoad();
         let order;
         let tr = document.getElementById("table").getElementsByTagName("tr");
         while(tr.length > 1){
@@ -186,11 +196,13 @@
 
                     table.appendChild(tr);
                 }
-            }
+             }
+            Endload();
         }
     }
 
     function SetOrderMobile() {
+        SrartLoad();
         let orderMobile;
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '@ViewBag.BaseUrl/Dashbord/Orders/GetOrderMobile', true);
@@ -203,6 +215,7 @@
                 SetBlockPoint(orderMobile.OnePointForAddressOrders);
                 SetBlockOrder(orderMobile.Orders);
             }
+            Endload();
         }
     }
 
@@ -246,6 +259,20 @@
 
             block.appendChild(newElDiv);
             block.appendChild(line);
+        }
+    }
+
+    function SrartLoad() {
+        let load = document.getElementsByClassName("loader");
+        for (let i = 0; i < load.length; i++) {
+            load[i].style.display = "block";
+        }
+    }
+
+    function Endload() {
+        let load = document.getElementsByClassName("loader");
+        for (let i = 0; i < load.length; i++) {
+            load[i].style.display = "none";
         }
     }
 
@@ -332,5 +359,27 @@
 
     tr:nth-child(odd) {
         background-color: rgba(181, 181, 181, 0.28);
+    }
+
+    .loader {
+        margin: 10px;
+        border: 3px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 3px solid black;
+        border-bottom: 3px solid black;
+        width: 20px;
+        height: 20px;
+        -webkit-animation: spin 0.5s linear infinite;
+        animation: spin 0.5s linear infinite;
+        display:none;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
     }
 </style>
