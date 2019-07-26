@@ -180,12 +180,12 @@ namespace ApiMobaileTaxi.Service
          
         public List<Order> GetOrders()
         {
-            return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-2))).ToList();
+            return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && o.isValid && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-1))).ToList();
         }
 
         public List<Order> GetOrders(string date)
         {
-            return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) < DateTime.Parse(GetDFormat(date)) && DateTime.Parse(GetDFormat(date)) > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-3))).ToList();
+            return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && o.isValid && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) < DateTime.Parse(GetDFormat(date)) && DateTime.Parse(GetDFormat(date)) > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(-20))).ToList();
         }
 
         private string GetDFormat(string data)

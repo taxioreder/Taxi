@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FluentScheduler;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using WebTaxi.Backgraund;
 
 namespace WebTaxi
 {
@@ -23,6 +25,7 @@ namespace WebTaxi
                     name: "default",
                     template: "{controller=RA}/{action=Index}/{id?}");
             });
+            JobManager.Initialize(new MyRegistr());
         }
     }
 }

@@ -65,7 +65,7 @@ namespace WebTaxi.Service
 
         public List<Order> GetOrders()
         {
-            return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-1))).ToList();
+            return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && o.isValid && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-1))).ToList();
         }
 
         public List<Order> GetFullOrders()
@@ -170,8 +170,8 @@ namespace WebTaxi.Service
             {
                 return;
             }
-            order.FB = "";
-            order.isValid = true;
+            order.FB = "Wait a minute we check the order";
+            order.isValid = false;
             context.Orders.Add(order);
             context.SaveChanges();
         }
@@ -198,7 +198,11 @@ namespace WebTaxi.Service
             order.TimeOfAppointment = timeOfAppointment != null ? timeOfAppointment : order.TimeOfAppointment;
             order.Milisse = milisse != null ? milisse : order.Milisse;
             order.Price = price != null ? price : order.Price;
-            order.isValid = true;
+            if (order.CurrentStatus == "NewLoad")
+            {
+                order.FB = "Wait a minute we check the order";
+                order.isValid = false;
+            }
             order.NoName3 = noName3 != null ? noName3 : order.NoName3;
             order.NoName4 = noNama4 != null ? noNama4 : order.NoName4;
             order.NoName5 = noName5 != null ? noName5 : order.NoName5;
