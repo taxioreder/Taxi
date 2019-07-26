@@ -36,6 +36,32 @@ namespace WebTaxi.Service
             }
         }
 
+        public bool IsValidAddress(string address)
+        {
+            IRestResponse response = null;
+            string content = null;
+            try
+            {
+                RestClient client = new RestClient("https://maps.googleapis.com");
+                RestRequest request = new RestRequest($"maps/api/geocode/json?address={address}&sensor=true&key=AIzaSyBg0nsyrrsmGyw9Iiw0TOu4HI6o8Jt1jHU", Method.GET);
+                request.Timeout = 200000;
+                response = client.Execute(request);
+                content = response.Content;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            if (content == "" || response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return false;
+            }
+            else
+            {
+                return GetData3(content);
+            }
+        }
+
         public int GetGetDuration(string addressFrom, string addressTo)
         {
             IRestResponse response = null;
@@ -138,7 +164,18 @@ namespace WebTaxi.Service
             {
 
             }
+            return location;
+        }
 
+        private bool GetData3(string respJsonStr)
+        {
+            bool location = false;
+            var responseAppS = JObject.Parse(respJsonStr);
+            var status = responseAppS.Value<string>("status");
+            if (status == "OK")
+            {
+                location = true;
+            }
             return location;
         }
     }
