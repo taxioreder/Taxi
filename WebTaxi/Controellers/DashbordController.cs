@@ -25,10 +25,17 @@ namespace WebTaxi.Controellers
                 Request.Cookies.TryGetValue("KeyAvthoTaxi", out key);
                 if (managerTaxi.CheckKey(key))
                 {
-                    ViewBag.Orders = managerTaxi.GetOrders("NewLoad", page);
-                    ViewBag.Drivers = managerTaxi.GetDrivers();
-                    ViewBag.count = managerTaxi.GetCountPage("NewLoad");
-                    actionResult = View("NewLoad");
+                    try
+                    {
+                        ViewBag.Orders = managerTaxi.GetOrders("NewLoad", page);
+                        ViewBag.Drivers = managerTaxi.GetDrivers();
+                        ViewBag.count = managerTaxi.GetCountPage("NewLoad");
+                        actionResult = View("NewLoad");
+                    }
+                    catch (Exception e)
+                    {
+                        System.IO.File.WriteAllText("3.txt", e.Message);
+                    }
                 }
                 else
                 {

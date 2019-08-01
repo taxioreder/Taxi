@@ -23,7 +23,7 @@
                                                             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_6"/>
                                                         </Label.GestureRecognizers>
                                                     </Label>
-                                                    <StackLayout x:Name="infoB" IsVisible="False">
+                                                    <StackLayout x:Name="infoB" IsVisible="True">
                                                         <FlexLayout>
                                                             <Label Text="Phone:"/>
                                                             <Label Text="{Binding Phone}" TextColor="Blue" Margin="2, 0, 0, 0">
@@ -58,7 +58,7 @@
                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_7"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <StackLayout x:Name="stepB" IsVisible="False">
+                <StackLayout x:Name="stepB" IsVisible="True">
                     <ListView ItemsSource="{Binding OrderMobile.OnePointForAddressOrders}" IsPullToRefreshEnabled="True" HasUnevenRows="True" SeparatorVisibility="None" RefreshCommand="{Binding RefreshCommand}"
                                   IsRefreshing="{Binding IsRefr}" ItemTapped="ListView_ItemTapped">
                         <ListView.ItemTemplate>

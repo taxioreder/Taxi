@@ -133,6 +133,8 @@ namespace DBAplication.Migrations
                     NoName6 = table.Column<string>(nullable: true),
                     CountCustomer = table.Column<int>(nullable: false),
                     Comment = table.Column<string>(nullable: true),
+                    FB = table.Column<string>(nullable: true),
+                    isValid = table.Column<bool>(nullable: false),
                     isAccept = table.Column<bool>(nullable: false),
                     IsVisableAccept = table.Column<bool>(nullable: false),
                     DriverID = table.Column<int>(nullable: true),
