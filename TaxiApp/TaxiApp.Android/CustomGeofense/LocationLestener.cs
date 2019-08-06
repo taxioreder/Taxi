@@ -64,8 +64,8 @@ namespace TaxiApp.Droid.CustomGeofense
                                 context.StartActivity(MainActivity.GetInstance().Intent);
                             }
                         }
-                        else if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0022 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0022 > lastloc.Latitude)
-                           && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0022 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0022 > lastloc.Longitude) && !GefenceLocation.gefenceModel.IsNewOrder)
+                        else if ((GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat - 0.0022 < lastloc.Latitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lat + 0.0022 > lastloc.Latitude)
+                           && (GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng - 0.0022 < lastloc.Longitude && GefenceLocation.gefenceModel.OnePointForAddressOrder.Lng + 0.0022 > lastloc.Longitude) && !GefenceLocation.gefenceModel.IsNewOrder)
                         {
                             await gefenceManager.RecurentStatusOrder(GefenceLocation.gefenceModel.OrderMobile.ID, "NewOrder");
                             GefenceLocation.gefenceModel.IsNewOrder = true;
