@@ -142,7 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaxiApp\TaxiApp.csproj">
-      <Project>{3F26CAB1-AC49-4597-958A-447E91830954}</Project>
+      <Project>{A4DD4201-9F04-4E86-B9BB-A06FEC48D03B}</Project>
       <Name>TaxiApp</Name>
     </ProjectReference>
   </ItemGroup>

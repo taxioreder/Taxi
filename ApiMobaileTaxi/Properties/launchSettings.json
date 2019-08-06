@@ -1,8 +1,8 @@
-﻿{
+{
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
-    "windowsAuthentication": false, 
-    "anonymousAuthentication": true, 
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:54991",
       "sslPort": 44395
@@ -19,10 +19,10 @@
     },
     "ApiMobaileTaxi": {
       "commandName": "Project",
-      "applicationUrl": "http://192.168.0.100:8098",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://192.168.0.100:8098"
     }
   }
 }
