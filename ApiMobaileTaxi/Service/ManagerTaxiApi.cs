@@ -52,6 +52,10 @@ namespace ApiMobaileTaxi.Service
             }
         }
 
+        internal void SaveTokenStore(string token, string tokenStore)
+        {
+            sqlCoommandTaxiApi.SaveTokenStoreinDb(token, tokenStore);
+        }
 
         private async Task WorkNewOrder(int idOrderMobile, string statusOrderMobil, string token, bool isNew)
         {

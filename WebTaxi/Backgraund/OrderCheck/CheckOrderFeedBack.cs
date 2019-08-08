@@ -24,10 +24,19 @@ namespace WebTaxi.Backgraund.OrderCheck
         private async void Work()
         {
             List<Order> orders = sqlCommand.GetFullOrders();
-            await CheckSucceeding(orders.Where(o => o.CurrentStatus == "NewLoad").ToList());
+            await CheckSucceedingNewLoad(orders.Where(o => o.CurrentStatus == "NewLoad").ToList());
+            //await CheckSucceedingAssigne(orders.Where(o => o.CurrentStatus == "Assigned").ToList());
         }
 
-        private async Task CheckSucceeding(List<Order> orders)
+        private async Task CheckSucceedingAssigne(List<Order> orders)
+        {
+            foreach (Order order in orders)
+            {
+
+            }
+        }
+
+        private async Task CheckSucceedingNewLoad(List<Order> orders)
         {
             foreach (Order order in orders)
             {

@@ -57,6 +57,13 @@ namespace ApiMobaileTaxi.Service
             await context.SaveChangesAsync();
         }
 
+        internal async void SaveTokenStoreinDb(string token, string tokenStore)
+        {
+            Driver driver = context.Drivers.FirstOrDefault(d => d.Token == token);
+            driver.TokenShope = tokenStore;
+            await context.SaveChangesAsync();
+        }
+
         public async Task SetStatusMobileOrderEnd(int idOrderMobile, string token)
         {
             Driver driver = context.Drivers.FirstOrDefault(d => d.Token == token);

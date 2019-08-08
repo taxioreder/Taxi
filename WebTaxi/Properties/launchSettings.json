@@ -18,7 +18,7 @@
     "WebTaxi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://192.168.0.100:8087",
+      "applicationUrl": "http://192.168.0.101",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

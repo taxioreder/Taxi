@@ -23,6 +23,8 @@
         public string NoName4 { get; set; }
         public string NoName5 { get; set; }
         public string NoName6 { get; set; }
+        public string DateAccept { get; set; }
+        public string TimeAccept { get; set; }
         public int CountCustomer { get; set; }
         public string Comment { get; set; }
         public string FB { get; set; }
