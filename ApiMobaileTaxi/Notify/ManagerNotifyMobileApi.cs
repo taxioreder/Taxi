@@ -27,7 +27,7 @@ namespace ApiMobaileTaxi.Notify
             tRequest.ContentType = "application/json";
         }
 
-        public void SendNotyfyStatusPickup(string tokenShope, )
+        public void SendNotyfyStatusPickup(string tokenShope, string click_action, string body, string title)
         {
             if (tokenShope != null && tokenShope != "")
             {
@@ -37,9 +37,9 @@ namespace ApiMobaileTaxi.Notify
                     content_available = true,
                     notification = new
                     {
-                        click_action = "Oreder",
-                        body = "After delivery, write down the time of arrival, then to indicate this in the inspection",
-                        title = $"Orede Id: {idShip} on my way",
+                        click_action = click_action,
+                        body = body,
+                        title = title,
                     },
                 };
                 string postbody = JsonConvert.SerializeObject(payload).ToString();

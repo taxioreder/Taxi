@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
-using ApiMobaileTaxi.Model;
 using DBAplication.Model;
 
 namespace ApiMobaileTaxi.Service

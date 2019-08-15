@@ -99,6 +99,7 @@ namespace WebTaxi.Service
                 orderMobile.OnePointForAddressOrders.Insert(positionS, new OnePointForAddressOrder(order.ID, location.lat, location.lng, order.TimeOfPickup, order.Date, "Start", order.FromAddress));
                 GetPositionLocation(orderMobile.OnePointForAddressOrders, location1, locationDriver, ref positionE);
                 orderMobile.OnePointForAddressOrders.Insert(positionE, new OnePointForAddressOrder(order.ID, location.latE, location.lngE, order.TimeOfAppointment, order.Date, "End", order.ToAddress));
+                orderMobile.OnePointForAddressOrders.Sort((b1, b2) => DateTime.Compare(DateTime.Parse(b1.PTime), DateTime.Parse(b2.PTime)));
             }
             if (orderMobile.Orders == null)
             {
