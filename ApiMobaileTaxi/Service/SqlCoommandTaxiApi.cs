@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiMobaileTaxi.Notify;
 using DBAplication;
 using DBAplication.Model;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace ApiMobaileTaxi.Service
 
         public async Task SetStatusMobileOrderStart(int idOrderMobile)
         {
+            ManagerNotifyMobileApi managerNotifyMobileApi = new ManagerNotifyMobileApi();
             OrderMobile orderMobile = context.OrderMobiles
                 .Include(om => om.Orders)
                 .Include(om => om.OnePointForAddressOrders)
@@ -29,20 +31,23 @@ namespace ApiMobaileTaxi.Service
             orderMobile.Status = "InWork";
             orderMobile.OnePointForAddressOrders[0].Status = "DriveFromPoint";
             order.CurrentStatus = "Picked up";
+            string tokenShope = GetTokenShope(orderMobile.IdDriver);
+            managerNotifyMobileApi.SendNotyfyStatusPickup(tokenShope, "Order", $"Drive to {orderMobile.OnePointForAddressOrders[0].Address}", $"It is important to complete the order on time before {orderMobile.OnePointForAddressOrders[0].PTime}");
             await context.SaveChangesAsync();
         }
 
         public async Task SetStatusCompletPoint(int idOrderMobile)
         {
+            ManagerNotifyMobileApi managerNotifyMobileApi = new ManagerNotifyMobileApi();
             OrderMobile orderMobile = context.OrderMobiles
                 .Include(om => om.Orders)
                 .Include(om => om.OnePointForAddressOrders)
                 .FirstOrDefault(om => om.ID == idOrderMobile);
             OnePointForAddressOrder onePointForAddressOrder = orderMobile.OnePointForAddressOrders.FirstOrDefault(om => om.Status == "DriveFromPoint");
+            int index = orderMobile.OnePointForAddressOrders.IndexOf(onePointForAddressOrder);
             Order order = context.Orders.FirstOrDefault(o => o.ID == onePointForAddressOrder.IDorder);
             if (onePointForAddressOrder != null)
             {
-                int index = orderMobile.OnePointForAddressOrders.IndexOf(onePointForAddressOrder);
                 orderMobile.OnePointForAddressOrders.First(om => om.Status == "DriveFromPoint").Status = "CompletePoint";
                 orderMobile.OnePointForAddressOrders[index + 1].Status = "DriveFromPoint";
             }
@@ -54,6 +59,8 @@ namespace ApiMobaileTaxi.Service
             {
                 order.CurrentStatus = "Delivered";
             }
+            string tokenShope = GetTokenShope(orderMobile.IdDriver);
+            managerNotifyMobileApi.SendNotyfyStatusPickup(tokenShope, "Order", $"Drive to {orderMobile.OnePointForAddressOrders[index+1].Address}", $"It is important to complete the order on time before {orderMobile.OnePointForAddressOrders[index+1].PTime}");
             await context.SaveChangesAsync();
         }
 
@@ -66,6 +73,7 @@ namespace ApiMobaileTaxi.Service
 
         public async Task SetStatusMobileOrderEnd(int idOrderMobile, string token)
         {
+            ManagerNotifyMobileApi managerNotifyMobileApi = new ManagerNotifyMobileApi();
             Driver driver = context.Drivers.FirstOrDefault(d => d.Token == token);
             OrderMobile orderMobile1 = context.OrderMobiles.ToList().FirstOrDefault(om => om.IdDriver == driver.ID.ToString() && om.Status == "NewNext");
             OrderMobile orderMobile = context.OrderMobiles
@@ -80,6 +88,8 @@ namespace ApiMobaileTaxi.Service
             orderMobile.Status = "EndWork";
             orderMobile.OnePointForAddressOrders[0].Status = "CompletePoint";
             order.CurrentStatus = "Delivered";
+            string tokenShope = GetTokenShope(orderMobile.IdDriver);
+            managerNotifyMobileApi.SendNotyfyStatusPickup(tokenShope, "Order", "You have successfully completed the order", $"accept the next order on time. within 5 minutes, if any");
             await context.SaveChangesAsync();
         }
 
@@ -296,6 +306,12 @@ namespace ApiMobaileTaxi.Service
                 .Include(o => o.Orders)
                 .Include(o => o.OnePointForAddressOrders)
                 .FirstOrDefault(o => o.IdDriver == driver.ID.ToString() && o.Status == "New" || o.Status == "InWork");
+        }
+
+        internal string GetTokenShope(string idDriver)
+        {
+            Driver driver = context.Drivers.FirstOrDefault(d => d.ID.ToString() == idDriver);
+            return driver.TokenShope;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ApiMobaileTaxi.BackgroundService.Model;
+using ApiMobaileTaxi.Notify;
 using ApiMobaileTaxi.Service;
 using DBAplication.Model;
 using FluentScheduler;
@@ -225,7 +226,16 @@ namespace ApiMobaileTaxi.BackgroundService.DriverManager
                     }
                 }
                 await sqlCoommandTaxiApi.SetOrederMobile(orderMobile, locationsAcceptOrder[0].ID, isNew);
-                
+                ManagerNotifyMobileApi managerNotifyMobileApi = new ManagerNotifyMobileApi();
+                string tokenShope = sqlCoommandTaxiApi.GetTokenShope(orderMobile.IdDriver);
+                if (isNew)
+                {
+                    managerNotifyMobileApi.SendNotyfyStatusPickup(tokenShope, "Order", "New order for you", "System gave you a new order, The system gave you a new order, accept the order if possible, if you have no orders, accept the order within 5 minutes");
+                }
+                else
+                {
+                    managerNotifyMobileApi.SendNotyfyStatusPickup(tokenShope, "Order", "Next order for you", "your next order is created, it will be available after the completion of the current order");
+                }
             }
         }
 

@@ -27,7 +27,7 @@ namespace TaxiApp.Service.Geofence
                     string token = CrossSettings.Current.GetValueOrDefault("Token", "");
                     RestClient client = new RestClient(Config.BaseReqvesteUrl);
                     RestRequest request = new RestRequest("Api.Mobile/Order/RecurentOrderDrive", Method.POST);
-                    client.Timeout = 10000;
+                    client.Timeout = 60000;
                     request.AddHeader("Accept", "application/json");
                     request.AddParameter("token", token);
                     request.AddParameter("idOrderMobile", idOrderMobile);

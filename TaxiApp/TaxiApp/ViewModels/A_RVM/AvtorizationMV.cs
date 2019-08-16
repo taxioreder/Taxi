@@ -5,6 +5,7 @@ using Prism.Mvvm;
 using Rg.Plugins.Popup.Services;
 using TaxiApp.Service;
 using TaxiApp.Service.GeloctionGPS;
+using TaxiApp.StoreNotify;
 using TaxiApp.View;
 using TaxiApp.View.AppPage;
 using Xamarin.Forms;
@@ -73,6 +74,7 @@ namespace TaxiApp.ViewModels.A_RVM
                     await Utils.StartListening();
                 });
                 App.Current.MainPage = new NavigationPage(new FullOrder(managerTaxi));
+                DependencyService.Get<IStore>().OnTokenRefresh();
             }
             else if (state == 4)
             {

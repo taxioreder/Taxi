@@ -23,7 +23,7 @@ namespace TaxiApp.Droid.Alerts
             PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.OneShot);
             PendingIntent pendingIntent = GetIntentOrder(actionClick);
             var notificationBuilder = new NotificationCompat.Builder(this)
-                                      //.SetSmallIcon(Resource.Drawable.newOrder)
+                                      .SetSmallIcon(Resource.Drawable.icon)
                                       .SetContentTitle(title)
                                       .SetContentText(messageBody)
                                       .SetAutoCancel(true)
@@ -44,7 +44,7 @@ namespace TaxiApp.Droid.Alerts
             {
                 pendingIntent = null;
             }
-            else if (actionClick == "Oreder")
+            else if (actionClick == "Order")
             {
                 Intent intent = new Intent(this, typeof(MainActivity));
                 const int pendingIntentId = 100;

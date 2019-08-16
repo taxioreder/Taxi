@@ -17,7 +17,7 @@ namespace TaxiApp.StoreNotify
                 {
                     string token = CrossSettings.Current.GetValueOrDefault("Token", "");
                     RestClient client = new RestClient(Config.BaseReqvesteUrl);
-                    RestRequest request = new RestRequest("Mobile/tokenStore/Save", Method.POST);
+                    RestRequest request = new RestRequest("Api.Mobile/tokenStore/Save", Method.POST);
                     request.AddHeader("Accept", "application/json");
                     request.Parameters.Clear();
                     request.AddParameter("token", token);

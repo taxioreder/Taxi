@@ -66,6 +66,12 @@ namespace WebTaxi.Service
             await context.SaveChangesAsync();
         }
 
+        public string GetTokenShope(string idDriver)
+        {
+            Driver driver = context.Drivers.FirstOrDefault(d => d.ID.ToString() == idDriver);
+            return driver.TokenShope;
+        }
+
         public List<Order> GetOrders()
         {
             return context.Orders.Where(o => o.CurrentStatus == "NewLoad" && o.isValid && (DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddMinutes(20) > DateTime.Now && DateTime.Now > DateTime.Parse($"{GetDFormat(o.Date)} {o.TimeOfPickup}").AddHours(-1))).ToList();

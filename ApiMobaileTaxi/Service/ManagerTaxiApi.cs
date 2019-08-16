@@ -33,7 +33,7 @@ namespace ApiMobaileTaxi.Service
             }
             else if (statusOrderMobil == "NewOrder")
             {
-                await WorkNewOrder(idOrderMobile, statusOrderMobil, token, false);
+                await WorkNewOrder(idOrderMobile, statusOrderMobil, token, false, false);
             }
             else if (statusOrderMobil == "CompletePoint")
             {
@@ -45,7 +45,7 @@ namespace ApiMobaileTaxi.Service
             }
             else if (statusOrderMobil == "NewOrderAndEndOrder")
             {
-                await WorkNewOrder(idOrderMobile, statusOrderMobil, token, false);
+                await WorkNewOrder(idOrderMobile, statusOrderMobil, token, false, true);
             }
         }
 
@@ -54,7 +54,7 @@ namespace ApiMobaileTaxi.Service
             sqlCoommandTaxiApi.SaveTokenStoreinDb(token, tokenStore);
         }
 
-        private async Task WorkNewOrder(int idOrderMobile, string statusOrderMobil, string token, bool isNew)
+        private async Task WorkNewOrder(int idOrderMobile, string statusOrderMobil, string token, bool isNew, bool isNewOrderAndEndOrder)
         {
             List<BackgroundService.DriverManager.location> locationsOrder = new List<BackgroundService.DriverManager.location>();
             ConnectorApiMaps connectorApiMaps = new ConnectorApiMaps();
@@ -86,7 +86,10 @@ namespace ApiMobaileTaxi.Service
                 locationsOrder.Remove(locationsAcceptOrder[1]);
                 orderForDrivers.OrderOnTheWay(locationsOrder, locationsAcceptOrder, orders, sqlCoommandTaxiApi, isNew);
             }
-            await sqlCoommandTaxiApi.SetStatusMobileOrderEnd(idOrderMobile, token);
+            if (isNewOrderAndEndOrder)
+            {
+                await sqlCoommandTaxiApi.SetStatusMobileOrderEnd(idOrderMobile, token);
+            }
         }
 
         private void CheckAccept(object state)

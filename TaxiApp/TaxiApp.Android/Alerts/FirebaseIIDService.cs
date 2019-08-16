@@ -1,7 +1,9 @@
 ﻿using Android.App;
 using Firebase.Iid;
+using TaxiApp.Droid.Alerts;
 using TaxiApp.StoreNotify;
 
+[assembly: Xamarin.Forms.Dependency(typeof(FirebaseIIDService))]
 namespace TaxiApp.Droid.Alerts
 {
     [Service]

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebTaxi.Notify;
 
 namespace WebTaxi.Service
 {
@@ -262,7 +263,10 @@ namespace WebTaxi.Service
 
         public async void SetMobileOrder(OrderMobile orderMobile)
         {
-           await sqlCommand.AssigneOrderMobile(orderMobile);
+            await sqlCommand.AssigneOrderMobile(orderMobile);
+            ManagerNotifyMobileApi managerNotifyMobileApi = new ManagerNotifyMobileApi();
+            string tokenShope = sqlCommand.GetTokenShope(orderMobile.IdDriver);
+            managerNotifyMobileApi.SendNotyfyStatusPickup(tokenShope, "Order", "New order for you", "Dispatcher gave you a new order, The dispatcher gave you a new order, accept the order if possible, if you have no orders, accept the order within 5 minutes");
         }
     }
 }
